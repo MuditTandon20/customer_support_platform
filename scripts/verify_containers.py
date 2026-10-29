@@ -30,7 +30,7 @@ def main():
     run(*full,'build')
     run(*full,'up','-d','--wait','--wait-timeout','180')
     run('docker','run','--rm','--network','none','--mount',f'type=bind,source={ROOT},target=/verification,readonly',
-        '-e','PYTHONPATH=/app','aster-stage1-verify-ai','python','-m','unittest','discover','-s','/verification/tests','-p','test_*.py')
+        '-e','PYTHONPATH=/app',prefix+'-verify-ai','python','-m','unittest','discover','-s','/verification/tests','-p','test_*.py')
     env={**os.environ,'TEST_API_URL':f'http://localhost:{api_port}','TEST_WEB_URL':f'http://localhost:{web_port}',
          'TEST_FRONTEND_ORIGIN':f'http://localhost:{web_port}','TEST_BETA_API_URL':f'http://localhost:{beta_port}'}
     for script in ['tests/integration.py','tests/stage1_integration.py']:
