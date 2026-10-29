@@ -30,6 +30,21 @@ def wait_ready():
         time.sleep(1)
     raise AssertionError('Container API did not recover within 120 seconds')
 
+def wait_healthy(*services):
+    # `compose start --wait` is unavailable in older runner Compose versions.
+    # Inspect the actual health state rather than assuming process start is ready.
+    deadline=time.monotonic()+180
+    while time.monotonic()<deadline:
+        states=[]
+        for service in services:
+            container=docker('ps','-q',service)
+            state=subprocess.check_output(['docker','inspect','--format',
+                '{{if .State.Health}}{{.State.Health.Status}}{{else}}{{.State.Status}}{{end}}',container],text=True).strip() if container else 'missing'
+            states.append(state)
+        if all(state=='healthy' for state in states):return
+        time.sleep(1)
+    raise AssertionError('Services did not become healthy: '+str(dict(zip(services,states))))
+
 def main():
     wait_ready()
     client = httpx.Client(base_url=BASE, headers={'Origin': ORIGIN}, timeout=30)
@@ -65,7 +80,8 @@ def main():
         manual.raise_for_status()
         assert any(a['status']=='fallback' for a in client.get('/ai/activity', headers=headers).json())
     finally:
-        docker('start', '--wait', 'ai')
+        docker('start', 'ai')
+        wait_healthy('ai')
     report['ai_outage_manual_support'] = 'passed'
     recovery_start = time.monotonic()
     docker('restart', 'api', 'ai', 'web')
@@ -78,14 +94,16 @@ def main():
         assert httpx.get(BASE+'/ready', timeout=25).status_code == 503
     finally:
         recovery_start = time.monotonic()
-        docker('start', '--wait', 'db')
+        docker('start', 'db')
+        wait_healthy('db')
     wait_ready()
     report['database_recovery_ms'] = round((time.monotonic()-recovery_start)*1000)
     assert client.get(path, headers=headers).status_code == 200
     report['database_readiness_failure_and_recovery'] = 'passed'
     docker('stop')
     recovery_start = time.monotonic()
-    docker('start', '--wait')
+    docker('start')
+    wait_healthy('db','ai','api','web')
     wait_ready()
     assert client.get(path, headers=headers).status_code == 200
     report['complete_stack_stop_start_preserves_data'] = 'passed'

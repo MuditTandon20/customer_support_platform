@@ -4,7 +4,7 @@
 
 ## What changed
 
-Docker Desktop was stopped. It was started with its existing Linux/WSL 2 configuration; Docker Engine 29.7.2 and Compose 5.4.0 became available. Existing projects/volumes were inspected and left intact. All Aster mutations were confined to two named synthetic rehearsal projects, `aster-stage1-verify` and `aster-stage1-free-verify`, and their own named PostgreSQL volumes.
+Docker Desktop was stopped. It was started with its existing Linux/WSL 2 configuration; Docker Engine 29.7.2 and Compose 5.4.0 became available. Existing projects/volumes were inspected and left intact. All Docker mutations were confined to two named synthetic rehearsal projects, `aster-stage1-verify` and `aster-stage1-free-verify`, and their own named PostgreSQL volumes. The Windows fault/restart/beta profile was also rerun with the rebuilt native API against fresh uniquely named databases in the earlier disposable Postgres 18 cluster; existing records were not reset.
 
 The four-service layout runs production standalone Next.js, optimized Rust, internal Python 3.12 and PostgreSQL 17. The second layout exercises the actual `deploy/Dockerfile.stage1` combined Rust/Python supervisor at **0.1 CPU and 512 MiB**, with a separate persistent Postgres service. Neither layout is a public deployment. The database major version remains 17; migrations and application records are retained across container recreation.
 
@@ -26,6 +26,7 @@ The four-service layout runs production standalone Next.js, optimized Rust, inte
 | Browser/component/security/mobile/accessibility | 8 tests against the production container website, including real cited customer replies, CSAT, XSS text rendering, fixed-host proxy paths and workflow drag/keyboard editing |
 | Migrations | All 9 expected migration versions present and successful in fresh Postgres 17; no migration file or existing checksum changed |
 | Outages/restarts | AI outage preserves manual replies; database outage makes readiness return 503 and recovers; service restart, complete stop/start and forced container recreation preserve ticket data |
+| Windows native fault/beta profile | All 7 AI-outage suites, persisted-ticket restart and concurrent organization cap checks passed with the new HS256 provider; earlier native preview restored with readiness 200 |
 | Local security controls | Non-root application processes; Python has no published host port; missing AI service token denied; hostile Origin denied even with bearer auth; SQL-like search treated as data; 31st authentication request rate-limited |
 | Constrained combined backend | Stage 1 API suites pass with beta guards enabled under 512 MiB/0.1 CPU; AI-worker termination triggers supervisor/container recovery and retained ticket remains accessible |
 | Dependency checks | npm project/test audits clean; installed Python application OSV clean; one retained Rust advisory-data discrepancy below |
@@ -67,7 +68,7 @@ The local database image is not the selected managed Neon deployment, but these 
 
 ## Performance and unverified scope
 
-The final recovery run measured service restart **3437 ms**, database recovery **11000 ms**, complete stack start **36438 ms**, and complete container recreation **43484 ms**. These include the local Compose command and health-gate waits, not provider cold starts. The constrained backend passed all seven Stage 1 API tests in **18.087 s**; its AI-worker crash recovery measured **4437 ms**. Cgroup peak before that crash was **73,986,048 bytes (70.6 MiB)**; the restarted cgroup peak was **35,418,112 bytes**, with no OOM kill. These snapshots cover this small rehearsal, not a sustained-capacity guarantee.
+The final recovery run measured service restart **3438 ms**, database recovery **8781 ms**, complete stack start **36938 ms**, and complete container recreation **39390 ms**. These include the local Compose command and health-gate waits, not provider cold starts. The constrained backend passed all seven Stage 1 API tests in **18.087 s**; its AI-worker crash recovery measured **4437 ms**. Cgroup peak before that crash was **73,986,048 bytes (70.6 MiB)**; the restarted cgroup peak was **35,418,112 bytes**, with no OOM kill. These snapshots cover this small rehearsal, not a sustained-capacity guarantee.
 
 The container API smoke check made **100 requests**, concurrency **10**, **0 errors**, p50 **14.36 ms**, p95 **271.85 ms**, **254.8 requests/s**, in an empty synthetic tenant. This is a smoke measurement, not an SLO.
 
@@ -76,5 +77,7 @@ See `STAGE1_CONTAINER_LIGHTHOUSE.json`, `STAGE1_CONTAINER_INTERACTIONS.json`, `S
 No public endpoint was deployed, no managed database/account was provisioned, and no hosted backup/restore, cold-start or provider-quota test was performed. The ₹0 plan remains conditional on the documented free quotas/eligibility. Follow STAGE1_DEPLOYMENT_RUNBOOK.md only after the security hold is resolved and a later deployment is authorized.
 
 ## Visual evidence and Git scope
+
+[Initial CI run 40882403937](https://github.com/MuditTandon20/customer_support_platform/actions/runs/40882403937) passed the integrated job and all container API/browser tests, then exposed an older-Compose incompatibility in the harness: `compose start --wait` was unsupported. The harness now uses `start` plus explicit inspected health polling. The complete local recovery sequence passed again with that portable implementation; the follow-up CI conclusion is reported at handoff. The native profile script also no longer writes an obsolete Docker-unavailable conclusion for a check it does not perform.
 
 Actual final container screenshots: [desktop](screenshots/workspace-desktop.png), [mobile](screenshots/workspace-mobile.png), [light theme](screenshots/workspace-light.png), [customer portal](screenshots/customer-portal.png), [workflow studio](screenshots/stage1-workflow.png). Only release/stage1-testing is committed/pushed. Main stays at d3b4e25; prior release baseline is ba39a46. The original PDF, HTML and PDF generator remain untracked and untouched. No Kubernetes or replacement application stack was introduced.

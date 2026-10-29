@@ -14,13 +14,13 @@
   "non_root_and_private_ai": "passed",
   "csrf_bearer_origin_and_search_input": "passed",
   "ai_outage_manual_support": "passed",
-  "service_restart_ready_ms": 3437,
-  "database_recovery_ms": 11000,
+  "service_restart_ready_ms": 3438,
+  "database_recovery_ms": 8781,
   "database_readiness_failure_and_recovery": "passed",
   "complete_stack_stop_start_preserves_data": "passed",
-  "complete_stack_start_ready_ms": 36438,
+  "complete_stack_start_ready_ms": 36938,
   "container_recreation_preserves_data": "passed",
-  "container_recreation_ready_ms": 43484,
+  "container_recreation_ready_ms": 39390,
   "authentication_rate_limit": "passed: 31st request denied",
   "result": "passed"
 }

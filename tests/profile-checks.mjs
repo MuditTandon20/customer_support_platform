@@ -30,6 +30,6 @@ try{
  const token=candidates.find(r=>r.status===200).body.token;
  if((await post(18082,'/invitations',{email:'real@example.com',role:'customer'},token)).status!==400)throw new Error('Real invitation accepted');
  const mailbox=await fetch('http://localhost:18082/sandbox/mailbox',{headers:{Authorization:`Bearer ${token}`}});if(mailbox.status!==403)throw new Error('Public sandbox exposed');
- await writeFile('../docs/STAGE1_PROFILE_CHECKS.json',JSON.stringify({ai_service_failure:'passed: seven API suites with unavailable service and explicit fallback assertions',native_restart:'passed: owned ticket accessible after process restart with same Postgres',public_beta:'passed: synthetic emails, concurrent organization cap and disabled sandbox',container_restart:'UNVERIFIED: Docker engine unavailable'},null,2));
+ await writeFile('../docs/STAGE1_PROFILE_CHECKS.json',JSON.stringify({ai_service_failure:'passed: seven API suites with unavailable service and explicit fallback assertions',native_restart:'passed: owned ticket accessible after process restart with same Postgres',public_beta:'passed: synthetic emails, concurrent organization cap and disabled sandbox',container_restart:'Not exercised by this native script; see STAGE1_CONTAINER_CHECKS.json for separate Docker verification'},null,2));
  console.log('Fault, restart and public-beta profile checks passed.');
 }finally{if(fault)await stop(fault.child);if(beta)await stop(beta.child);await client.end();}
