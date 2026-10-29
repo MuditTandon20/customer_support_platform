@@ -1,0 +1,19 @@
+{
+  "source": "https://api.osv.dev/v1/querybatch",
+  "dependencies_checked": 308,
+  "cargo_target": "x86_64-unknown-linux-gnu",
+  "python_scope": "All installed distributions in local image aster-stage1-free-verify-backend",
+  "findings": [
+    {
+      "package": {
+        "name": "block-buffer",
+        "ecosystem": "crates.io"
+      },
+      "version": "0.10.4",
+      "active_in_current_target": true,
+      "advisories": [
+        "GHSA-qwgh-2vcv-g2f7"
+      ]
+    }
+  ]
+}

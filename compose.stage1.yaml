@@ -1,0 +1,36 @@
+# Local rehearsal of the selected single-instance free backend, never a deployment.
+services:
+  db:
+    image: postgres:17-trixie
+    environment:
+      POSTGRES_USER: support
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run scripts/init-env.ps1 first}
+      POSTGRES_DB: support_os
+    volumes: [stage1_verify_db:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U support -d support_os"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  backend:
+    build:
+      context: .
+      dockerfile: deploy/Dockerfile.stage1
+    ports: ["127.0.0.1:${STAGE1_PORT:-18083}:10000"]
+    environment:
+      DATABASE_URL: postgres://support:${POSTGRES_PASSWORD}@db:5432/support_os
+      JWT_SECRET: ${JWT_SECRET:?Run scripts/init-env.ps1 first}
+      AI_SERVICE_TOKEN: ${AI_SERVICE_TOKEN:?Run scripts/init-env.ps1 first}
+      FRONTEND_ORIGIN: http://localhost:3000
+      COOKIE_SECURE: "false" # localhost HTTP only; mandatory true on hosted HTTPS
+      BETA_MODE: "true"
+      BACKGROUND_PROCESSING: "false"
+      ENABLE_SANDBOX: "false"
+      LLM_ENABLED: "false"
+    mem_limit: 512m
+    cpus: 0.1
+    restart: unless-stopped
+    depends_on:
+      db: {condition: service_healthy}
+volumes:
+  stage1_verify_db:

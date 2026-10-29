@@ -19,15 +19,10 @@ rskafka = { version = "0.6", default-features = false, optional = true }
 reqwest = { version = "0.12", features = ["json"] }
 tower-http = { version = "0.6", features = ["cors", "trace", "limit"] }
 sha2 = "0.11"
+jsonwebtoken = { version = "10.4", default-features = false }
+ring = "0.17.14"
+signature = "2.2"
 
 [features]
 default = []
 kafka = ["dep:rskafka"]
-
-# Keep native Windows development usable with the existing MSVC setup.
-# Linux hosting uses AWS-LC and omits the unused RustCrypto RSA/ECC stack.
-[target.'cfg(windows)'.dependencies]
-jsonwebtoken = { version = "10.3", default-features = false, features = ["rust_crypto"] }
-
-[target.'cfg(not(windows))'.dependencies]
-jsonwebtoken = { version = "10.3", default-features = false, features = ["aws_lc_rs"] }

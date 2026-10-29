@@ -22,7 +22,8 @@ async def main():
         start=time.perf_counter();results=await asyncio.gather(*(one(i) for i in range(100)));elapsed=time.perf_counter()-start
     latencies=sorted(r['ms'] for r in results)
     report={'requests':100,'concurrency':10,'errors':sum(r['status']!=200 for r in results),'p50_ms':round(statistics.median(latencies),2),'p95_ms':round(latencies[94],2),'elapsed_seconds':round(elapsed,2),'requests_per_second':round(100/elapsed,2),'environment':'Windows local Rust debug build; disposable PostgreSQL 18; empty synthetic tenant; 50 inbox + 50 analytics requests','scope':'Smoke measurement only. Not an availability or production SLO.'}
-    pathlib.Path('docs/load-smoke.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
+    if os.getenv('TEST_ENVIRONMENT'):report['environment']=os.environ['TEST_ENVIRONMENT']
+    pathlib.Path(os.getenv('LOAD_REPORT_PATH','docs/load-smoke.json')).write_text(json.dumps(report,indent=2),encoding='utf-8')
     print(json.dumps(report,indent=2))
     if report['errors']:raise SystemExit(1)
 asyncio.run(main())

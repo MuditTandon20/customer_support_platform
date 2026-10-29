@@ -1,6 +1,6 @@
 # Aster Stage 1 release evidence
 
-2026-10-29. **ASTER STAGE 1: READY FOR FREE-TIER TEST DEPLOYMENT**, subject to the explicit infrastructure and security limitations below. **Not deployed.** This is a synthetic-data, non-commercial beta, not a production release.
+2026-10-29. **Superseded readiness verdict: PUBLIC RELEASE ON SECURITY HOLD.** See [final container verification and remaining risks](STAGE1_FINAL_VERIFICATION.md). The implementation/performance evidence below describes the initial release; later Docker verification supersedes its container gaps and vulnerability assessment. **Not deployed.** This is a synthetic-data, non-commercial beta, not a production release.
 
 ## Delivered behavior and architecture
 
@@ -30,7 +30,7 @@ Main implementation: `backend/rust-api/src/{workflow_engine,ai_activity,main,out
 | Browser/component/mobile/accessibility | 7 Playwright tests passed; all seven passed again after final label cleanup and build. Includes full support journey, dark/light, mobile, reduced motion, axe checks, drag and keyboard editing |
 | Dependency audits | Frontend and test npm audit: 0; installed isolated Python OSV: 0; Rust findings remain below |
 | Configuration | Compose parsed, release guards passed, generated API contract has 52 paths, Git diff whitespace check passed |
-| Container image/start/restart | **UNVERIFIED**: Docker CLI exists but Docker engine is unavailable |
+| Container image/start/restart | Subsequently verified: see STAGE1_FINAL_VERIFICATION.md and container evidence JSON |
 | Linux CI | [Implementation run 40857767822](https://github.com/MuditTandon20/customer_support_platform/actions/runs/40857767822) completed successfully, including fresh Postgres 17 migrations, API suites and all browsers |
 | Hosted providers | **UNVERIFIED**; no cloud resource or deployment created |
 

@@ -1,0 +1,11 @@
+{
+  "requests": 100,
+  "concurrency": 10,
+  "errors": 0,
+  "p50_ms": 14.36,
+  "p95_ms": 271.85,
+  "elapsed_seconds": 0.39,
+  "requests_per_second": 254.8,
+  "environment": "Docker Desktop Linux optimized Rust and Postgres 17; Windows HTTP client; empty synthetic tenant; 50 inbox and 50 analytics requests",
+  "scope": "Smoke measurement only. Not an availability or production SLO."
+}

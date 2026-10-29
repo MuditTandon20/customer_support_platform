@@ -1,10 +1,12 @@
 # Future deployment runbook — do not execute without later authorization
 
+**Security gate:** read STAGE1_FINAL_VERIFICATION.md. Unresolved base-image findings currently hold public release; these instructions do not authorize deployment.
+
 This release is preparation only. No cloud resources or deployment were created. Use an entirely new synthetic-data database and free accounts; never point this beta at a real customer database. Hosting research and cost boundaries are in STAGE1_HOSTING_DECISION.md.
 
 ## Reproduce the verified native environment
 
-Use Rust 1.97+, Node 22 and Python 3.10+. Install the Python requirements into backend/ai-copilot/.venv. Use `npm ci` in frontend and tests. CMake and a C compiler are needed for the Linux JWT provider; the native Windows configuration retains RustCrypto for development. The selected Linux image builds the supported portable AWS-LC C implementation.
+Use Rust 1.97+, Node 22 and Python 3.10+. Install the Python requirements into backend/ai-copilot/.venv. Use `npm ci` in frontend and tests. A C compiler is needed for ring on both native platforms. JWT uses the supported HS256-only ring adapter on Windows and Linux; the unused RSA/ECC provider graph and AWS-LC build configuration were removed.
 
 ```powershell
 cargo test --manifest-path backend/rust-api/Cargo.toml --locked
@@ -63,3 +65,15 @@ Workflow actions execute with their ticket/message transaction. Each workflow ha
 ## Release evidence
 
 See STAGE1_RELEASE_REPORT.md, the measured JSON artifacts, screenshots and release branch commit references. Configuration syntax and native tests are evidence of preparation, not evidence that Vercel/Render/Neon were deployed successfully.
+
+## Reproduce final container verification
+
+Start Docker Desktop and select its Linux engine. Install the Python requirements in the existing virtual environment and run npm ci/Playwright Chromium setup in tests as above. From repository root run:
+
+```powershell
+backend/ai-copilot/.venv/Scripts/python.exe scripts/verify_containers.py
+```
+
+This uses only aster-stage1-verify (web 3000/API 8080) and aster-stage1-free-verify (beta API 18083), with distinct retained named volumes. It creates .env with random local credentials only if absent. Never remove an existing .env or reset volumes to make a test pass. Repeated beta rehearsals intentionally accumulate synthetic organizations and can hit the public organization cap. Stop these two projects with docker compose -p aster-stage1-verify stop and docker compose -f compose.stage1.yaml -p aster-stage1-free-verify stop; no volume deletion is needed. The backend crash, DB outage and recreation tests interrupt only these named rehearsal containers.
+
+Application runtime images have no npm/pip package managers. Update locked dependencies through the build stages and rebuild; do not install packages interactively into running containers. PostgreSQL stays on major version 17. The free-container profile is an HTTP localhost rehearsal with COOKIE_SECURE=false; the future HTTPS deployment must use COOKIE_SECURE=true from the existing Render manifest.

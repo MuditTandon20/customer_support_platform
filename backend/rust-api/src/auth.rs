@@ -52,6 +52,7 @@ pub fn create_jwt_version(
     token_version: i64,
     secret: &str,
 ) -> Result<String, jsonwebtoken::errors::Error> {
+    crate::jwt_crypto::install();
     let expiration = chrono::Utc::now()
         .checked_add_signed(chrono::Duration::hours(24))
         .expect("valid timestamp")
@@ -73,6 +74,7 @@ pub fn create_jwt_version(
 }
 
 pub fn verify_jwt(token: &str, secret: &str) -> Result<Claims, jsonwebtoken::errors::Error> {
+    crate::jwt_crypto::install();
     let token_data = decode::<Claims>(
         token,
         &DecodingKey::from_secret(secret.as_bytes()),
@@ -203,8 +205,33 @@ mod tests {
             &Header::new(jsonwebtoken::Algorithm::HS384),
             &claims,
             &EncodingKey::from_secret(secret.as_bytes()),
+        );
+        assert!(other.is_err());
+        let mut pieces: Vec<_> = good.split('.').collect();
+        pieces[0] = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzM4NCJ9";
+        assert!(verify_jwt(&pieces.join("."), secret).is_err());
+        assert!(verify_jwt(&good, "different-secret").is_err());
+        assert!(verify_jwt("not-a-token", secret).is_err());
+    }
+    #[test]
+    fn jwt_legacy_hs256_fixture_and_expiration() {
+        // Independently generated with Python stdlib hmac/hashlib, using the
+        // original HS256 wire format and no token_version claim.
+        let fixture = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDEiLCJvcmdfaWQiOiIwMDAwMDAwMC0wMDAwLTAwMDAtMDAwMC0wMDAwMDAwMDAwMDIiLCJyb2xlIjoiYWRtaW4iLCJleHAiOjQxMDI0NDQ4MDB9.hwWygY-ZQazCui6EcdcxoMYX9v6lquLks3yCExOhkIY";
+        let secret = "legacy-synthetic-secret-at-least-32-characters";
+        let claims = verify_jwt(fixture, secret).unwrap();
+        assert_eq!(claims.token_version, 0);
+        assert_eq!(claims.sub, "00000000-0000-0000-0000-000000000001");
+        let mut tampered = fixture.to_string();
+        let signature_start = tampered.rfind('.').unwrap() + 1;
+        tampered.replace_range(signature_start..signature_start + 1, "A");
+        assert!(verify_jwt(&tampered, secret).is_err());
+        let expired = encode(
+            &Header::default(),
+            &Claims { exp: 1, ..claims },
+            &EncodingKey::from_secret(secret.as_bytes()),
         )
         .unwrap();
-        assert!(verify_jwt(&other, secret).is_err());
+        assert!(verify_jwt(&expired, secret).is_err());
     }
 }

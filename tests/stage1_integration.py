@@ -8,7 +8,7 @@ def key():return str(uuid.uuid4())
 class Stage1(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.c=httpx.Client(base_url=os.getenv('TEST_API_URL','http://localhost:18080'),timeout=30,headers={'Origin':'http://localhost:13000'})
+        cls.c=httpx.Client(base_url=os.getenv('TEST_API_URL','http://localhost:18080'),timeout=30,headers={'Origin':os.getenv('TEST_FRONTEND_ORIGIN','http://localhost:13000')})
         suffix=key()[:8]
         def signup(name):
             r=cls.c.post('/auth/signup',json={'organization_name':f'Stage1 synthetic {name} {suffix}','email':f'{name}-{suffix}@example.test','full_name':f'Synthetic {name}','password':'Stage1-test-password-2026!'})

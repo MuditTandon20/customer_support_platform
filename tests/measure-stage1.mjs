@@ -9,11 +9,13 @@ const {default:lighthouse}=await import(pathToFileURL(tool.resolve('lighthouse')
 const {launch}=await import(pathToFileURL(tool.resolve('chrome-launcher')).href);
 const chrome=await launch({chromePath:chromium.executablePath(),chromeFlags:['--headless','--disable-dev-shm-usage']});
 const url=process.env.TEST_WEB_URL||'http://localhost:13000';
+const prefix=process.env.PERFORMANCE_PREFIX||'STAGE1';
 try{
  const result=await lighthouse(url,{port:chrome.port,onlyCategories:['performance','accessibility'],output:'json',logLevel:'error',enableErrorReporting:false});
  const lhr=result.lhr;
  const report={environment:'Local Windows, production Next.js, Playwright Chromium, Lighthouse 12.6.1 mobile simulated throttling; not hosted',url,scores:Object.fromEntries(Object.entries(lhr.categories).map(([k,v])=>[k,v.score===null?null:Math.round(v.score*100)])),lcp_ms:lhr.audits['largest-contentful-paint'].numericValue,cls:lhr.audits['cumulative-layout-shift'].numericValue,tbt_ms:lhr.audits['total-blocking-time'].numericValue,inp:'Not measured by a navigation Lighthouse run; no field p75 claimed',bootup:lhr.audits['bootup-time']?.details?.items||[],mainthread:lhr.audits['mainthread-work-breakdown']?.details?.items||[],warnings:lhr.runWarnings||[],runtimeError:lhr.runtimeError||null};
- await writeFile('../docs/STAGE1_LIGHTHOUSE.json',JSON.stringify(report,null,2));
+ if(process.env.MEASUREMENT_ENV)report.environment=process.env.MEASUREMENT_ENV;
+ await writeFile(`../docs/${prefix}_LIGHTHOUSE.json`,JSON.stringify(report,null,2));
  console.log(JSON.stringify(report,null,2));
 }finally{await chrome.kill();}
 const browser=await chromium.launch();const page=await browser.newPage({viewport:{width:390,height:844}});
@@ -21,5 +23,5 @@ await page.addInitScript(()=>{window.__asterEvents=[];window.__asterCls=0;new Pe
 await page.goto(url+'/login');await page.getByLabel('Email address').fill('synthetic-measurement@example.test');await page.getByLabel('Password',{exact:true}).fill('Synthetic-measurement-password!');
 await page.getByRole('link',{name:'Join your team'}).click();
 const interactions=await page.evaluate(()=>({samples:window.__asterEvents,cls:window.__asterCls}));
-await writeFile('../docs/STAGE1_INTERACTIONS.json',JSON.stringify({environment:'Single local synthetic mobile interaction sample; not field INP',...interactions},null,2));
+await writeFile(`../docs/${prefix}_INTERACTIONS.json`,JSON.stringify({environment:'Single local synthetic mobile interaction sample; not field INP',...interactions},null,2));
 await browser.close();

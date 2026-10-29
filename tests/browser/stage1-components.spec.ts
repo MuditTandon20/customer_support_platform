@@ -27,6 +27,9 @@ test('workflow component supports drag, keyboard reorder and a persisted trigger
  await expect(nodes).toHaveCount(2);await expect(nodes.first()).toContainText('ticket.created');
  const saved=page.waitForResponse(r=>new URL(r.url()).pathname==='/api/workflows'&&r.request().method()==='POST');
  await page.getByRole('button',{name:'Save draft',exact:true}).click();expect((await saved).ok()).toBeTruthy();
- await page.getByRole('button',{name:'Publish version'}).click();await expect(page.getByText('Version 1 published. Execution uses this saved version.')).toBeVisible();
+ const published=page.waitForResponse(r=>new URL(r.url()).pathname.endsWith('/publish')&&r.request().method()==='POST');
+ await page.getByRole('button',{name:'Publish version'}).click();
+ const publication=await published;expect(publication.ok()).toBeTruthy();expect((await publication.json()).version).toBe(1);
+ await expect(page.getByText('Version 1 published. Execution uses this saved version.')).toBeVisible();
  await page.screenshot({path:'../docs/screenshots/stage1-workflow.png',fullPage:true});
 });

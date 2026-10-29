@@ -1,3 +1,5 @@
+> Current assessment: [STAGE1_FINAL_VERIFICATION.md](STAGE1_FINAL_VERIFICATION.md). RSA and crypto-bigint have been removed on both targets; the raw block-buffer metadata discrepancy and base-image findings remain. No clean-security or public-readiness claim is made. The earlier investigation below is retained as history.
+
 # Security verification and limits
 
 This is a local implementation, not a security certification or production-readiness assessment.
@@ -8,7 +10,7 @@ Frontend dependencies were upgraded to Next.js 16.4.3 and transitive fixes; `npm
 
 Python uses a separate .venv and requirements.lock constraints. The OSV scan of that interpreter found no reported Python advisories after updates. The user's global Python environment was not altered. Linux-only optional dependencies are not verified by this Windows lock/environment; container execution is still required.
 
-The public OSV dependency inventory is in [dependency-scan.json](dependency-scan.json), with the initial scan retained separately. Remaining Rust transitive findings:
+The public OSV dependency inventory is in [dependency-scan.json](dependency-scan.json), with the initial scan retained separately. Original Rust transitive findings before final verification:
 
 | Dependency | Advisory | Current assessment |
 |---|---|---|
@@ -22,6 +24,6 @@ Production prerequisites remain: HTTPS and COOKIE_SECURE=true; a same-site API o
 
 Extractive suggestions can reproduce malicious text contained in a knowledge article. Such content is visibly a source excerpt, never an authorization instruction. No model-produced tool call is executed. Human review remains essential; this does not constitute a general prompt-injection guarantee for future generated answers.
 
-## Stage 1 target-specific investigation
+## Historical Stage 1 target-specific investigation (superseded)
 
 Linux now selects AWS-LC JWT support and does not select the RustCrypto RSA/crypto-bigint dependencies. Native Windows retains RustCrypto after an attempted AWS-LC build failed on the available NASM/MSVC long-path toolchain. Both target dependency graphs were inspected; Linux execution must still pass CI/container tests. block-buffer 0.10.4 remains in SQLx SHA-2 migration checksum dependencies on Linux; no clean Rust audit is claimed. The current OSV JSON reflects the Windows graph. See STAGE1_RELEASE_REPORT.md for exposure and release limits. BETA_MODE forces paid inference off, requires synthetic .test emails and disables public sandbox exposure in the release manifest. Origin-bearing mutations are checked even with bearer authentication.

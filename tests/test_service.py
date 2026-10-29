@@ -23,6 +23,14 @@ class InternalService(unittest.TestCase):
             client=LLMClient()
             self.assertFalse(client.is_configured)
             self.assertIsNone(client.client)
+    def test_extractive_startup_does_not_load_provider_sdk(self):
+        import subprocess
+        result=subprocess.run([sys.executable,'-c',
+            "import sys;from app.main import app;assert 'openai' not in sys.modules;from app.llm_client import llm_client;assert not llm_client.is_configured"],
+            cwd=pathlib.Path(__file__).parents[1]/'backend/ai-copilot',
+            env={**os.environ,'BETA_MODE':'true','LLM_ENABLED':'true','OPENAI_API_KEY':'synthetic-not-a-provider-key'},
+            capture_output=True,text=True)
+        self.assertEqual(result.returncode,0,result.stderr)
     def test_summary_and_classification(self):
         r=self.client.post('/copilot/summarize',headers=self.headers,json={'subject':'Login','content':'Reset failed.'})
         self.assertEqual(r.status_code,200)

@@ -1,3 +1,5 @@
+> Latest follow-up: Docker Desktop/Linux engine was started, both Docker layouts built and exercised. Current checks cover 5 Rust tests, 18 Python tests, 18 full-stack API suites and 8 browsers, plus constrained beta and container recovery. **Public release remains on security hold**; read [STAGE1_FINAL_VERIFICATION.md](STAGE1_FINAL_VERIFICATION.md). Native demo/port details below are historical; the current container preview uses http://localhost:3000, API 8080, combined beta API 18083. Original databases and user artifacts remain untouched.
+
 # Build state and continuation
 
 Date: 2026-10-29. Repository: Customer Service Automation. User requested implementation and improvements based on AI_Support_Full_Build_Package.zip. The PRD and master prompt were read fully. No subagents, external messages, paid calls or production deployments were used. The later Stage 1 request explicitly authorizes a dedicated testing-branch commit and push.

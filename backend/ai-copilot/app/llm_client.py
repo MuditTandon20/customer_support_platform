@@ -2,7 +2,6 @@ import json
 import logging
 import os
 from typing import Any, Dict, List, Optional
-from openai import AsyncOpenAI
 
 logger = logging.getLogger(__name__)
 
@@ -20,6 +19,9 @@ class LLMClient:
         )
 
         if self.is_configured:
+            # The extractive beta needs no provider SDK at startup. Importing it
+            # only on explicit opt-in reduces cold-start CPU and memory.
+            from openai import AsyncOpenAI
             self.client = AsyncOpenAI(api_key=self.api_key, base_url=self.base_url)
             logger.info("LLMClient initialized with model: %s", self.model)
         else:

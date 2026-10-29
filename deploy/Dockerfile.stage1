@@ -1,15 +1,19 @@
 FROM rust:1.97-bookworm AS build
-WORKDIR /repo
-RUN apt-get update && apt-get install -y --no-install-recommends cmake pkg-config libssl-dev && rm -rf /var/lib/apt/lists/*
-COPY .cargo ./.cargo
-COPY backend/rust-api ./backend/rust-api
-RUN cargo build --manifest-path backend/rust-api/Cargo.toml --release --locked
-FROM python:3.12-slim-bookworm
-RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates libssl3 && rm -rf /var/lib/apt/lists/* && useradd -m app
+RUN apt-get update && apt-get install -y --no-install-recommends pkg-config libssl-dev && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+COPY backend/rust-api/Cargo.toml backend/rust-api/Cargo.lock ./
+COPY backend/rust-api/src ./src
+COPY backend/rust-api/migrations ./migrations
+COPY backend/rust-api/openapi.json ./openapi.json
+RUN cargo test --release --locked && cargo build --release --locked
+FROM python:3.12-slim-trixie
+RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends ca-certificates libssl3t64 && rm -rf /var/lib/apt/lists/* && useradd -m app
 WORKDIR /app
 COPY backend/ai-copilot/requirements.txt backend/ai-copilot/requirements.lock ./
-RUN pip install --no-cache-dir -r requirements.txt
-COPY --from=build /repo/backend/rust-api/target/release/rust-api /usr/local/bin/rust-api
+RUN pip install --no-cache-dir --timeout 120 --retries 5 pip==26.2.2 \
+    && pip install --no-cache-dir --timeout 120 --retries 5 -r requirements.txt \
+    && python -m pip uninstall -y pip && rm -rf /usr/local/lib/python3.12/ensurepip
+COPY --from=build /app/target/release/rust-api /usr/local/bin/rust-api
 COPY backend/ai-copilot/app ./app
 COPY deploy/run_services.py ./run_services.py
 USER app

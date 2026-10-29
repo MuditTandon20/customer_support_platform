@@ -1,7 +1,7 @@
 name: aster-support
 services:
   db:
-    image: postgres:17-bookworm
+    image: postgres:17-trixie
     environment:
       POSTGRES_USER: support
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run scripts/init-env.ps1 first}
@@ -15,18 +15,27 @@ services:
       retries: 20
   api:
     build: ./backend/rust-api
-    ports: ["127.0.0.1:8080:8080"]
+    ports: ["127.0.0.1:${API_PORT:-8080}:8080"]
     environment:
       DATABASE_URL: postgres://support:${POSTGRES_PASSWORD}@db:5432/support_os
       JWT_SECRET: ${JWT_SECRET:?Run scripts/init-env.ps1 first}
       AI_SERVICE_TOKEN: ${AI_SERVICE_TOKEN:?Run scripts/init-env.ps1 first}
       AI_COPILOT_URL: http://ai:8001
-      FRONTEND_ORIGIN: http://localhost:3000
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:3000}
       ENABLE_SANDBOX: "true"
+      BETA_MODE: "false"
+      BACKGROUND_PROCESSING: "false"
+      DB_MAX_CONNECTIONS: "4"
       RUST_LOG: info
     depends_on:
       db: {condition: service_healthy}
-      ai: {condition: service_started}
+      ai: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://localhost:8080/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
     restart: unless-stopped
   ai:
     build: ./backend/ai-copilot
@@ -34,17 +43,23 @@ services:
       AI_SERVICE_TOKEN: ${AI_SERVICE_TOKEN}
       LLM_ENABLED: "false"
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health')"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/ready')"]
       interval: 10s
       timeout: 3s
       retries: 10
   web:
     build:
       context: ./frontend
-    ports: ["127.0.0.1:3000:3000"]
+    ports: ["127.0.0.1:${WEB_PORT:-3000}:3000"]
     environment:
       API_PROXY_URL: http://api:8080
-    depends_on: [api]
+    depends_on:
+      api: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 15s
+      timeout: 8s
+      retries: 10
     restart: unless-stopped
   kafka:
     image: apache/kafka:3.9.0

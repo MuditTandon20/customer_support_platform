@@ -1,0 +1,73 @@
+{
+  "environment": "Docker Desktop Linux production standalone Next.js; Windows Playwright Chromium, Lighthouse 12.6.1 mobile simulated throttling; not hosted",
+  "url": "http://localhost:3000",
+  "scores": {
+    "performance": 70,
+    "accessibility": 100
+  },
+  "lcp_ms": 3079.2056,
+  "cls": 0,
+  "tbt_ms": 1184.4999999999995,
+  "inp": "Not measured by a navigation Lighthouse run; no field p75 claimed",
+  "bootup": [
+    {
+      "url": "http://localhost:3000/_next/static/chunks/3wbm-994r45kr.js",
+      "total": 1354.9919999999975,
+      "scripting": 1278.7199999999973,
+      "scriptParseCompile": 33.536
+    },
+    {
+      "url": "http://localhost:3000/",
+      "total": 925.04,
+      "scripting": 27.571999999999996,
+      "scriptParseCompile": 7.507999999999998
+    },
+    {
+      "url": "Unattributable",
+      "total": 425.90800000000075,
+      "scripting": 12.54,
+      "scriptParseCompile": 0
+    }
+  ],
+  "mainthread": [
+    {
+      "group": "scriptEvaluation",
+      "groupLabel": "Script Evaluation",
+      "duration": 1378.0239999999976
+    },
+    {
+      "group": "styleLayout",
+      "groupLabel": "Style & Layout",
+      "duration": 788.456
+    },
+    {
+      "group": "other",
+      "groupLabel": "Other",
+      "duration": 522.3960000000006
+    },
+    {
+      "group": "scriptParseCompile",
+      "groupLabel": "Script Parsing & Compilation",
+      "duration": 76.612
+    },
+    {
+      "group": "parseHTML",
+      "groupLabel": "Parse HTML & CSS",
+      "duration": 61.559999999999995
+    },
+    {
+      "group": "paintCompositeRender",
+      "groupLabel": "Rendering",
+      "duration": 27.116
+    },
+    {
+      "group": "garbageCollection",
+      "groupLabel": "Garbage Collection",
+      "duration": 12.315999999999997
+    }
+  ],
+  "warnings": [
+    "Clearing the browser cache timed out. Try auditing this page again and file a bug if the issue persists."
+  ],
+  "runtimeError": null
+}

@@ -1,0 +1,72 @@
+{
+  "environment": "Docker Desktop Linux production standalone Next.js; Windows Playwright Chromium, Lighthouse 12.6.1 mobile simulated throttling; after functional tests, not hosted",
+  "url": "http://localhost:3000",
+  "scores": {
+    "performance": 74,
+    "accessibility": 100
+  },
+  "lcp_ms": 3106.6899,
+  "cls": 0,
+  "tbt_ms": 834.4999999999998,
+  "inp": "Not measured by a navigation Lighthouse run; no field p75 claimed",
+  "bootup": [
+    {
+      "url": "http://localhost:3000/",
+      "total": 834.652,
+      "scripting": 24.575999999999993,
+      "scriptParseCompile": 7.403999999999999
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/1x6obpmlu1_c2.js",
+      "total": 799.0399999999996,
+      "scripting": 770.8159999999997,
+      "scriptParseCompile": 1.568
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/3wbm-994r45kr.js",
+      "total": 396.08000000000015,
+      "scripting": 308.7280000000002,
+      "scriptParseCompile": 40.592
+    },
+    {
+      "url": "Unattributable",
+      "total": 316.87200000000024,
+      "scripting": 13.835999999999999,
+      "scriptParseCompile": 0
+    }
+  ],
+  "mainthread": [
+    {
+      "group": "scriptEvaluation",
+      "groupLabel": "Script Evaluation",
+      "duration": 1160.2479999999975
+    },
+    {
+      "group": "styleLayout",
+      "groupLabel": "Style & Layout",
+      "duration": 701.408
+    },
+    {
+      "group": "other",
+      "groupLabel": "Other",
+      "duration": 436.11600000000044
+    },
+    {
+      "group": "scriptParseCompile",
+      "groupLabel": "Script Parsing & Compilation",
+      "duration": 89.888
+    },
+    {
+      "group": "paintCompositeRender",
+      "groupLabel": "Rendering",
+      "duration": 38.364000000000004
+    },
+    {
+      "group": "parseHTML",
+      "groupLabel": "Parse HTML & CSS",
+      "duration": 24.811999999999998
+    }
+  ],
+  "warnings": [],
+  "runtimeError": null
+}
