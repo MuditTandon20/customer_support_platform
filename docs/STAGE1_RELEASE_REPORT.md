@@ -31,7 +31,8 @@ Main implementation: `backend/rust-api/src/{workflow_engine,ai_activity,main,out
 | Dependency audits | Frontend and test npm audit: 0; installed isolated Python OSV: 0; Rust findings remain below |
 | Configuration | Compose parsed, release guards passed, generated API contract has 52 paths, Git diff whitespace check passed |
 | Container image/start/restart | **UNVERIFIED**: Docker CLI exists but Docker engine is unavailable |
-| Hosted providers and Linux execution | **UNVERIFIED locally**; no cloud resource or deployment created. Remote CI status is separate evidence |
+| Linux build/tests | GitHub Ubuntu CI has passed Rust build/tests, Python tests and frontend build/audit; end-to-end job still running at report update |
+| Hosted providers | **UNVERIFIED**; no cloud resource or deployment created |
 
 One simultaneous load/browser/API run hit Windows socket error 10053; a sequential rerun passed all seven API cases. No automatic retry of uncertain writes was added. A mobile theme control was initially outside the viewport; scrollable navigation fixed it and final browser checks passed. This is useful regression evidence, not a claim of exhaustive security/accessibility testing.
 
@@ -43,7 +44,7 @@ The final synthetic login interaction sample recorded 16 ms Event Timing entries
 
 The API smoke check made 100 requests, concurrency 10, zero errors: p50 **52.2 ms**, p95 **295.41 ms**, **101.73 requests/s**, in an empty synthetic tenant on Windows debug Rust/Postgres 18. This is not a capacity or availability guarantee.
 
-Local stack readiness: **2065 ms**. Point-in-time working sets: Rust **20.4 MiB**, actual Python worker **59.8 MiB**, Next **83.3 MiB**. Peak working sets were approximately 58.4/59.8/120.1 MiB. These do not establish combined Linux container RSS or free-host memory fit. Static JavaScript physical total was **719,141 bytes** across all route chunks, largest **229,820 bytes** (below the checked 300 KB single-chunk budget). Total is not one page's transfer size.
+Local stack readiness: **2065 ms**. Point-in-time working sets: Rust **20.4 MiB**, actual Python worker **59.8 MiB**, Next **83.3 MiB**. Peak working sets were approximately 58.4/59.8/120.1 MiB. These do not establish combined Linux container RSS or free-host memory fit. Static JavaScript physical total was **719,142 bytes** across all route chunks, largest **229,820 bytes** (below the CI-enforced 300 KB single-chunk budget). Total is not one page's transfer size.
 
 Evidence: STAGE1_LIGHTHOUSE.json, STAGE1_LIGHTHOUSE_BASELINE.json, STAGE1_INTERACTIONS.json, STAGE1_RESOURCES.json, load-smoke.json, STAGE1_PROFILE_CHECKS.json. Lighthouse is an isolated operator tool outside project dependencies; its dev-tool dependency tree has advisories and is not part of the deployed app. Hosted cold starts, Linux memory, actual throttled free-host load and field Web Vitals remain unmeasured.
 
@@ -59,7 +60,7 @@ React text rendering and parameterized SQL reduce XSS/SQL-injection exposure; th
 
 Recommendation: **Vercel Hobby + one Render Free combined Rust/Python container + Neon Free**, estimated **₹0/month only within eligible free quotas**. Render sleeps and has 512 MB; Neon scales to zero. Optional Groq/free inference is evaluated but not provisioned or required. No payment methods, paid plans, inference charges or automatic deployments were enabled. Account eligibility, provider restrictions and storage/compute quotas must be rechecked before future deployment. See [hosting decision](STAGE1_HOSTING_DECISION.md) for dated primary sources and alternatives.
 
-Follow [exact setup, future deployment and rollback instructions](STAGE1_DEPLOYMENT_RUNBOOK.md). Container execution, Linux CI and HTTPS smoke checks are required gates before any public launch. Do not auto-upgrade if the free service is inadequate. Scheduled jobs, guaranteed uptime, live mail/payments, hosted backup recovery, semantic vectors and external provider delivery are outside this release.
+Follow [exact setup, future deployment and rollback instructions](STAGE1_DEPLOYMENT_RUNBOOK.md). Container execution, completed CI and HTTPS smoke checks are required gates before any public launch. Do not auto-upgrade if the free service is inadequate. Scheduled jobs, guaranteed uptime, live mail/payments, hosted backup recovery, semantic vectors and external provider delivery are outside this release.
 
 ## Screenshots and Git references
 

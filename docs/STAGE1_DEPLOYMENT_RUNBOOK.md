@@ -26,6 +26,7 @@ The harness starts a unique disposable PostgreSQL cluster on 55433, Rust on 1808
 backend/ai-copilot/.venv/Scripts/python.exe -m unittest discover -s tests -p 'test_*.py' -v
 backend/ai-copilot/.venv/Scripts/python.exe tests/integration.py
 backend/ai-copilot/.venv/Scripts/python.exe tests/stage1_integration.py
+backend/ai-copilot/.venv/Scripts/python.exe scripts/check_bundle.py
 cd tests
 node profile-checks.mjs
 npm run test:e2e

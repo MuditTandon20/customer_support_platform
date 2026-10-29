@@ -35,6 +35,7 @@ jobs:
       - run: python -m unittest discover -s tests -p 'test_*.py' -v
       - run: npm ci && npm run lint && npx tsc --noEmit && npm run build && npm audit --audit-level=high
         working-directory: frontend
+      - run: python scripts/check_bundle.py
       - run: npm ci && npx playwright install --with-deps chromium
         working-directory: tests
       - run: |
