@@ -1,0 +1,17 @@
+{
+  "reviewed_source_digest": "72267f580713ede91adc9fc3f86569516f2665cdb76fad129812977e3ae366ed",
+  "scope": "Current synthetic non-commercial Stage 1 JSON/TEXT application, hardened images and manifests; no arbitrary SQL, XML/upload/archive parsing or process execution exposed",
+  "review_basis": [
+    "Source and dependency inventory reviewed",
+    "Public entrypoints and storage types verified",
+    "Non-root/no-SUID image controls verified",
+    "Capability-free read-only rehearsal passed",
+    "Exact gosu binary analyzed with govulncheck",
+    "Unknown findings fail closed"
+  ],
+  "limitations": [
+    "Not a production security certification",
+    "A future source/config/dependency change requires explicit reassessment",
+    "Hosted TLS, secrets and provider controls must be checked at future authorized launch"
+  ]
+}

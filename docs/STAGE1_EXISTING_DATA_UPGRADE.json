@@ -1,0 +1,50 @@
+{
+  "result": "passed",
+  "scope": "Owned pre-existing local Aster rehearsal volumes; no reset, volume deletion or schema rewrite",
+  "projects": [
+    {
+      "project": "aster-stage1-verify",
+      "before": {
+        "users": 43,
+        "tickets": 66,
+        "messages": 45,
+        "documents": 15,
+        "workflow_runs": 63,
+        "migrations": 9
+      },
+      "after": {
+        "users": 43,
+        "tickets": 66,
+        "messages": 45,
+        "documents": 15,
+        "workflow_runs": 63,
+        "migrations": 9
+      },
+      "data_counts_unchanged": true,
+      "gosu": "1.20 (go1.24.6 on linux/amd64; gc)",
+      "elapsed_ms": 41391
+    },
+    {
+      "project": "aster-stage1-free-verify",
+      "before": {
+        "users": 9,
+        "tickets": 30,
+        "messages": 6,
+        "documents": 2,
+        "workflow_runs": 34,
+        "migrations": 9
+      },
+      "after": {
+        "users": 9,
+        "tickets": 30,
+        "messages": 6,
+        "documents": 2,
+        "workflow_runs": 34,
+        "migrations": 9
+      },
+      "data_counts_unchanged": true,
+      "gosu": "1.20 (go1.24.6 on linux/amd64; gc)",
+      "elapsed_ms": 25047
+    }
+  ]
+}

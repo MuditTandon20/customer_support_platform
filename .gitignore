@@ -50,6 +50,7 @@ tests/test-results/
 tests/playwright-report/
 *.tsbuildinfo
 docs/stage1-local-runtime.json
+/.security-evidence/
 
 # Debug logs
 npm-debug.log*

@@ -1,0 +1,69 @@
+{
+  "result": "passed",
+  "scope": "Current synthetic-data JSON API and hardened local rehearsal; not arbitrary direct SQL or future XML/upload features",
+  "driver_host": "Windows",
+  "project": "aster-stage1-security",
+  "runtime_boundaries": [
+    {
+      "service": "db",
+      "image_id": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62",
+      "uid": 999,
+      "capabilities": "none",
+      "no_new_privileges": true,
+      "rootfs_read_only": true,
+      "suid_sgid_files": [],
+      "homed_tpm_daemon_or_device": []
+    },
+    {
+      "service": "api",
+      "image_id": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde",
+      "uid": 1000,
+      "capabilities": "none",
+      "no_new_privileges": true,
+      "rootfs_read_only": true,
+      "suid_sgid_files": [],
+      "homed_tpm_daemon_or_device": []
+    },
+    {
+      "service": "ai",
+      "image_id": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57",
+      "uid": 1000,
+      "capabilities": "none",
+      "no_new_privileges": true,
+      "rootfs_read_only": true,
+      "suid_sgid_files": [],
+      "homed_tpm_daemon_or_device": []
+    },
+    {
+      "service": "web",
+      "image_id": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485",
+      "uid": 1001,
+      "capabilities": "none",
+      "no_new_privileges": true,
+      "rootfs_read_only": true,
+      "suid_sgid_files": [],
+      "homed_tpm_daemon_or_device": []
+    },
+    {
+      "service": "backend",
+      "image_id": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0",
+      "uid": 1000,
+      "capabilities": "none",
+      "no_new_privileges": true,
+      "rootfs_read_only": true,
+      "suid_sgid_files": [],
+      "homed_tpm_daemon_or_device": []
+    }
+  ],
+  "source_digest": "72267f580713ede91adc9fc3f86569516f2665cdb76fad129812977e3ae366ed",
+  "xml_protocol_rejected": true,
+  "xml_text_stored_without_entity_expansion": true,
+  "storage_types": [
+    "knowledge_documents.content:text",
+    "messages.body:text",
+    "tickets.description:text"
+  ],
+  "arbitrary_shell_tool_rejected": true,
+  "health_probe_positive_and_negative": "passed",
+  "source_boundary_review": "No XML SQL parser calls or Rust shell-command execution in current source/migrations"
+}

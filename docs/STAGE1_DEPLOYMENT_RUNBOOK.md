@@ -1,6 +1,6 @@
 # Future deployment runbook — do not execute without later authorization
 
-**Security gate:** read STAGE1_FINAL_VERIFICATION.md. Unresolved base-image findings currently hold public release; these instructions do not authorize deployment.
+**Security gate:** read STAGE1_SECURITY_CLOSURE.md. The current scoped beta assessment resolves the earlier hold; require green integrated/container/security CI before launch. These instructions do not authorize deployment or claim a clean package scan.
 
 This release is preparation only. No cloud resources or deployment were created. Use an entirely new synthetic-data database and free accounts; never point this beta at a real customer database. Hosting research and cost boundaries are in STAGE1_HOSTING_DECISION.md.
 

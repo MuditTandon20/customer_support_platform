@@ -1,0 +1,9 @@
+{
+  "result": "passed",
+  "crate": "block-buffer 0.10.4",
+  "case": "advisory_inline_position_corruption_does_not_reproduce_in_010",
+  "fixture_lock_sha256": "34d7f9366bd4c5060e9112924992d4aa66a6c4c80cf86735f98621a2ab08248d",
+  "toolchain": "cargo 1.97.1 (c980f4866 2026-06-30)",
+  "upstream": "https://github.com/RustCrypto/utils/security/advisories/GHSA-qwgh-2vcv-g2f7",
+  "limitation": "Normal caught-panic regression plus source/version review, not a Miri run or general memory-safety proof. Fixture dependencies are not runtime dependencies."
+}

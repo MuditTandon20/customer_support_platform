@@ -6,9 +6,9 @@ The full supplied PRD is **not entirely implemented**. Read [requirements and ve
 
 ## Stage 1 testing release
 
-**Public release is on security hold.** Docker functionality and constrained-runtime recovery have been tested; unresolved image findings prevent an unconditional readiness claim. Read the [final deployment-readiness verification](docs/STAGE1_FINAL_VERIFICATION.md).
+**Security review completed for the scoped Stage 1 beta.** The reviewed build is eligible for synthetic, non-commercial testing after its CI gates pass. Raw package alerts remain visible with bounded, evidence-backed assessments. Read the [security review closure](docs/STAGE1_SECURITY_CLOSURE.md).
 
-Prepared for a synthetic-data, non-commercial free-tier test. **Not deployed.** See the [release evidence and limitations](docs/STAGE1_RELEASE_REPORT.md), [hosting decision](docs/STAGE1_HOSTING_DECISION.md), and [reproducible setup/future deployment runbook](docs/STAGE1_DEPLOYMENT_RUNBOOK.md). Branch: `release/stage1-testing`. Automatic deployments are disabled. Docker runtime and hosted cold starts remain unverified.
+Prepared for a synthetic-data, non-commercial free-tier test. **Not deployed.** See the [release evidence and limitations](docs/STAGE1_RELEASE_REPORT.md), [hosting decision](docs/STAGE1_HOSTING_DECISION.md), and [reproducible setup/future deployment runbook](docs/STAGE1_DEPLOYMENT_RUNBOOK.md). Branch: `release/stage1-testing`. Automatic deployments are disabled. Docker runtime is verified; hosted cold starts remain unverified.
 
 ## Run locally
 

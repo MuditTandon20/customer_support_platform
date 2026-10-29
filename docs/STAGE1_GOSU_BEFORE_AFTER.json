@@ -1,0 +1,67 @@
+{
+  "1.19": {
+    "binary_sha256": "52c8749d0142edd234e9d6bd5237dff2d81e71f43537e2f4f66f75dd4b243dd0",
+    "scanner": {
+      "protocol_version": "v1.0.0",
+      "scanner_name": "govulncheck",
+      "scanner_version": "v1.9.0",
+      "db": "https://vuln.go.dev",
+      "db_last_modified": "2026-10-27T21:16:18Z",
+      "scan_level": "symbol",
+      "scan_mode": "binary"
+    },
+    "version_package_and_symbol_matches": 71,
+    "affected_symbol_findings": [
+      {
+        "osv": "GO-2026-6686",
+        "fixed_version": "v0.4.1",
+        "trace": [
+          {
+            "module": "github.com/moby/sys/user",
+            "version": "v0.1.0",
+            "package": "github.com/moby/sys/user",
+            "function": "ParseGroupFilter"
+          }
+        ]
+      },
+      {
+        "osv": "GO-2026-6686",
+        "fixed_version": "v0.4.1",
+        "trace": [
+          {
+            "module": "github.com/moby/sys/user",
+            "version": "v0.1.0",
+            "package": "github.com/moby/sys/user",
+            "function": "GetExecUserPath"
+          }
+        ]
+      },
+      {
+        "osv": "GO-2026-6686",
+        "fixed_version": "v0.4.1",
+        "trace": [
+          {
+            "module": "github.com/moby/sys/user",
+            "version": "v0.1.0",
+            "package": "github.com/moby/sys/user",
+            "function": "GetExecUser"
+          }
+        ]
+      }
+    ]
+  },
+  "1.20": {
+    "binary_sha256": "b1892636c281590f34bc63c1118f058cd9de66c4ea463772e3909672d8b302ac",
+    "scanner": {
+      "protocol_version": "v1.0.0",
+      "scanner_name": "govulncheck",
+      "scanner_version": "v1.9.0",
+      "db": "https://vuln.go.dev",
+      "db_last_modified": "2026-10-27T21:16:18Z",
+      "scan_level": "symbol",
+      "scan_mode": "binary"
+    },
+    "version_package_and_symbol_matches": 66,
+    "affected_symbol_findings": []
+  }
+}

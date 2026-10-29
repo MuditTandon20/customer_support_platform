@@ -9,12 +9,16 @@ import subprocess
 import time
 import uuid
 import httpx
+import os
+import platform
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-COMPOSE = ['docker', 'compose', '-p', 'aster-stage1-verify']
-BASE = 'http://localhost:8080'
-ORIGIN = 'http://localhost:3000'
-report = {'environment': 'Docker Desktop Linux engine, release Rust, Python 3.12, Postgres 17, production standalone Next'}
+PREFIX=os.getenv('ASTER_VERIFY_PROJECT_PREFIX','aster-stage1')
+assert PREFIX in {'aster-stage1','aster-stage1-security'}
+COMPOSE = ['docker', 'compose', '-p', PREFIX+'-verify']
+BASE = os.getenv('TEST_API_URL','http://localhost:8080')
+ORIGIN = os.getenv('TEST_WEB_URL','http://localhost:3000')
+report = {'environment': 'Linux Docker engine, release Rust, Python 3.12, Postgres 17, production standalone Next', 'driver_host':platform.system(), 'project':PREFIX+'-verify'}
 
 def docker(*args):
     return subprocess.check_output(COMPOSE + list(args), cwd=ROOT, text=True).strip()
@@ -92,6 +96,8 @@ def main():
     docker('stop', 'db')
     try:
         assert httpx.get(BASE+'/ready', timeout=25).status_code == 503
+        probe=subprocess.run(COMPOSE+['exec','-T','api','rust-api','--healthcheck'],cwd=ROOT,capture_output=True)
+        assert probe.returncode != 0
     finally:
         recovery_start = time.monotonic()
         docker('start', 'db')

@@ -1,3 +1,5 @@
+> The remaining review is complete for the current synthetic Stage 1 build: [security closure and evidence](STAGE1_SECURITY_CLOSURE.md). Raw alerts are retained; this is not a clean-package or production security certification. Earlier assessments below are retained as history.
+
 > Current assessment: [STAGE1_FINAL_VERIFICATION.md](STAGE1_FINAL_VERIFICATION.md). RSA and crypto-bigint have been removed on both targets; the raw block-buffer metadata discrepancy and base-image findings remain. No clean-security or public-readiness claim is made. The earlier investigation below is retained as history.
 
 # Security verification and limits

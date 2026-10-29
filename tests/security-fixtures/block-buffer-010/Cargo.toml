@@ -1,0 +1,10 @@
+[package]
+name = "aster-block-buffer-advisory-regression"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+# Isolated advisory reproduction only; never an Aster runtime dependency.
+[dependencies]
+block-buffer = "=0.10.4"
+typenum = "1"

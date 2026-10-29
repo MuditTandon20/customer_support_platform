@@ -1,5 +1,7 @@
 {
-  "environment": "Docker Desktop Linux engine, release Rust, Python 3.12, Postgres 17, production standalone Next",
+  "environment": "Linux Docker engine, release Rust, Python 3.12, Postgres 17, production standalone Next",
+  "driver_host": "Windows",
+  "project": "aster-stage1-security-verify",
   "migration_versions": [
     "20260818174011",
     "20260823150220",
@@ -14,13 +16,13 @@
   "non_root_and_private_ai": "passed",
   "csrf_bearer_origin_and_search_input": "passed",
   "ai_outage_manual_support": "passed",
-  "service_restart_ready_ms": 3438,
-  "database_recovery_ms": 8781,
+  "service_restart_ready_ms": 3328,
+  "database_recovery_ms": 8609,
   "database_readiness_failure_and_recovery": "passed",
   "complete_stack_stop_start_preserves_data": "passed",
-  "complete_stack_start_ready_ms": 36938,
+  "complete_stack_start_ready_ms": 37656,
   "container_recreation_preserves_data": "passed",
-  "container_recreation_ready_ms": 39390,
+  "container_recreation_ready_ms": 38829,
   "authentication_rate_limit": "passed: 31st request denied",
   "result": "passed"
 }

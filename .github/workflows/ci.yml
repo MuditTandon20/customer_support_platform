@@ -30,6 +30,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - run: cargo fmt --manifest-path backend/rust-api/Cargo.toml --check
       - run: cargo test --manifest-path backend/rust-api/Cargo.toml --locked
+      - run: python scripts/check_block_buffer.py
       - run: cargo build --manifest-path backend/rust-api/Cargo.toml --locked
       - run: pip install -r backend/ai-copilot/requirements.txt
       - run: python -m unittest discover -s tests -p 'test_*.py' -v
@@ -62,6 +63,7 @@ jobs:
       - run: npm ci && npx playwright install --with-deps chromium
         working-directory: tests
       - run: python scripts/verify_containers.py
+      - run: python scripts/review_security.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -69,4 +71,10 @@ jobs:
           path: |
             docs/STAGE1_CONTAINER_CHECKS.json
             docs/STAGE1_FREE_CONTAINER_CHECKS.json
+            docs/STAGE1_RUNTIME_SECURITY.json
+            docs/STAGE1_SECURITY_REVIEW.json
+            docs/STAGE1_GOSU_ANALYSIS.json
+            docs/STAGE1_IMAGE_SECURITY.json
+            .security-evidence/*.json
             docs/screenshots
+          include-hidden-files: true

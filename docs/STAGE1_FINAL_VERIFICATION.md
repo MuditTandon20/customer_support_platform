@@ -1,3 +1,5 @@
+> Current security verdict: the earlier hold below is superseded by [STAGE1_SECURITY_CLOSURE.md](STAGE1_SECURITY_CLOSURE.md). The scoped beta review is complete; raw scans remain visible. This document retains the earlier verification and hold history.
+
 # Final deployment-readiness verification
 
 2026-10-29. **Public test release: SECURITY HOLD — do not deploy.** Container functionality has been exercised; this report supersedes the earlier conditional readiness wording. No cloud deployment, paid resource, merge into main, force push, database reset or volume deletion was performed.

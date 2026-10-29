@@ -1,0 +1,135 @@
+[
+  {
+    "id": "CVE-2025-69720",
+    "source": "https://security-tracker.debian.org/tracker/CVE-2025-69720",
+    "assessment_category": "unused_cli",
+    "assessment_reference": "STAGE1_SECURITY_REVIEW.json",
+    "distribution": "Debian Trixie; stable package matches remain; no unsupported library replacement"
+  },
+  {
+    "id": "CVE-2026-12064",
+    "source": "https://security-tracker.debian.org/tracker/CVE-2026-12064",
+    "assessment_category": "removed_runtime_dependency",
+    "assessment_reference": "STAGE1_SECURITY_REVIEW.json",
+    "distribution": "Debian Trixie; stable package matches remain; no unsupported library replacement"
+  },
+  {
+    "id": "CVE-2026-16742",
+    "source": "https://security-tracker.debian.org/tracker/CVE-2026-16742",
+    "assessment_category": "component_absent",
+    "assessment_reference": "STAGE1_SECURITY_REVIEW.json",
+    "distribution": "Debian Trixie; stable package matches remain; no unsupported library replacement"
+  },
+  {
+    "id": "CVE-2026-24882",
+    "source": "https://security-tracker.debian.org/tracker/CVE-2026-24882",
+    "assessment_category": "component_absent",
+    "assessment_reference": "STAGE1_SECURITY_REVIEW.json",
+    "distribution": "Debian Trixie; stable package matches remain; no unsupported library replacement"
+  },
+  {
+    "id": "CVE-2026-54369",
+    "source": "https://security-tracker.debian.org/tracker/CVE-2026-54369",
+    "assessment_category": "unused_privileged_acl",
+    "assessment_reference": "STAGE1_SECURITY_REVIEW.json",
+    "distribution": "Debian Trixie; stable package matches remain; no unsupported library replacement"
+  },
+  {
+    "id": "CVE-2026-6653",
+    "source": "https://security-tracker.debian.org/tracker/CVE-2026-6653",
+    "assessment_category": "unused_xml_parser",
+    "assessment_reference": "STAGE1_SECURITY_REVIEW.json",
+    "distribution": "Debian Trixie; stable package matches remain; no unsupported library replacement"
+  },
+  {
+    "id": "CVE-2026-74860",
+    "source": "https://security-tracker.debian.org/tracker/CVE-2026-74860",
+    "assessment_category": "unused_xml_parser",
+    "assessment_reference": "STAGE1_SECURITY_REVIEW.json",
+    "distribution": "Debian Trixie; stable package matches remain; no unsupported library replacement"
+  },
+  {
+    "id": "CVE-2026-76642",
+    "source": "https://security-tracker.debian.org/tracker/CVE-2026-76642",
+    "assessment_category": "mount_hooks",
+    "assessment_reference": "STAGE1_SECURITY_REVIEW.json",
+    "distribution": "Debian Trixie; stable package matches remain; no unsupported library replacement"
+  },
+  {
+    "id": "CVE-2026-78408",
+    "source": "https://security-tracker.debian.org/tracker/CVE-2026-78408",
+    "assessment_category": "namespace_operator",
+    "assessment_reference": "STAGE1_SECURITY_REVIEW.json",
+    "distribution": "Debian Trixie; stable package matches remain; no unsupported library replacement"
+  },
+  {
+    "id": "CVE-2026-78409",
+    "source": "https://security-tracker.debian.org/tracker/CVE-2026-78409",
+    "assessment_category": "mount_hooks",
+    "assessment_reference": "STAGE1_SECURITY_REVIEW.json",
+    "distribution": "Debian Trixie; stable package matches remain; no unsupported library replacement"
+  },
+  {
+    "id": "CVE-2026-78410",
+    "source": "https://security-tracker.debian.org/tracker/CVE-2026-78410",
+    "assessment_category": "mount_hooks",
+    "assessment_reference": "STAGE1_SECURITY_REVIEW.json",
+    "distribution": "Debian Trixie; stable package matches remain; no unsupported library replacement"
+  },
+  {
+    "id": "CVE-2026-8458",
+    "source": "https://security-tracker.debian.org/tracker/CVE-2026-8458",
+    "assessment_category": "removed_runtime_dependency",
+    "assessment_reference": "STAGE1_SECURITY_REVIEW.json",
+    "distribution": "Debian Trixie; stable package matches remain; no unsupported library replacement"
+  },
+  {
+    "id": "CVE-2026-86138",
+    "source": "https://security-tracker.debian.org/tracker/CVE-2026-86138",
+    "assessment_category": "unused_xml_parser",
+    "assessment_reference": "STAGE1_SECURITY_REVIEW.json",
+    "distribution": "Debian Trixie; stable package matches remain; no unsupported library replacement"
+  },
+  {
+    "id": "CVE-2026-86139",
+    "source": "https://security-tracker.debian.org/tracker/CVE-2026-86139",
+    "assessment_category": "unused_xml_parser",
+    "assessment_reference": "STAGE1_SECURITY_REVIEW.json",
+    "distribution": "Debian Trixie; stable package matches remain; no unsupported library replacement"
+  },
+  {
+    "id": "CVE-2026-86140",
+    "source": "https://security-tracker.debian.org/tracker/CVE-2026-86140",
+    "assessment_category": "unused_xml_parser",
+    "assessment_reference": "STAGE1_SECURITY_REVIEW.json",
+    "distribution": "Debian Trixie; stable package matches remain; no unsupported library replacement"
+  },
+  {
+    "id": "CVE-2026-86142",
+    "source": "https://security-tracker.debian.org/tracker/CVE-2026-86142",
+    "assessment_category": "unused_xml_parser",
+    "assessment_reference": "STAGE1_SECURITY_REVIEW.json",
+    "distribution": "Debian Trixie; stable package matches remain; no unsupported library replacement"
+  },
+  {
+    "id": "CVE-2026-86143",
+    "source": "https://security-tracker.debian.org/tracker/CVE-2026-86143",
+    "assessment_category": "unused_xml_parser",
+    "assessment_reference": "STAGE1_SECURITY_REVIEW.json",
+    "distribution": "Debian Trixie; stable package matches remain; no unsupported library replacement"
+  },
+  {
+    "id": "CVE-2026-86144",
+    "source": "https://security-tracker.debian.org/tracker/CVE-2026-86144",
+    "assessment_category": "unused_xml_parser",
+    "assessment_reference": "STAGE1_SECURITY_REVIEW.json",
+    "distribution": "Debian Trixie; stable package matches remain; no unsupported library replacement"
+  },
+  {
+    "id": "CVE-2026-9538",
+    "source": "https://security-tracker.debian.org/tracker/CVE-2026-9538",
+    "assessment_category": "unused_archive_parser",
+    "assessment_reference": "STAGE1_SECURITY_REVIEW.json",
+    "distribution": "Debian Trixie; stable package matches remain; no unsupported library replacement"
+  }
+]

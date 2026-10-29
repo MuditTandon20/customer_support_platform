@@ -5,17 +5,21 @@ import subprocess
 import time
 import uuid
 import httpx
+import os
+import platform
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-CMD = ['docker','compose','-f','compose.stage1.yaml','-p','aster-stage1-free-verify']
+PREFIX=os.getenv('ASTER_VERIFY_PROJECT_PREFIX','aster-stage1')
+assert PREFIX in {'aster-stage1','aster-stage1-security'}
+CMD = ['docker','compose','-f','compose.stage1.yaml','-p',PREFIX+'-free-verify']
 def compose(*args):
     return subprocess.check_output(CMD+list(args),cwd=ROOT,text=True).strip()
 def inspect(container, template):
     return subprocess.check_output(['docker','inspect','--format',template,container],text=True).strip()
 
 def main():
-    base='http://localhost:18083'
-    client=httpx.Client(base_url=base,headers={'Origin':'http://localhost:3000'},timeout=30)
+    base=os.getenv('TEST_BETA_API_URL','http://localhost:18083')
+    client=httpx.Client(base_url=base,headers={'Origin':os.getenv('TEST_WEB_URL','http://localhost:3000')},timeout=30)
     assert client.get('/release').json()['synthetic_emails_required'] is True
     payload={'email':f'profile-{uuid.uuid4()}@example.test','password':'Synthetic-beta-container-password!',
              'organization_name':'Synthetic constrained runtime','full_name':'Synthetic tester'}
@@ -50,7 +54,7 @@ def main():
     assert client.get(path,headers=headers).status_code==200
     assert inspect(container,'{{.State.OOMKilled}}')=='false'
     memory=json.loads(compose('exec','-T','backend','python','-c',"import pathlib,json;print(json.dumps({n:pathlib.Path('/sys/fs/cgroup/'+n).read_text().strip() for n in ['memory.current','memory.peak','memory.max']}))"))
-    report={'environment':'Local Docker Desktop Linux, actual combined release image; not hosted Render',
+    report={'environment':'Linux Docker engine, actual combined release image; not hosted Render', 'driver_host':platform.system(), 'project':PREFIX+'-free-verify',
         'memory_limit_bytes':512*1024*1024,'cpu_limit':0.1,'cgroup_memory_bytes':memory,
         'cgroup_memory_before_worker_crash':memory_before_crash,
         'beta_guards':'passed: real emails and sandbox denied, billing and model inference disabled',

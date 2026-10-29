@@ -1,21 +1,23 @@
 {
-  "environment": "Local Docker Desktop Linux, actual combined release image; not hosted Render",
+  "environment": "Linux Docker engine, actual combined release image; not hosted Render",
+  "driver_host": "Windows",
+  "project": "aster-stage1-security-free-verify",
   "memory_limit_bytes": 536870912,
   "cpu_limit": 0.1,
   "cgroup_memory_bytes": {
-    "memory.current": "35151872",
-    "memory.peak": "35418112",
+    "memory.current": "33779712",
+    "memory.peak": "33779712",
     "memory.max": "536870912"
   },
   "cgroup_memory_before_worker_crash": {
-    "memory.current": "72925184",
-    "memory.peak": "73986048",
+    "memory.current": "72069120",
+    "memory.peak": "73318400",
     "memory.max": "536870912"
   },
   "beta_guards": "passed: real emails and sandbox denied, billing and model inference disabled",
   "non_root": "passed",
   "ai_worker_crash_supervisor_restart": "passed",
-  "worker_crash_recovery_ms": 4437,
+  "worker_crash_recovery_ms": 4000,
   "persisted_ticket_after_restart": "passed",
   "oom_killed": false,
   "limits": "Small synthetic tests only; no hosted cold start, sustained load or uptime guarantee"

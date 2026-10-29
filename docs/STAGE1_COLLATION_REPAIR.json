@@ -1,0 +1,112 @@
+{
+  "result": "passed",
+  "scope": "Owned retained local rehearsal clusters only; private backups, no data/schema reset; user/system indexes rebuilt before version refresh; NULL template0 default version intentionally retained",
+  "projects": [
+    {
+      "project": "aster-stage1-verify",
+      "private_backup_file": "aster-stage1-verify-pre-final-collation-1e95fd60.sql",
+      "backup_sha256": "34f025927c22a516af6be8f463d86a1620dd5a870cc441b529f5e9eb198262a7",
+      "database_checks": [
+        {
+          "database": "postgres",
+          "recorded_before": "2.41",
+          "actual": "2.41",
+          "default_version_untracked": false,
+          "named_collations_refreshed": 0,
+          "indexes_rebuilt_before_refresh": false,
+          "invalid_indexes": 0,
+          "named_collation_mismatches": 0
+        },
+        {
+          "database": "support_os",
+          "recorded_before": "2.41",
+          "actual": "2.41",
+          "default_version_untracked": false,
+          "named_collations_refreshed": 0,
+          "indexes_rebuilt_before_refresh": false,
+          "invalid_indexes": 0,
+          "named_collation_mismatches": 0
+        },
+        {
+          "database": "template1",
+          "recorded_before": "2.41",
+          "actual": "2.41",
+          "default_version_untracked": false,
+          "named_collations_refreshed": 0,
+          "indexes_rebuilt_before_refresh": false,
+          "invalid_indexes": 0,
+          "named_collation_mismatches": 0
+        },
+        {
+          "database": "template0",
+          "recorded_before": null,
+          "actual": "2.41",
+          "default_version_untracked": true,
+          "named_collations_refreshed": 0,
+          "indexes_rebuilt_before_refresh": false,
+          "invalid_indexes": 0,
+          "named_collation_mismatches": 0
+        }
+      ],
+      "all_public_rows_unchanged": true,
+      "public_tables_checked": 22,
+      "rows_fingerprint_before": "f98c15f3bc7c76227f65be3dff68347d5243de39a71d5f533b9379ccd3a6bba0",
+      "rows_fingerprint_after": "f98c15f3bc7c76227f65be3dff68347d5243de39a71d5f533b9379ccd3a6bba0",
+      "tracked_database_collation_mismatches": 0,
+      "template0_connections_disabled": true
+    },
+    {
+      "project": "aster-stage1-free-verify",
+      "private_backup_file": "aster-stage1-free-verify-pre-final-collation-852d7985.sql",
+      "backup_sha256": "825d0b8d8b9aff26026c4a1ad860458c4cbedfa435eb978c7ac05a8a2bf049a8",
+      "database_checks": [
+        {
+          "database": "postgres",
+          "recorded_before": "2.36",
+          "actual": "2.41",
+          "default_version_untracked": false,
+          "named_collations_refreshed": 809,
+          "indexes_rebuilt_before_refresh": true,
+          "invalid_indexes": 0,
+          "named_collation_mismatches": 0
+        },
+        {
+          "database": "support_os",
+          "recorded_before": "2.36",
+          "actual": "2.41",
+          "default_version_untracked": false,
+          "named_collations_refreshed": 809,
+          "indexes_rebuilt_before_refresh": true,
+          "invalid_indexes": 0,
+          "named_collation_mismatches": 0
+        },
+        {
+          "database": "template1",
+          "recorded_before": "2.36",
+          "actual": "2.41",
+          "default_version_untracked": false,
+          "named_collations_refreshed": 809,
+          "indexes_rebuilt_before_refresh": true,
+          "invalid_indexes": 0,
+          "named_collation_mismatches": 0
+        },
+        {
+          "database": "template0",
+          "recorded_before": null,
+          "actual": "2.41",
+          "default_version_untracked": true,
+          "named_collations_refreshed": 809,
+          "indexes_rebuilt_before_refresh": true,
+          "invalid_indexes": 0,
+          "named_collation_mismatches": 0
+        }
+      ],
+      "all_public_rows_unchanged": true,
+      "public_tables_checked": 22,
+      "rows_fingerprint_before": "ffbf947495b5dae162e496ab4d953372c1732e119627035af5570191c89c7e09",
+      "rows_fingerprint_after": "ffbf947495b5dae162e496ab4d953372c1732e119627035af5570191c89c7e09",
+      "tracked_database_collation_mismatches": 0,
+      "template0_connections_disabled": true
+    }
+  ]
+}

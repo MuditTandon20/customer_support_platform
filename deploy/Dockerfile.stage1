@@ -16,6 +16,8 @@ RUN pip install --no-cache-dir --timeout 120 --retries 5 pip==26.2.2 \
 COPY --from=build /app/target/release/rust-api /usr/local/bin/rust-api
 COPY backend/ai-copilot/app ./app
 COPY deploy/run_services.py ./run_services.py
+RUN find / -xdev -type f -perm /6000 -exec chmod a-s {} +
+ENV PYTHONDONTWRITEBYTECODE=1
 USER app
 ENV PORT=10000 AI_COPILOT_URL=http://127.0.0.1:8001 BETA_MODE=true BACKGROUND_PROCESSING=false LLM_ENABLED=false ENABLE_SANDBOX=false DB_MAX_CONNECTIONS=4
 EXPOSE 10000

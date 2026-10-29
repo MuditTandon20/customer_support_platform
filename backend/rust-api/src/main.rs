@@ -41,6 +41,32 @@ pub struct AppState {
 #[tokio::main]
 async fn main() {
     dotenvy::dotenv().ok();
+    if env::args().nth(1).as_deref() == Some("--healthcheck") {
+        let port = env::var("API_BIND")
+            .ok()
+            .and_then(|v| v.parse::<SocketAddr>().ok())
+            .map(|v| v.port())
+            .or_else(|| env::var("PORT").ok().and_then(|v| v.parse::<u16>().ok()))
+            .unwrap_or(8080);
+        let healthy = async {
+            let response = reqwest::Client::builder()
+                .no_proxy()
+                .timeout(Duration::from_secs(4))
+                .build()
+                .ok()?
+                .get(format!("http://127.0.0.1:{port}/ready"))
+                .send()
+                .await
+                .ok()?
+                .error_for_status()
+                .ok()?;
+            let body = response.json::<serde_json::Value>().await.ok()?;
+            Some(body.get("status")?.as_str()? == "healthy")
+        }
+        .await
+        .unwrap_or(false);
+        std::process::exit(if healthy { 0 } else { 1 });
+    }
     tracing_subscriber::fmt()
         .json()
         .with_env_filter(

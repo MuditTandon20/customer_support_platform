@@ -1,3 +1,5 @@
+> Current release security assessment: see [STAGE1_SECURITY_CLOSURE.md](STAGE1_SECURITY_CLOSURE.md). The earlier hold and initial measurements below are historical. The reviewed build is eligible for synthetic Stage 1 testing after green CI; not deployed.
+
 # Aster Stage 1 release evidence
 
 2026-10-29. **Superseded readiness verdict: PUBLIC RELEASE ON SECURITY HOLD.** See [final container verification and remaining risks](STAGE1_FINAL_VERIFICATION.md). The implementation/performance evidence below describes the initial release; later Docker verification supersedes its container gaps and vulnerability assessment. **Not deployed.** This is a synthetic-data, non-commercial beta, not a production release.

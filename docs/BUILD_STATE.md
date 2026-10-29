@@ -1,3 +1,5 @@
+> Latest: the remaining scoped security review is complete; see [STAGE1_SECURITY_CLOSURE.md](STAGE1_SECURITY_CLOSURE.md). The earlier hold below is superseded for this synthetic, non-commercial beta after CI gates pass. All original data/artifacts were preserved, including retained-volume upgrade/collation checks. No deployment occurred.
+
 > Latest follow-up: Docker Desktop/Linux engine was started, both Docker layouts built and exercised. Current checks cover 5 Rust tests, 18 Python tests, 18 full-stack API suites and 8 browsers, plus constrained beta and container recovery. **Public release remains on security hold**; read [STAGE1_FINAL_VERIFICATION.md](STAGE1_FINAL_VERIFICATION.md). Native demo/port details below are historical; the current container preview uses http://localhost:3000, API 8080, combined beta API 18083. Original databases and user artifacts remain untouched.
 
 # Build state and continuation

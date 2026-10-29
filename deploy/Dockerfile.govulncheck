@@ -1,0 +1,4 @@
+# Offline-local binary analysis tool; never part of an Aster runtime/deployment.
+FROM golang:1.27.3
+RUN go install golang.org/x/vuln/cmd/govulncheck@v1.9.0
+ENTRYPOINT ["/go/bin/govulncheck"]

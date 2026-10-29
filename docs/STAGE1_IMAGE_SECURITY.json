@@ -1,17 +1,17 @@
 {
   "scanner": "Trivy 0.76.1",
-  "scope": "HIGH/CRITICAL, OS and detected language packages; not an exhaustive security assessment",
+  "scope": "HIGH/CRITICAL, no ignore rules; duplicate package matches retained",
   "images": {
     "api": {
-      "image": "aster-stage1-verify-api",
-      "image_id": "sha256:15296612e45f082ee0c7f13b98a37c5f1b5bc6d8c4c27aa003b07e6cd38e5383",
+      "image": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde",
+      "image_id": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde",
       "counts": {
-        "HIGH": 47
+        "HIGH": 43
       },
       "fixable_findings": 0,
       "findings": [
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "bsdutils",
           "installed": "1:2.41.5-0+deb13u1",
@@ -21,7 +21,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "bsdutils",
           "installed": "1:2.41.5-0+deb13u1",
@@ -31,7 +31,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "bsdutils",
           "installed": "1:2.41.5-0+deb13u1",
@@ -41,7 +41,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "bsdutils",
           "installed": "1:2.41.5-0+deb13u1",
@@ -51,27 +51,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
-          "id": "CVE-2026-12064",
-          "package": "curl",
-          "installed": "8.14.1-2+deb13u7",
-          "fixed": null,
-          "severity": "HIGH",
-          "status": "affected",
-          "url": "https://avd.aquasec.com/nvd/cve-2026-12064"
-        },
-        {
-          "target": "aster-stage1-verify-api (debian 13.7)",
-          "id": "CVE-2026-8458",
-          "package": "curl",
-          "installed": "8.14.1-2+deb13u7",
-          "fixed": null,
-          "severity": "HIGH",
-          "status": "affected",
-          "url": "https://avd.aquasec.com/nvd/cve-2026-8458"
-        },
-        {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-54369",
           "package": "libacl1",
           "installed": "2.3.2-2+b1",
@@ -81,7 +61,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-54369"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "libblkid1",
           "installed": "2.41.5-0+deb13u1",
@@ -91,7 +71,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "libblkid1",
           "installed": "2.41.5-0+deb13u1",
@@ -101,7 +81,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "libblkid1",
           "installed": "2.41.5-0+deb13u1",
@@ -111,7 +91,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "libblkid1",
           "installed": "2.41.5-0+deb13u1",
@@ -121,27 +101,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
-          "id": "CVE-2026-12064",
-          "package": "libcurl4t64",
-          "installed": "8.14.1-2+deb13u7",
-          "fixed": null,
-          "severity": "HIGH",
-          "status": "affected",
-          "url": "https://avd.aquasec.com/nvd/cve-2026-12064"
-        },
-        {
-          "target": "aster-stage1-verify-api (debian 13.7)",
-          "id": "CVE-2026-8458",
-          "package": "libcurl4t64",
-          "installed": "8.14.1-2+deb13u7",
-          "fixed": null,
-          "severity": "HIGH",
-          "status": "affected",
-          "url": "https://avd.aquasec.com/nvd/cve-2026-8458"
-        },
-        {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "liblastlog2-2",
           "installed": "2.41.5-0+deb13u1",
@@ -151,7 +111,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "liblastlog2-2",
           "installed": "2.41.5-0+deb13u1",
@@ -161,7 +121,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "liblastlog2-2",
           "installed": "2.41.5-0+deb13u1",
@@ -171,7 +131,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "liblastlog2-2",
           "installed": "2.41.5-0+deb13u1",
@@ -181,7 +141,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "libmount1",
           "installed": "2.41.5-0+deb13u1",
@@ -191,7 +151,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "libmount1",
           "installed": "2.41.5-0+deb13u1",
@@ -201,7 +161,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "libmount1",
           "installed": "2.41.5-0+deb13u1",
@@ -211,7 +171,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "libmount1",
           "installed": "2.41.5-0+deb13u1",
@@ -221,7 +181,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "libsmartcols1",
           "installed": "2.41.5-0+deb13u1",
@@ -231,7 +191,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "libsmartcols1",
           "installed": "2.41.5-0+deb13u1",
@@ -241,7 +201,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "libsmartcols1",
           "installed": "2.41.5-0+deb13u1",
@@ -251,7 +211,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "libsmartcols1",
           "installed": "2.41.5-0+deb13u1",
@@ -261,7 +221,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-16742",
           "package": "libsystemd0",
           "installed": "257.13-1~deb13u1",
@@ -271,7 +231,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-16742"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2025-69720",
           "package": "libtinfo6",
           "installed": "6.5+20250216-2",
@@ -281,7 +241,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2025-69720"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-16742",
           "package": "libudev1",
           "installed": "257.13-1~deb13u1",
@@ -291,7 +251,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-16742"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "libuuid1",
           "installed": "2.41.5-0+deb13u1",
@@ -301,7 +261,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "libuuid1",
           "installed": "2.41.5-0+deb13u1",
@@ -311,7 +271,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "libuuid1",
           "installed": "2.41.5-0+deb13u1",
@@ -321,7 +281,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "libuuid1",
           "installed": "2.41.5-0+deb13u1",
@@ -331,7 +291,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "login",
           "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
@@ -341,7 +301,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "login",
           "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
@@ -351,7 +311,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "login",
           "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
@@ -361,7 +321,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "login",
           "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
@@ -371,7 +331,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "mount",
           "installed": "2.41.5-0+deb13u1",
@@ -381,7 +341,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "mount",
           "installed": "2.41.5-0+deb13u1",
@@ -391,7 +351,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "mount",
           "installed": "2.41.5-0+deb13u1",
@@ -401,7 +361,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "mount",
           "installed": "2.41.5-0+deb13u1",
@@ -411,7 +371,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2025-69720",
           "package": "ncurses-base",
           "installed": "6.5+20250216-2",
@@ -421,7 +381,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2025-69720"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2025-69720",
           "package": "ncurses-bin",
           "installed": "6.5+20250216-2",
@@ -431,7 +391,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2025-69720"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-9538",
           "package": "perl-base",
           "installed": "5.40.1-6+deb13u1",
@@ -441,7 +401,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-9538"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "util-linux",
           "installed": "2.41.5-0+deb13u1",
@@ -451,7 +411,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "util-linux",
           "installed": "2.41.5-0+deb13u1",
@@ -461,7 +421,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "util-linux",
           "installed": "2.41.5-0+deb13u1",
@@ -471,7 +431,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-api (debian 13.7)",
+          "target": "sha256:a86c0153f84889447031306f1bf96bb3c895435c7b08e0103434d2f9f56d7fde (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "util-linux",
           "installed": "2.41.5-0+deb13u1",
@@ -483,15 +443,15 @@
       ]
     },
     "ai": {
-      "image": "aster-stage1-verify-ai",
-      "image_id": "sha256:b210eefffe6a9df2574b9bf30fe6a987821560cae7420bf8665eecdaf3ae8e49",
+      "image": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57",
+      "image_id": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57",
       "counts": {
         "HIGH": 44
       },
       "fixable_findings": 0,
       "findings": [
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "bsdutils",
           "installed": "1:2.41.5-0+deb13u1",
@@ -501,7 +461,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "bsdutils",
           "installed": "1:2.41.5-0+deb13u1",
@@ -511,7 +471,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "bsdutils",
           "installed": "1:2.41.5-0+deb13u1",
@@ -521,7 +481,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "bsdutils",
           "installed": "1:2.41.5-0+deb13u1",
@@ -531,7 +491,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-54369",
           "package": "libacl1",
           "installed": "2.3.2-2+b1",
@@ -541,7 +501,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-54369"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "libblkid1",
           "installed": "2.41.5-0+deb13u1",
@@ -551,7 +511,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "libblkid1",
           "installed": "2.41.5-0+deb13u1",
@@ -561,7 +521,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "libblkid1",
           "installed": "2.41.5-0+deb13u1",
@@ -571,7 +531,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "libblkid1",
           "installed": "2.41.5-0+deb13u1",
@@ -581,7 +541,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "liblastlog2-2",
           "installed": "2.41.5-0+deb13u1",
@@ -591,7 +551,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "liblastlog2-2",
           "installed": "2.41.5-0+deb13u1",
@@ -601,7 +561,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "liblastlog2-2",
           "installed": "2.41.5-0+deb13u1",
@@ -611,7 +571,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "liblastlog2-2",
           "installed": "2.41.5-0+deb13u1",
@@ -621,7 +581,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "libmount1",
           "installed": "2.41.5-0+deb13u1",
@@ -631,7 +591,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "libmount1",
           "installed": "2.41.5-0+deb13u1",
@@ -641,7 +601,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "libmount1",
           "installed": "2.41.5-0+deb13u1",
@@ -651,7 +611,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "libmount1",
           "installed": "2.41.5-0+deb13u1",
@@ -661,7 +621,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2025-69720",
           "package": "libncursesw6",
           "installed": "6.5+20250216-2",
@@ -671,7 +631,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2025-69720"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "libsmartcols1",
           "installed": "2.41.5-0+deb13u1",
@@ -681,7 +641,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "libsmartcols1",
           "installed": "2.41.5-0+deb13u1",
@@ -691,7 +651,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "libsmartcols1",
           "installed": "2.41.5-0+deb13u1",
@@ -701,7 +661,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "libsmartcols1",
           "installed": "2.41.5-0+deb13u1",
@@ -711,7 +671,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-16742",
           "package": "libsystemd0",
           "installed": "257.13-1~deb13u1",
@@ -721,7 +681,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-16742"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2025-69720",
           "package": "libtinfo6",
           "installed": "6.5+20250216-2",
@@ -731,7 +691,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2025-69720"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-16742",
           "package": "libudev1",
           "installed": "257.13-1~deb13u1",
@@ -741,7 +701,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-16742"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "libuuid1",
           "installed": "2.41.5-0+deb13u1",
@@ -751,7 +711,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "libuuid1",
           "installed": "2.41.5-0+deb13u1",
@@ -761,7 +721,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "libuuid1",
           "installed": "2.41.5-0+deb13u1",
@@ -771,7 +731,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "libuuid1",
           "installed": "2.41.5-0+deb13u1",
@@ -781,7 +741,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "login",
           "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
@@ -791,7 +751,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "login",
           "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
@@ -801,7 +761,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "login",
           "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
@@ -811,7 +771,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "login",
           "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
@@ -821,7 +781,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "mount",
           "installed": "2.41.5-0+deb13u1",
@@ -831,7 +791,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "mount",
           "installed": "2.41.5-0+deb13u1",
@@ -841,7 +801,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "mount",
           "installed": "2.41.5-0+deb13u1",
@@ -851,7 +811,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "mount",
           "installed": "2.41.5-0+deb13u1",
@@ -861,7 +821,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2025-69720",
           "package": "ncurses-base",
           "installed": "6.5+20250216-2",
@@ -871,7 +831,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2025-69720"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2025-69720",
           "package": "ncurses-bin",
           "installed": "6.5+20250216-2",
@@ -881,7 +841,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2025-69720"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-9538",
           "package": "perl-base",
           "installed": "5.40.1-6+deb13u1",
@@ -891,7 +851,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-9538"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "util-linux",
           "installed": "2.41.5-0+deb13u1",
@@ -901,7 +861,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "util-linux",
           "installed": "2.41.5-0+deb13u1",
@@ -911,7 +871,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "util-linux",
           "installed": "2.41.5-0+deb13u1",
@@ -921,7 +881,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-ai (debian 13.7)",
+          "target": "sha256:0648fd36d2b15bff1c7bdd7b34384c9073ef25050d9320b5143e31bb0991bc57 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "util-linux",
           "installed": "2.41.5-0+deb13u1",
@@ -933,15 +893,15 @@
       ]
     },
     "web": {
-      "image": "aster-stage1-verify-web",
-      "image_id": "sha256:a1250279a68ae8b7414cdedf4b94cf79defe8d0945c10f8c6edd3f2a2b4b00de",
+      "image": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485",
+      "image_id": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485",
       "counts": {
         "HIGH": 43
       },
       "fixable_findings": 0,
       "findings": [
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "bsdutils",
           "installed": "1:2.41.5-0+deb13u1",
@@ -951,7 +911,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "bsdutils",
           "installed": "1:2.41.5-0+deb13u1",
@@ -961,7 +921,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "bsdutils",
           "installed": "1:2.41.5-0+deb13u1",
@@ -971,7 +931,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "bsdutils",
           "installed": "1:2.41.5-0+deb13u1",
@@ -981,7 +941,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-54369",
           "package": "libacl1",
           "installed": "2.3.2-2+b1",
@@ -991,7 +951,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-54369"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "libblkid1",
           "installed": "2.41.5-0+deb13u1",
@@ -1001,7 +961,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "libblkid1",
           "installed": "2.41.5-0+deb13u1",
@@ -1011,7 +971,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "libblkid1",
           "installed": "2.41.5-0+deb13u1",
@@ -1021,7 +981,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "libblkid1",
           "installed": "2.41.5-0+deb13u1",
@@ -1031,7 +991,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "liblastlog2-2",
           "installed": "2.41.5-0+deb13u1",
@@ -1041,7 +1001,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "liblastlog2-2",
           "installed": "2.41.5-0+deb13u1",
@@ -1051,7 +1011,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "liblastlog2-2",
           "installed": "2.41.5-0+deb13u1",
@@ -1061,7 +1021,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "liblastlog2-2",
           "installed": "2.41.5-0+deb13u1",
@@ -1071,7 +1031,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "libmount1",
           "installed": "2.41.5-0+deb13u1",
@@ -1081,7 +1041,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "libmount1",
           "installed": "2.41.5-0+deb13u1",
@@ -1091,7 +1051,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "libmount1",
           "installed": "2.41.5-0+deb13u1",
@@ -1101,7 +1061,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "libmount1",
           "installed": "2.41.5-0+deb13u1",
@@ -1111,7 +1071,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "libsmartcols1",
           "installed": "2.41.5-0+deb13u1",
@@ -1121,7 +1081,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "libsmartcols1",
           "installed": "2.41.5-0+deb13u1",
@@ -1131,7 +1091,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "libsmartcols1",
           "installed": "2.41.5-0+deb13u1",
@@ -1141,7 +1101,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "libsmartcols1",
           "installed": "2.41.5-0+deb13u1",
@@ -1151,7 +1111,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-16742",
           "package": "libsystemd0",
           "installed": "257.13-1~deb13u1",
@@ -1161,7 +1121,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-16742"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2025-69720",
           "package": "libtinfo6",
           "installed": "6.5+20250216-2",
@@ -1171,7 +1131,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2025-69720"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-16742",
           "package": "libudev1",
           "installed": "257.13-1~deb13u1",
@@ -1181,7 +1141,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-16742"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "libuuid1",
           "installed": "2.41.5-0+deb13u1",
@@ -1191,7 +1151,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "libuuid1",
           "installed": "2.41.5-0+deb13u1",
@@ -1201,7 +1161,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "libuuid1",
           "installed": "2.41.5-0+deb13u1",
@@ -1211,7 +1171,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "libuuid1",
           "installed": "2.41.5-0+deb13u1",
@@ -1221,7 +1181,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "login",
           "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
@@ -1231,7 +1191,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "login",
           "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
@@ -1241,7 +1201,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "login",
           "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
@@ -1251,7 +1211,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "login",
           "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
@@ -1261,7 +1221,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "mount",
           "installed": "2.41.5-0+deb13u1",
@@ -1271,7 +1231,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "mount",
           "installed": "2.41.5-0+deb13u1",
@@ -1281,7 +1241,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "mount",
           "installed": "2.41.5-0+deb13u1",
@@ -1291,7 +1251,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "mount",
           "installed": "2.41.5-0+deb13u1",
@@ -1301,7 +1261,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2025-69720",
           "package": "ncurses-base",
           "installed": "6.5+20250216-2",
@@ -1311,7 +1271,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2025-69720"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2025-69720",
           "package": "ncurses-bin",
           "installed": "6.5+20250216-2",
@@ -1321,7 +1281,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2025-69720"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-9538",
           "package": "perl-base",
           "installed": "5.40.1-6+deb13u1",
@@ -1331,7 +1291,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-9538"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "util-linux",
           "installed": "2.41.5-0+deb13u1",
@@ -1341,7 +1301,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "util-linux",
           "installed": "2.41.5-0+deb13u1",
@@ -1351,7 +1311,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "util-linux",
           "installed": "2.41.5-0+deb13u1",
@@ -1361,7 +1321,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-verify-web (debian 13.7)",
+          "target": "sha256:3944cd86bc2a651e7eebf5dd431382816362690d76eba9a2260559fa77438485 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "util-linux",
           "installed": "2.41.5-0+deb13u1",
@@ -1373,15 +1333,15 @@
       ]
     },
     "combined_beta": {
-      "image": "aster-stage1-free-verify-backend",
-      "image_id": "sha256:8e864b4af5809445dd36258998d2f4ae932a47fa074a6cad719274a9168d0b97",
+      "image": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0",
+      "image_id": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0",
       "counts": {
         "HIGH": 44
       },
       "fixable_findings": 0,
       "findings": [
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "bsdutils",
           "installed": "1:2.41.5-0+deb13u1",
@@ -1391,7 +1351,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "bsdutils",
           "installed": "1:2.41.5-0+deb13u1",
@@ -1401,7 +1361,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "bsdutils",
           "installed": "1:2.41.5-0+deb13u1",
@@ -1411,7 +1371,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "bsdutils",
           "installed": "1:2.41.5-0+deb13u1",
@@ -1421,7 +1381,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-54369",
           "package": "libacl1",
           "installed": "2.3.2-2+b1",
@@ -1431,7 +1391,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-54369"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "libblkid1",
           "installed": "2.41.5-0+deb13u1",
@@ -1441,7 +1401,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "libblkid1",
           "installed": "2.41.5-0+deb13u1",
@@ -1451,7 +1411,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "libblkid1",
           "installed": "2.41.5-0+deb13u1",
@@ -1461,7 +1421,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "libblkid1",
           "installed": "2.41.5-0+deb13u1",
@@ -1471,7 +1431,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "liblastlog2-2",
           "installed": "2.41.5-0+deb13u1",
@@ -1481,7 +1441,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "liblastlog2-2",
           "installed": "2.41.5-0+deb13u1",
@@ -1491,7 +1451,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "liblastlog2-2",
           "installed": "2.41.5-0+deb13u1",
@@ -1501,7 +1461,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "liblastlog2-2",
           "installed": "2.41.5-0+deb13u1",
@@ -1511,7 +1471,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "libmount1",
           "installed": "2.41.5-0+deb13u1",
@@ -1521,7 +1481,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "libmount1",
           "installed": "2.41.5-0+deb13u1",
@@ -1531,7 +1491,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "libmount1",
           "installed": "2.41.5-0+deb13u1",
@@ -1541,7 +1501,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "libmount1",
           "installed": "2.41.5-0+deb13u1",
@@ -1551,7 +1511,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2025-69720",
           "package": "libncursesw6",
           "installed": "6.5+20250216-2",
@@ -1561,7 +1521,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2025-69720"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "libsmartcols1",
           "installed": "2.41.5-0+deb13u1",
@@ -1571,7 +1531,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "libsmartcols1",
           "installed": "2.41.5-0+deb13u1",
@@ -1581,7 +1541,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "libsmartcols1",
           "installed": "2.41.5-0+deb13u1",
@@ -1591,7 +1551,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "libsmartcols1",
           "installed": "2.41.5-0+deb13u1",
@@ -1601,7 +1561,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-16742",
           "package": "libsystemd0",
           "installed": "257.13-1~deb13u1",
@@ -1611,7 +1571,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-16742"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2025-69720",
           "package": "libtinfo6",
           "installed": "6.5+20250216-2",
@@ -1621,7 +1581,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2025-69720"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-16742",
           "package": "libudev1",
           "installed": "257.13-1~deb13u1",
@@ -1631,7 +1591,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-16742"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "libuuid1",
           "installed": "2.41.5-0+deb13u1",
@@ -1641,7 +1601,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "libuuid1",
           "installed": "2.41.5-0+deb13u1",
@@ -1651,7 +1611,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "libuuid1",
           "installed": "2.41.5-0+deb13u1",
@@ -1661,7 +1621,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "libuuid1",
           "installed": "2.41.5-0+deb13u1",
@@ -1671,7 +1631,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "login",
           "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
@@ -1681,7 +1641,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "login",
           "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
@@ -1691,7 +1651,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "login",
           "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
@@ -1701,7 +1661,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "login",
           "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
@@ -1711,7 +1671,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "mount",
           "installed": "2.41.5-0+deb13u1",
@@ -1721,7 +1681,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "mount",
           "installed": "2.41.5-0+deb13u1",
@@ -1731,7 +1691,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "mount",
           "installed": "2.41.5-0+deb13u1",
@@ -1741,7 +1701,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "mount",
           "installed": "2.41.5-0+deb13u1",
@@ -1751,7 +1711,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2025-69720",
           "package": "ncurses-base",
           "installed": "6.5+20250216-2",
@@ -1761,7 +1721,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2025-69720"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2025-69720",
           "package": "ncurses-bin",
           "installed": "6.5+20250216-2",
@@ -1771,7 +1731,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2025-69720"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-9538",
           "package": "perl-base",
           "installed": "5.40.1-6+deb13u1",
@@ -1781,7 +1741,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-9538"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "util-linux",
           "installed": "2.41.5-0+deb13u1",
@@ -1791,7 +1751,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "util-linux",
           "installed": "2.41.5-0+deb13u1",
@@ -1801,7 +1761,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "util-linux",
           "installed": "2.41.5-0+deb13u1",
@@ -1811,7 +1771,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "aster-stage1-free-verify-backend (debian 13.7)",
+          "target": "sha256:1a3dc3c2adebf016bca0c7617f193fb67a092df93b4550da0357947b0451afa0 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "util-linux",
           "installed": "2.41.5-0+deb13u1",
@@ -1823,8 +1783,8 @@
       ]
     },
     "local_postgres": {
-      "image": "postgres:17-trixie",
-      "image_id": "sha256:31ba9c94a03ada9988f2bb493a22a75eef3a185884533e5cdbcd498ea835b08f",
+      "image": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62",
+      "image_id": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62",
       "counts": {
         "HIGH": 86,
         "CRITICAL": 2
@@ -1832,7 +1792,7 @@
       "fixable_findings": 26,
       "findings": [
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "bsdutils",
           "installed": "1:2.41.5-0+deb13u1",
@@ -1842,7 +1802,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "bsdutils",
           "installed": "1:2.41.5-0+deb13u1",
@@ -1852,7 +1812,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "bsdutils",
           "installed": "1:2.41.5-0+deb13u1",
@@ -1862,7 +1822,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "bsdutils",
           "installed": "1:2.41.5-0+deb13u1",
@@ -1872,7 +1832,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-24882",
           "package": "dirmngr",
           "installed": "2.4.7-21+deb13u1+b5",
@@ -1882,7 +1842,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-24882"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-24882",
           "package": "gnupg",
           "installed": "2.4.7-21+deb13u1",
@@ -1892,7 +1852,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-24882"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-24882",
           "package": "gnupg-l10n",
           "installed": "2.4.7-21+deb13u1",
@@ -1902,7 +1862,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-24882"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-24882",
           "package": "gpg",
           "installed": "2.4.7-21+deb13u1+b5",
@@ -1912,7 +1872,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-24882"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-24882",
           "package": "gpg-agent",
           "installed": "2.4.7-21+deb13u1+b5",
@@ -1922,7 +1882,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-24882"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-24882",
           "package": "gpgconf",
           "installed": "2.4.7-21+deb13u1+b5",
@@ -1932,7 +1892,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-24882"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-24882",
           "package": "gpgsm",
           "installed": "2.4.7-21+deb13u1+b5",
@@ -1942,7 +1902,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-24882"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-54369",
           "package": "libacl1",
           "installed": "2.3.2-2+b1",
@@ -1952,7 +1912,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-54369"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "libblkid1",
           "installed": "2.41.5-0+deb13u1",
@@ -1962,7 +1922,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "libblkid1",
           "installed": "2.41.5-0+deb13u1",
@@ -1972,7 +1932,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "libblkid1",
           "installed": "2.41.5-0+deb13u1",
@@ -1982,7 +1942,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "libblkid1",
           "installed": "2.41.5-0+deb13u1",
@@ -1992,7 +1952,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "liblastlog2-2",
           "installed": "2.41.5-0+deb13u1",
@@ -2002,7 +1962,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "liblastlog2-2",
           "installed": "2.41.5-0+deb13u1",
@@ -2012,7 +1972,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "liblastlog2-2",
           "installed": "2.41.5-0+deb13u1",
@@ -2022,7 +1982,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "liblastlog2-2",
           "installed": "2.41.5-0+deb13u1",
@@ -2032,7 +1992,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "libmount1",
           "installed": "2.41.5-0+deb13u1",
@@ -2042,7 +2002,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "libmount1",
           "installed": "2.41.5-0+deb13u1",
@@ -2052,7 +2012,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "libmount1",
           "installed": "2.41.5-0+deb13u1",
@@ -2062,7 +2022,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "libmount1",
           "installed": "2.41.5-0+deb13u1",
@@ -2072,7 +2032,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2025-69720",
           "package": "libncursesw6",
           "installed": "6.5+20250216-2",
@@ -2082,7 +2042,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2025-69720"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-9538",
           "package": "libperl5.40",
           "installed": "5.40.1-6+deb13u1",
@@ -2092,7 +2052,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-9538"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "libsmartcols1",
           "installed": "2.41.5-0+deb13u1",
@@ -2102,7 +2062,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "libsmartcols1",
           "installed": "2.41.5-0+deb13u1",
@@ -2112,7 +2072,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "libsmartcols1",
           "installed": "2.41.5-0+deb13u1",
@@ -2122,7 +2082,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "libsmartcols1",
           "installed": "2.41.5-0+deb13u1",
@@ -2132,7 +2092,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-16742",
           "package": "libsystemd0",
           "installed": "257.13-1~deb13u1",
@@ -2142,7 +2102,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-16742"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2025-69720",
           "package": "libtinfo6",
           "installed": "6.5+20250216-2",
@@ -2152,7 +2112,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2025-69720"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-16742",
           "package": "libudev1",
           "installed": "257.13-1~deb13u1",
@@ -2162,7 +2122,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-16742"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "libuuid1",
           "installed": "2.41.5-0+deb13u1",
@@ -2172,7 +2132,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "libuuid1",
           "installed": "2.41.5-0+deb13u1",
@@ -2182,7 +2142,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "libuuid1",
           "installed": "2.41.5-0+deb13u1",
@@ -2192,7 +2152,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "libuuid1",
           "installed": "2.41.5-0+deb13u1",
@@ -2202,7 +2162,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-6653",
           "package": "libxml2",
           "installed": "2.12.7+dfsg+really2.9.14-2.1+deb13u3",
@@ -2212,7 +2172,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-6653"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-74860",
           "package": "libxml2",
           "installed": "2.12.7+dfsg+really2.9.14-2.1+deb13u3",
@@ -2222,7 +2182,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-74860"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-86138",
           "package": "libxml2",
           "installed": "2.12.7+dfsg+really2.9.14-2.1+deb13u3",
@@ -2232,7 +2192,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-86138"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-86139",
           "package": "libxml2",
           "installed": "2.12.7+dfsg+really2.9.14-2.1+deb13u3",
@@ -2242,7 +2202,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-86139"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-86140",
           "package": "libxml2",
           "installed": "2.12.7+dfsg+really2.9.14-2.1+deb13u3",
@@ -2252,7 +2212,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-86140"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-86142",
           "package": "libxml2",
           "installed": "2.12.7+dfsg+really2.9.14-2.1+deb13u3",
@@ -2262,7 +2222,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-86142"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-86143",
           "package": "libxml2",
           "installed": "2.12.7+dfsg+really2.9.14-2.1+deb13u3",
@@ -2272,7 +2232,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-86143"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-86144",
           "package": "libxml2",
           "installed": "2.12.7+dfsg+really2.9.14-2.1+deb13u3",
@@ -2282,7 +2242,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-86144"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "login",
           "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
@@ -2292,7 +2252,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "login",
           "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
@@ -2302,7 +2262,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "login",
           "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
@@ -2312,7 +2272,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "login",
           "installed": "1:4.16.0-2+really2.41.5-0+deb13u1",
@@ -2322,7 +2282,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "mount",
           "installed": "2.41.5-0+deb13u1",
@@ -2332,7 +2292,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "mount",
           "installed": "2.41.5-0+deb13u1",
@@ -2342,7 +2302,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "mount",
           "installed": "2.41.5-0+deb13u1",
@@ -2352,7 +2312,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "mount",
           "installed": "2.41.5-0+deb13u1",
@@ -2362,7 +2322,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78410"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2025-69720",
           "package": "ncurses-base",
           "installed": "6.5+20250216-2",
@@ -2372,7 +2332,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2025-69720"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2025-69720",
           "package": "ncurses-bin",
           "installed": "6.5+20250216-2",
@@ -2382,7 +2342,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2025-69720"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-9538",
           "package": "perl",
           "installed": "5.40.1-6+deb13u1",
@@ -2392,7 +2352,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-9538"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-9538",
           "package": "perl-base",
           "installed": "5.40.1-6+deb13u1",
@@ -2402,7 +2362,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-9538"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-9538",
           "package": "perl-modules-5.40",
           "installed": "5.40.1-6+deb13u1",
@@ -2412,7 +2372,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-9538"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-76642",
           "package": "util-linux",
           "installed": "2.41.5-0+deb13u1",
@@ -2422,7 +2382,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-76642"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78408",
           "package": "util-linux",
           "installed": "2.41.5-0+deb13u1",
@@ -2432,7 +2392,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78408"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78409",
           "package": "util-linux",
           "installed": "2.41.5-0+deb13u1",
@@ -2442,7 +2402,7 @@
           "url": "https://avd.aquasec.com/nvd/cve-2026-78409"
         },
         {
-          "target": "postgres:17-trixie (debian 13.7)",
+          "target": "sha256:dd8b0f78eafdace3725ba1fcc984b0e26de260e164fc117c0e27a7d461168f62 (debian 13.7)",
           "id": "CVE-2026-78410",
           "package": "util-linux",
           "installed": "2.41.5-0+deb13u1",
@@ -2714,5 +2674,5 @@
       ]
     }
   },
-  "readiness": "SECURITY HOLD: unresolved base-image findings; no clean image claim"
+  "readiness": "Raw findings remain; see STAGE1_SECURITY_REVIEW.json for scoped assessment"
 }

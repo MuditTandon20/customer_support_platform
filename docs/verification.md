@@ -1,3 +1,5 @@
+> Current follow-up: [security closure](STAGE1_SECURITY_CLOSURE.md), including hardened runtime tests, exact-binary analysis, isolated advisory reproduction and data-preserving retained-volume upgrade. Earlier hold statements below are historical.
+
 > Final follow-up: [Docker verification and current security hold](STAGE1_FINAL_VERIFICATION.md). This supersedes earlier readiness wording, container gaps and test counts.
 
 > Current Stage 1 results supersede historical counts: see [STAGE1_RELEASE_REPORT.md](STAGE1_RELEASE_REPORT.md). Docker/cloud runtime remains unverified.
