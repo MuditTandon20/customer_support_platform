@@ -1,0 +1,58 @@
+{
+  "environment": "Windows/native debug Rust, isolated Python, production Next.js, disposable Postgres 18",
+  "local_readiness_ms": 2065,
+  "process_memory": [
+    {
+      "ProcessName": "node",
+      "WorkingSet64": 87363584,
+      "PeakWorkingSet64": 125923328
+    },
+    {
+      "ProcessName": "python",
+      "WorkingSet64": 62668800,
+      "PeakWorkingSet64": 62668800
+    },
+    {
+      "ProcessName": "rust-api",
+      "WorkingSet64": 21434368,
+      "PeakWorkingSet64": 61202432
+    }
+  ],
+  "frontend_static_js_total_bytes": 719141,
+  "largest_js_chunks": [
+    {
+      "file": "chunks\\3wbm-994r45kr.js",
+      "bytes": 229820
+    },
+    {
+      "file": "chunks\\2e268anpfvdoc.js",
+      "bytes": 168355
+    },
+    {
+      "file": "chunks\\0cz1d0mv5g_q7.js",
+      "bytes": 112594
+    },
+    {
+      "file": "chunks\\0xx6f4niszmjg.js",
+      "bytes": 35963
+    },
+    {
+      "file": "chunks\\2r4s4h5xul1n-.js",
+      "bytes": 28739
+    },
+    {
+      "file": "chunks\\2qp4ib0smtryd.js",
+      "bytes": 18289
+    },
+    {
+      "file": "chunks\\0umf92h1sb77c.js",
+      "bytes": 13822
+    },
+    {
+      "file": "chunks\\1j12bres2naaq.js",
+      "bytes": 13203
+    }
+  ],
+  "limitations": "Point-in-time Windows working sets and local process startup, not Render/Linux RSS or hosted cold starts; total JS includes route chunks not all loaded on one page.",
+  "memory_method": "Working sets of actual listening server processes, including Python worker rather than its small venv launcher."
+}

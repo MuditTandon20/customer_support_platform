@@ -58,7 +58,9 @@ export default function AuthForm({ register = false }: { register?: boolean }) {
                 register ? "/workspace/settings" : "/workspace/dashboard",
               );
             } catch (e) {
-              setExistingAccount(register && e instanceof ApiError && e.status === 409);
+              setExistingAccount(
+                register && e instanceof ApiError && e.status === 409,
+              );
               setError(errorMessage(e));
             } finally {
               setBusy(false);
@@ -75,13 +77,17 @@ export default function AuthForm({ register = false }: { register?: boolean }) {
           </h2>
           <p>
             {register
-              ? "Create an organization. You will be its administrator."
+              ? "Create a test organization. Use a synthetic .test email address; do not enter real customer data."
               : "Sign in to your support workspace."}
           </p>
           {error && (
             <div className="error-banner" role="alert">
               {error}
-              {existingAccount && <p><Link href="/login">Sign in to your existing account</Link></p>}
+              {existingAccount && (
+                <p>
+                  <Link href="/login">Sign in to your existing account</Link>
+                </p>
+              )}
             </div>
           )}
           {register && (
@@ -116,7 +122,7 @@ export default function AuthForm({ register = false }: { register?: boolean }) {
               name="email"
               autoComplete="email"
               maxLength={254}
-              placeholder="you@company.com"
+              placeholder="tester@example.test"
             />
           </label>
           <label>

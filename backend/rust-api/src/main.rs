@@ -18,12 +18,14 @@ use std::{
 };
 use tower_http::cors::CorsLayer;
 
+mod ai_activity;
 mod auth;
 mod error;
 mod handlers;
 mod models;
 mod outbox;
 mod policy;
+mod workflow_engine;
 
 use handlers::{identity, platform, sandbox, tickets, users};
 
@@ -38,7 +40,12 @@ pub struct AppState {
 #[tokio::main]
 async fn main() {
     dotenvy::dotenv().ok();
-    tracing_subscriber::fmt::init();
+    tracing_subscriber::fmt()
+        .json()
+        .with_env_filter(
+            tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(|_| "info".into()),
+        )
+        .init();
     assert!(
         env::var("JWT_SECRET").unwrap_or_default().len() >= 32,
         "JWT_SECRET needs at least 32 characters"
@@ -47,19 +54,27 @@ async fn main() {
     let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set in .env");
 
     let pool = PgPoolOptions::new()
-        .max_connections(10)
+        .max_connections(
+            env::var("DB_MAX_CONNECTIONS")
+                .ok()
+                .and_then(|v| v.parse().ok())
+                .unwrap_or(4),
+        )
+        .min_connections(0)
+        .idle_timeout(Duration::from_secs(10))
+        .acquire_timeout(Duration::from_secs(15))
         .connect(&database_url)
         .await
         .expect("Failed to connect to Postgres");
 
-    println!("Connected to Postgres successfully");
+    tracing::info!("Connected to Postgres successfully");
 
     // Automatically run any pending migrations
     sqlx::migrate!("./migrations")
         .run(&pool)
         .await
         .expect("Failed to run database migrations");
-    println!("Database migrations ran successfully");
+    tracing::info!("Database migrations ran successfully");
 
     let state = AppState {
         db: pool.clone(),
@@ -71,8 +86,11 @@ async fn main() {
             .unwrap_or_else(|_| "http://127.0.0.1:8001".to_string()),
         rate_limits: Arc::new(Mutex::new(HashMap::new())),
     };
-    tokio::spawn(outbox::run_notification_projection(pool.clone()));
+    if env::var("BACKGROUND_PROCESSING").as_deref() == Ok("true") {
+        tokio::spawn(outbox::run_notification_projection(pool.clone()));
+    }
 
+    #[cfg(feature = "kafka")]
     if let Ok(brokers) = env::var("KAFKA_BROKERS") {
         tokio::spawn(outbox::run_outbox_publisher(
             pool.clone(),
@@ -95,6 +113,13 @@ async fn main() {
 
     let app = Router::new()
         .route("/health", get(health_check))
+        .route("/ready", get(health_check))
+        .route(
+            "/live",
+            get(|| async { axum::Json(serde_json::json!({"status":"alive"})) }),
+        )
+        .route("/release", get(release_info))
+        .route("/ai/activity", get(platform::ai_activity))
         .route("/openapi.json", get(api_contract))
         .route("/auth/signup", post(users::signup))
         .route("/auth/login", post(users::login))
@@ -139,6 +164,7 @@ async fn main() {
             axum::routing::delete(platform::delete_knowledge),
         )
         .route("/knowledge/:id/reindex", post(platform::reindex_knowledge))
+        .route("/knowledge/:id/chunks", get(platform::chunks))
         .route("/tools/preview", post(platform::tool_preview))
         .route("/tools", post(platform::request_tool))
         .route("/approvals", get(platform::approvals))
@@ -171,17 +197,42 @@ async fn main() {
         .layer(cors)
         .with_state(state);
 
-    let address = env::var("API_BIND").unwrap_or_else(|_| "0.0.0.0:8080".into());
+    let address = env::var("API_BIND").unwrap_or_else(|_| {
+        format!(
+            "0.0.0.0:{}",
+            env::var("PORT").unwrap_or_else(|_| "8080".into())
+        )
+    });
     let listener = tokio::net::TcpListener::bind(&address).await.unwrap();
 
-    println!("Server running on {address}");
+    tracing::info!(address=%address,"Server listening");
 
     axum::serve(
         listener,
         app.into_make_service_with_connect_info::<SocketAddr>(),
     )
+    .with_graceful_shutdown(shutdown_signal())
     .await
     .unwrap();
+}
+async fn shutdown_signal() {
+    #[cfg(unix)]
+    {
+        let mut terminate =
+            tokio::signal::unix::signal(tokio::signal::unix::SignalKind::terminate())
+                .expect("Signal handler");
+        tokio::select! {_ = tokio::signal::ctrl_c()=>{},_ = terminate.recv()=>{}}
+    }
+    #[cfg(not(unix))]
+    {
+        let _ = tokio::signal::ctrl_c().await;
+    }
+    tracing::info!("Graceful shutdown requested");
+}
+async fn release_info() -> axum::Json<serde_json::Value> {
+    axum::Json(
+        serde_json::json!({"stage":"Stage 1 testing beta","commercial":false,"ai_mode":"deterministic extractive","scheduled_workflows":false,"synthetic_emails_required":env::var("BETA_MODE").as_deref()==Ok("true")}),
+    )
 }
 
 async fn health_check(State(s): State<AppState>) -> impl IntoResponse {
@@ -204,8 +255,8 @@ async fn api_contract() -> impl IntoResponse {
 }
 
 async fn rate_limit(State(s): State<AppState>, request: Request, next: Next) -> Response {
-    let cookie_auth = request.headers().contains_key("cookie")
-        && !request.headers().contains_key("authorization");
+    let cookie_auth =
+        request.headers().contains_key("cookie") || request.headers().contains_key("origin");
     if cookie_auth
         && !matches!(
             *request.method(),

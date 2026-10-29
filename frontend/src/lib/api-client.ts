@@ -40,11 +40,17 @@ export async function apiFetch<T>(
     ...options.headers,
   };
 
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    ...options,
-    credentials: "include",
-    headers,
-  });
+  let response: Response;
+  try {
+    response = await fetch(`${API_BASE_URL}${path}`, {
+      ...options,
+      credentials: "include",
+      headers,
+    });
+  } catch (error) {
+    if (options.signal?.aborted) throw error;
+    throw new ApiError(0, "Cannot reach the support service. Check your connection and refresh the page before trying again.");
+  }
 
   if (!response.ok) {
     const raw = await response.text();

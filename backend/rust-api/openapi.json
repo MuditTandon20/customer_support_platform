@@ -255,6 +255,117 @@
         }
       }
     },
+    "/ready": {
+      "get": {
+        "summary": "GET /ready",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Success; see API guide for response semantics"
+          },
+          "400": {
+            "description": "Validation/policy failure"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Role or origin denied"
+          },
+          "404": {
+            "description": "Absent or inaccessible resource; tenant existence not disclosed"
+          },
+          "429": {
+            "description": "Rate limit reached"
+          }
+        }
+      }
+    },
+    "/live": {
+      "get": {
+        "summary": "GET /live",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Success; see API guide for response semantics"
+          },
+          "400": {
+            "description": "Validation/policy failure"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Role or origin denied"
+          },
+          "404": {
+            "description": "Absent or inaccessible resource; tenant existence not disclosed"
+          },
+          "429": {
+            "description": "Rate limit reached"
+          }
+        }
+      }
+    },
+    "/release": {
+      "get": {
+        "summary": "GET /release",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Success; see API guide for response semantics"
+          },
+          "400": {
+            "description": "Validation/policy failure"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Role or origin denied"
+          },
+          "404": {
+            "description": "Absent or inaccessible resource; tenant existence not disclosed"
+          },
+          "429": {
+            "description": "Rate limit reached"
+          }
+        }
+      }
+    },
+    "/ai/activity": {
+      "get": {
+        "summary": "GET /ai/activity",
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "sessionCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API guide for response semantics"
+          },
+          "400": {
+            "description": "Validation/policy failure"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Role or origin denied"
+          },
+          "404": {
+            "description": "Absent or inaccessible resource; tenant existence not disclosed"
+          },
+          "429": {
+            "description": "Rate limit reached"
+          }
+        }
+      }
+    },
     "/openapi.json": {
       "get": {
         "summary": "GET /openapi.json",
@@ -1313,6 +1424,50 @@
     "/knowledge/{id}/reindex": {
       "post": {
         "summary": "POST /knowledge/{id}/reindex",
+        "security": [
+          {
+            "bearer": []
+          },
+          {
+            "sessionCookie": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success; see API guide for response semantics"
+          },
+          "400": {
+            "description": "Validation/policy failure"
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Role or origin denied"
+          },
+          "404": {
+            "description": "Absent or inaccessible resource; tenant existence not disclosed"
+          },
+          "429": {
+            "description": "Rate limit reached"
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ]
+      }
+    },
+    "/knowledge/{id}/chunks": {
+      "get": {
+        "summary": "GET /knowledge/{id}/chunks",
         "security": [
           {
             "bearer": []

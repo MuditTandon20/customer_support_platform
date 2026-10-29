@@ -17,7 +17,7 @@ paths={}
 for path,body in re.findall(r'\.route\(\s*"([^"]+)"\s*,(.*?)\)\s*(?=\.route|\.layer)',source,re.S):
     normalized=re.sub(r':(\w+)',r'{\1}',path)
     for method in re.findall(r'\b(get|post|patch|delete)\(',body):
-        public=path.startswith(('/auth/','/public/')) or path in ['/health','/openapi.json']
+        public=path.startswith(('/auth/','/public/')) or path in ['/health','/ready','/live','/release','/openapi.json']
         operation={'summary':f'{method.upper()} {normalized}','security':[] if public else [{'bearer':[]},{'sessionCookie':[]}],'responses':{'200':{'description':'Success; see API guide for response semantics'},'400':{'description':'Validation/policy failure'},'401':{'description':'Authentication required'},'403':{'description':'Role or origin denied'},'404':{'description':'Absent or inaccessible resource; tenant existence not disclosed'},'429':{'description':'Rate limit reached'}}}
         params=[{'name':p,'in':'path','required':True,'schema':{'type':'string','format':'uuid'} if p=='id' else {'type':'string'}} for p in re.findall(r'{(\w+)}',normalized)]
         if params:operation['parameters']=params

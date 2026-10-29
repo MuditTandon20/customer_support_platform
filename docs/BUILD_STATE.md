@@ -1,6 +1,10 @@
 # Build state and continuation
 
-Date: 2026-10-29. Repository: Customer Service Automation. User requested implementation and improvements based on AI_Support_Full_Build_Package.zip. The PRD and master prompt were read fully. No subagents, remote pushes, external messages, paid calls or production deployments were used.
+Date: 2026-10-29. Repository: Customer Service Automation. User requested implementation and improvements based on AI_Support_Full_Build_Package.zip. The PRD and master prompt were read fully. No subagents, external messages, paid calls or production deployments were used. The later Stage 1 request explicitly authorizes a dedicated testing-branch commit and push.
+
+## Current Stage 1 evidence
+
+The historical counts below describe the earlier integrated build. Current results: 4 Rust tests, 17 Python/config/contract tests, 11 existing API suites, 7 Stage 1 API suites and 7 browser tests passed. The final production build, lint and typecheck pass. Read [STAGE1_RELEASE_REPORT.md](STAGE1_RELEASE_REPORT.md) for measured performance, security findings, fresh migration/restart and outage evidence, screenshots and explicit infrastructure limitations. No cloud deployment was performed.
 
 ## Delivered
 
@@ -8,13 +12,13 @@ Retained the Rust/Axum + Postgres + Python/FastAPI + Next architecture, legacy t
 
 Main files: backend/rust-api/src/{auth,error,policy,main,outbox}.rs; handlers/{users,tickets,platform,identity,sandbox}.rs; backend/rust-api/migrations/20261029*; backend/ai-copilot/app/local_engine.py and routers; frontend/src/components; frontend/src/app/workspace and customer/auth routes; scripts; tests; compose.yaml; compose.events.yaml; docs.
 
-Existing uncommitted work was present before this build. Do not reset the repository or delete the user's PDF/documentation generator. No commits were created. The baseline audit records the initial state.
+Existing uncommitted work was present before this build. Do not reset the repository or delete the user's PDF/documentation generator. Local work was preserved in baseline commit 6caa575 and an external backup before Stage 1 edits. The baseline audit records the initial state.
 
 ## Verified state
 
 All 4 Rust unit tests, 13 Python/contract/retrieval tests, 11 HTTP suites (also repeated against a fresh database), 3 browser tests and principal accessibility/mobile checks pass. Frontend lint/typecheck/production build and npm audit pass. Compose configurations parse. See verification.md for exact commands and measured evidence.
 
-Dependency upgrades: Next 16.4.3, SQLx 0.8.6, Argon2 0.6, jsonwebtoken 10.4, compatible Rust dependency refresh, isolated Python requirements.lock. Synthetic legacy Argon2 hashes and old database migrations remain compatible. Three transitive Rust advisories remain; see security.md. Do not claim clean security or production readiness.
+Dependency upgrades: Next 16.4.3, SQLx 0.9.0, Argon2 0.6, jsonwebtoken 10.4, compatible Rust dependency refresh, isolated Python requirements.lock. Synthetic legacy Argon2 hashes and old database migrations remain compatible. Three transitive Rust advisories remain; see security.md. Do not claim clean security or production readiness.
 
 ## Running local preview at handoff
 
@@ -22,8 +26,8 @@ Dependency upgrades: Next 16.4.3, SQLx 0.8.6, Argon2 0.6, jsonwebtoken 10.4, com
 - Rust API/readiness: http://localhost:18080/health
 - API inventory: http://localhost:18080/openapi.json
 - Internal Python: 127.0.0.1:18001 (service-token required for copilot routes)
-- Disposable PostgreSQL: 127.0.0.1:55432, unique temp directory; no existing database was reset
-- Demo administrator: `demo-admin-75b737@example.test`; password `Demo-only-password-2026!`. This is synthetic local-only data. Seeding again creates a different explicitly labeled organization.
+- Disposable PostgreSQL: 127.0.0.1:55433, unique temp directory; no existing database was reset
+- Demo administrator: `demo-admin-04ba83@example.test`; password `Demo-only-password-2026!`. This is synthetic local-only data. Seeding again creates a different explicitly labeled organization.
 
 The native preview uses test ports and disposable storage. Default documented Docker/native setup uses web 3000/API 8080/AI 8001. Frontend/.env.local now sets the server-only API_PROXY_URL to http://127.0.0.1:18080 for the running preview, preserving other values. The obsolete public API variable is no longer read. No global Python packages were changed; backend/ai-copilot/.venv contains the verified Python environment.
 
@@ -33,9 +37,9 @@ Follow requirements-traceability.md. Major missing work is implementation, not o
 
 1. Production mail/provider adapters, signature-verified webhooks, retries/DLQ, external delivery provenance, scoped integrations and secret lifecycle. Keep sandbox clearly separate.
 2. Real billing abstraction/checkout/subscriptions/invoices/webhook entitlements and usage metering; never enable charges without explicit authorization.
-3. Knowledge file/URL queue, chunking/embedding/index lifecycle, richer document ACLs, multilingual model generation with citation validation, budgets/latency/token accounting and reproducible model evals.
+3. Knowledge file/URL queue, semantic embedding/index lifecycle, richer document ACLs, multilingual model generation with citation validation, budgets/latency/token accounting and reproducible model evals.
 4. Attachments/object storage/malware scanning, mentions/canned replies/bulk operations, actual SLA and collision presence, full customer identity/membership features.
-5. Workflow event triggers, durable timers, approval continuation, persisted failed runs, bounded retries and minimap. Current server graph validation and transactional local execution are functional.
+5. Durable timers, approval continuation, bounded retries and minimap. Stage 1 adds real event triggers, persisted failed runs and transactional savepoint rollback.
 6. Kafka consumer offsets/recovery; current local notification projection is not a broker consumer. Validate broker publishing with actual Kafka.
 7. Production telemetry/alerting, retention/export/deletion, backups and independent restore drill, distributed abuse protection, full accessibility/security review and load baseline. Address remaining dependency advisories.
 8. Complete REST response schemas, scoped API keys, external webhooks/subscriptions, SDKs and versioned endpoint aliases.
@@ -44,4 +48,4 @@ Follow requirements-traceability.md. Major missing work is implementation, not o
 
 Start Docker Desktop's Linux engine, run scripts/init-env.ps1 and docker compose up --build. Validate image builds and end-to-end flows on PostgreSQL 17/Linux, including Python Linux-only optional dependencies. Optional Kafka override: docker compose -f compose.yaml -f compose.events.yaml --profile events up --build. Do not remove volumes or alter production data. Then choose the remaining provider/durability work in dependency order, retaining existing contracts and adding focused negative tests.
 
-Routine local edits/tests are authorized. Production deployment, remote push, paid calls, irreversible schema/data changes and live charges are not authorized by this session.
+The Stage 1 request authorizes local edits/tests and commit/push of release/stage1-testing only. Production deployment, paid calls, destructive data changes and live charges remain unauthorized.

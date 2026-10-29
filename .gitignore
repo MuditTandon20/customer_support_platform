@@ -49,6 +49,7 @@ Thumbs.db
 tests/test-results/
 tests/playwright-report/
 *.tsbuildinfo
+docs/stage1-local-runtime.json
 
 # Debug logs
 npm-debug.log*

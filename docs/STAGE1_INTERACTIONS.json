@@ -1,0 +1,18 @@
+{
+  "environment": "Single local synthetic mobile interaction sample; not field INP",
+  "samples": [
+    {
+      "name": "pointerdown",
+      "duration": 16
+    },
+    {
+      "name": "pointerup",
+      "duration": 16
+    },
+    {
+      "name": "click",
+      "duration": 16
+    }
+  ],
+  "cls": 0
+}

@@ -186,6 +186,60 @@ export function WorkflowStudio() {
           <Pill tone="violet">{id ? "Saved draft" : "Unsaved draft"}</Pill>
         </div>
       </State>
+      <div
+        className="studio-templates"
+        role="group"
+        aria-label="Workflow templates"
+      >
+        {[
+          ["Prioritize new tickets", "ticket.created", "priority:high"],
+          ["Reopen customer replies", "customer.replied", "status:open"],
+          ["Request satisfaction", "ticket.resolved", "csat:request"],
+          ["Escalate missing evidence", "ai.abstained", "approval"],
+        ].map(([label, event, action]) => (
+          <button
+            key={event}
+            disabled={!admin}
+            onClick={() => {
+              setId("");
+              setName(label);
+              setNodes([
+                {
+                  id: "start",
+                  kind: "trigger",
+                  value: event,
+                  next: "act",
+                  otherwise: null,
+                },
+                {
+                  id: "act",
+                  kind: action === "approval" ? "approval" : "action",
+                  value:
+                    action === "approval"
+                      ? "Insufficient evidence; human review"
+                      : action,
+                  next: null,
+                  otherwise: null,
+                },
+              ]);
+              setSelected("start");
+            }}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+      <nav className="workflow-map" aria-label="Workflow node map">
+        {nodes.map((n) => (
+          <button
+            key={n.id}
+            onClick={() => setSelected(n.id)}
+            aria-pressed={selected === n.id}
+          >
+            {n.id} ? {n.kind}
+          </button>
+        ))}
+      </nav>
       <div className="studio-layout">
         <section className="workflow-canvas" aria-label="Workflow graph">
           <div className="canvas-caption">
@@ -305,9 +359,11 @@ export function WorkflowStudio() {
                 />
               </label>
               <p className="muted">
-                Actions: label:reviewed or status:open. Conditions compare
-                ticket priority. Approval pauses for a manual handoff; it does
-                not auto-resume.
+                Actions: label:reviewed, status:open, priority:high,
+                notify:agent or csat:request. Triggers: manual, ticket.created,
+                customer.replied, ticket.resolved or ai.abstained. Conditions
+                compare ticket priority. Approval pauses for a manual handoff;
+                it does not auto-resume.
               </p>
               <label>
                 Next node
@@ -466,6 +522,11 @@ export function WorkflowStudio() {
           </form>
         </section>
       )}
+      <p className="safe-note">
+        Event workflows run inside the triggering request and persist their
+        result. Free hosts may sleep. Scheduled delays and automatic approval
+        continuation are deliberately unavailable.
+      </p>
       <section className="panel simulation-bar">
         <div>
           <h2>See it before you run it.</h2>

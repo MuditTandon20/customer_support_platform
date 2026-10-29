@@ -4,6 +4,10 @@ An evidence-first customer support workspace built on the existing Rust/Axum API
 
 The full supplied PRD is **not entirely implemented**. Read [requirements and verification](docs/requirements-traceability.md) for exact status, and [build state](docs/BUILD_STATE.md) for remaining work. External delivery/payment providers are not live. No production-ready claim is made.
 
+## Stage 1 testing release
+
+Prepared for a synthetic-data, non-commercial free-tier test. **Not deployed.** See the [release evidence and limitations](docs/STAGE1_RELEASE_REPORT.md), [hosting decision](docs/STAGE1_HOSTING_DECISION.md), and [reproducible setup/future deployment runbook](docs/STAGE1_DEPLOYMENT_RUNBOOK.md). Branch: `release/stage1-testing`. Automatic deployments are disabled. Docker runtime and hosted cold starts remain unverified.
+
 ## Run locally
 
 With Docker Desktop's Linux engine running, from the project root:

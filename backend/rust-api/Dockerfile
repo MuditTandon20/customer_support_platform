@@ -1,4 +1,6 @@
-FROM rust:1.90-bookworm AS build
+FROM rust:1.97-bookworm AS build
+RUN apt-get update && apt-get install -y --no-install-recommends cmake pkg-config libssl-dev && rm -rf /var/lib/apt/lists/*
+ENV AWS_LC_SYS_NO_ASM=1
 WORKDIR /app
 COPY Cargo.toml Cargo.lock ./
 COPY src ./src

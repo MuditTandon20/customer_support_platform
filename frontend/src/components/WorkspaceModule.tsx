@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useDeferredValue } from "react";
 import Link from "next/link";
 import {
   write,
@@ -17,7 +17,11 @@ import {
 import { useUser } from "./WorkspaceShell";
 import { useResource, Heading, State, Notice, Pill, date } from "./WorkspaceUI";
 import EmailSandbox from "./EmailSandbox";
-import { WorkflowStudio } from "./WorkflowStudio";
+import dynamic from "next/dynamic";
+const WorkflowStudio = dynamic(
+  () => import("./WorkflowStudio").then((m) => m.WorkflowStudio),
+  { loading: () => <p aria-busy="true">Opening workflow studio...</p> },
+);
 
 export function TicketTable({ tickets }: { tickets: InboxTicket[] }) {
   return (
@@ -253,23 +257,15 @@ function ActivityChart({ data }: { data: Analytics["daily"] }) {
   );
 }
 function Inbox() {
-  const r = useResource<InboxTicket[]>("/inbox");
   const [q, setQ] = useState(""),
-    [status, setStatus] = useState("all");
+    [status, setStatus] = useState("all"),
+    [page, setPage] = useState(0);
+  const deferredQ = useDeferredValue(q);
+  const r = useResource<InboxTicket[]>(
+    `/inbox?limit=25&offset=${page * 25}&status=${status}&q=${encodeURIComponent(deferredQ)}`,
+  );
   const user = useUser();
-  const filtered =
-    r.data?.filter(
-      (t) =>
-        (status === "all" ||
-          (status === "unassigned"
-            ? !t.assigned_to
-            : status === "active"
-              ? !["closed", "solved"].includes(t.status)
-              : t.status === status)) &&
-        `${t.subject} ${t.customer_name} ${t.customer_email} ${t.labels.join(" ")}`
-          .toLowerCase()
-          .includes(q.toLowerCase()),
-    ) || [];
+  const filtered = r.data || [];
   return (
     <>
       <Heading
@@ -295,7 +291,10 @@ function Inbox() {
               <button
                 key={s}
                 className={status === s ? "selected" : ""}
-                onClick={() => setStatus(s)}
+                onClick={() => {
+                  setStatus(s);
+                  setPage(0);
+                }}
               >
                 {s === "all" ? "All conversations" : s}
               </button>
@@ -305,7 +304,10 @@ function Inbox() {
             <span className="sr-only">Search conversations</span>
             <input
               value={q}
-              onChange={(e) => setQ(e.target.value)}
+              onChange={(e) => {
+                setQ(e.target.value);
+                setPage(0);
+              }}
               placeholder="Search subjects, people, labels…"
             />
           </label>
@@ -527,7 +529,7 @@ function Approvals() {
       });
       setNotice(
         approve
-          ? `Approval recorded. Execution ${result.state}: provider adapter is not connected.`
+          ? result.state==="executed"?"Human review recorded. Continue support manually; the workflow does not automatically resume.":`Approval recorded. Execution ${result.state}: provider adapter is not connected.`
           : "Request rejected.",
       );
       r.refresh();
@@ -739,7 +741,7 @@ function Customers() {
       <Heading
         eyebrow="THE PEOPLE BEHIND THE TICKETS"
         title="A little more context. A better conversation."
-        description="Customer profiles from the 250 most recent conversations in this workspace."
+        description="Customer profiles from the 50 most recent conversations. Use inbox search to find older requests."
       />
       <label className="search-field">
         <span className="sr-only">Find a customer</span>
@@ -1099,6 +1101,72 @@ function Audit() {
     </>
   );
 }
+function AiActivity() {
+  const r =
+    useResource<
+      {
+        id: string;
+        ticket_id: string;
+        operation: string;
+        mode: string;
+        status: string;
+        latency_ms: number;
+        created_at: string;
+      }[]
+    >("/ai/activity");
+  return (
+    <>
+      <Heading
+        eyebrow="ASSISTANCE YOU CAN INSPECT"
+        title="Every suggestion leaves a trace."
+        description="Deterministic extraction and rules, never presented as generative AI. Manual support remains available if analysis fails."
+      />
+      <State loading={r.loading} error={r.error} empty={!r.data?.length}>
+        {r.data?.length ? (
+          <section
+            className="panel table-scroll"
+            tabIndex={0}
+            aria-label="AI activity table"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th>Operation</th>
+                  <th>Mode</th>
+                  <th>Status</th>
+                  <th>Latency</th>
+                  <th>Conversation</th>
+                </tr>
+              </thead>
+              <tbody>
+                {r.data.map((row) => (
+                  <tr key={row.id}>
+                    <td>{row.operation}</td>
+                    <td>{row.mode}</td>
+                    <td>
+                      <Pill>{row.status}</Pill>
+                    </td>
+                    <td>{row.latency_ms} ms</td>
+                    <td>
+                      <Link
+                        className="text-link"
+                        href={`/tickets/${row.ticket_id}`}
+                      >
+                        Open conversation
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </section>
+        ) : (
+          <>Analyze a conversation to see its real activity records.</>
+        )}
+      </State>
+    </>
+  );
+}
 export default function WorkspaceModule({ module }: { module: string }) {
   const user = useUser();
   if (user?.role === "customer" && !["inbox", "knowledge"].includes(module))
@@ -1114,6 +1182,8 @@ export default function WorkspaceModule({ module }: { module: string }) {
       return <WorkflowStudio />;
     case "approvals":
       return <Approvals />;
+    case "activity":
+      return <AiActivity />;
     case "analytics":
       return <AnalyticsPage />;
     case "customers":

@@ -1,0 +1,14 @@
+{
+  "environment": "Local Windows, production Next.js, Playwright Chromium, Lighthouse 12.6.1 mobile simulated throttling; not hosted",
+  "url": "http://localhost:13000",
+  "scores": {
+    "performance": 69,
+    "accessibility": 100
+  },
+  "lcp_ms": 3079.7631,
+  "cls": 0,
+  "tbt_ms": 1181.5,
+  "inp": "Not measured by a navigation Lighthouse run; no field p75 claimed",
+  "warnings": [],
+  "runtimeError": null
+}

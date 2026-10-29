@@ -9,14 +9,14 @@ export default function Home() {
   return (
     <main className="workspace marketing">
       <nav className="marketing-nav">
-        <Link className="brand" href="/">
+        <Link prefetch={false} className="brand" href="/">
           <span className="brand-mark">a</span>aster
           <span className="brand-caption">SUPPORT OS</span>
         </Link>
         <div>
-          <Link href="#principles">The approach</Link>
-          <Link href="/login">Sign in</Link>
-          <Link className="button primary" href="/signup">
+          <Link prefetch={false} href="#principles">The approach</Link>
+          <Link prefetch={false} href="/login">Sign in</Link>
+          <Link prefetch={false} className="button primary" href="/signup">
             Create workspace ↗
           </Link>
         </div>
@@ -38,21 +38,27 @@ export default function Home() {
           together. Keep your team in charge.
         </p>
         <div className="hero-actions">
-          <Link className="button primary" href="/signup">
+          <Link prefetch={false} className="button primary" href="/signup">
             Build your workspace ↗
           </Link>
-          <Link className="button secondary" href="/login">
+          <Link prefetch={false} className="button secondary" href="/login">
             Open your console →
           </Link>
         </div>
         <small>Local-first setup · No payment provider enabled</small>
-        <div className="hero-product">
+        <div className="hero-product depth-hero">
           <div className="preview-sidebar">
             <span className="brand-mark">a</span>
             <span>Overview</span>
             <span className="selected">Conversations</span>
             <span>Knowledge</span>
             <span>Workflows</span>
+          </div>
+          <div className="automation-float float-evidence" aria-hidden="true">
+            Evidence ? review
+          </div>
+          <div className="automation-float float-control" aria-hidden="true">
+            Human control
           </div>
           <div className="preview-main">
             <p className="eyebrow">A CALMER WAY TO HELP</p>
@@ -113,7 +119,7 @@ export default function Home() {
       </section>
       <footer className="marketing-footer">
         <span>aster · Support with a little more thought.</span>
-        <Link href="/signup">Start your workspace ↗</Link>
+        <Link prefetch={false} href="/signup">Start your workspace ↗</Link>
       </footer>
     </main>
   );

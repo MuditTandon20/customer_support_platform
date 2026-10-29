@@ -50,7 +50,17 @@ pub fn validate(d: &Definition) -> AppResult<()> {
     }
     for n in &d.nodes {
         match n.kind.as_str() {
-            "trigger" | "approval" | "fallback" => {}
+            "trigger"
+                if [
+                    "",
+                    "manual",
+                    "ticket.created",
+                    "customer.replied",
+                    "ticket.resolved",
+                    "ai.abstained",
+                ]
+                .contains(&n.value.as_str()) => {}
+            "approval" | "fallback" => {}
             "condition"
                 if ["low", "normal", "high", "urgent"].contains(&n.value.as_str())
                     && n.next.is_some()
@@ -63,6 +73,11 @@ pub fn validate(d: &Definition) -> AppResult<()> {
                 if n.value.strip_prefix("status:").is_some_and(|v| {
                     ["open", "pending", "on_hold", "solved", "closed"].contains(&v)
                 }) => {}
+            "action"
+                if n.value
+                    .strip_prefix("priority:")
+                    .is_some_and(|v| ["low", "normal", "high", "urgent"].contains(&v)) => {}
+            "action" if ["notify:agent", "csat:request"].contains(&n.value.as_str()) => {}
             "delay" => return Err(bad("Durable delays are not enabled; use an approval pause")),
             _ => return Err(bad("Unsupported node or invalid value")),
         }

@@ -1,0 +1,38 @@
+# Preparation only. Do not sync this Blueprint without later deployment authorization.
+previews:
+  generation: "off"
+services:
+  - type: web
+    name: aster-stage1-testing
+    runtime: docker
+    plan: free
+    region: frankfurt
+    branch: release/stage1-testing
+    autoDeployTrigger: "off"
+    dockerContext: .
+    dockerfilePath: ./deploy/Dockerfile.stage1
+    healthCheckPath: /ready
+    maxShutdownDelaySeconds: 30
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: AI_SERVICE_TOKEN
+        sync: false
+      - key: FRONTEND_ORIGIN
+        sync: false
+      - key: COOKIE_SECURE
+        value: "true"
+      - key: BETA_MODE
+        value: "true"
+      - key: MAX_ORGANIZATIONS
+        value: "10"
+      - key: ENABLE_SANDBOX
+        value: "false"
+      - key: LLM_ENABLED
+        value: "false"
+      - key: BACKGROUND_PROCESSING
+        value: "false"
+      - key: DB_MAX_CONNECTIONS
+        value: "4"

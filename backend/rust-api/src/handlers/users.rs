@@ -22,6 +22,10 @@ pub async fn signup(
     }
     let _legacy_requested_role = p.role; // Organization creators are always administrators.
     let email = p.email.trim().to_lowercase();
+    let beta = std::env::var("BETA_MODE").as_deref() == Ok("true");
+    if beta && !email.ends_with(".test") {
+        return Err(AppError::BadRequest("This public beta accepts synthetic .test email addresses only. Do not enter real customer data.".into()));
+    }
     let name = p.organization_name.as_deref().unwrap_or("").trim();
     if !email.contains('@') || email.len() > 254 || p.password.len() < 12 || p.password.len() > 256
     {
@@ -40,6 +44,21 @@ pub async fn signup(
     }
     let hash = auth::hash_password(&p.password)?;
     let mut tx = s.db.begin().await?;
+    if beta {
+        sqlx::query("SELECT pg_advisory_xact_lock(73192026)")
+            .execute(&mut *tx)
+            .await?;
+        let max: i64 = std::env::var("MAX_ORGANIZATIONS")
+            .ok()
+            .and_then(|v| v.parse().ok())
+            .unwrap_or(10);
+        let count: i64 = sqlx::query_scalar("SELECT count(*) FROM organizations")
+            .fetch_one(&mut *tx)
+            .await?;
+        if count >= max {
+            return Err(AppError::BadRequest("The free testing workspace limit has been reached. Try an existing test account or contact the operator.".into()));
+        }
+    }
     let org_id: Uuid =
         sqlx::query_scalar("INSERT INTO organizations(name,slug) VALUES($1,$2) RETURNING id")
             .bind(name)

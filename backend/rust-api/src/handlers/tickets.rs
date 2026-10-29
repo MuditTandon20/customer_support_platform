@@ -32,6 +32,22 @@ pub async fn create_ticket(
     // NEVER from the request body — this is what makes cross-org
     // ticket creation impossible even if a malicious client tries it.
     let mut tx = state.db.begin().await?;
+    sqlx::query("SELECT id FROM organizations WHERE id=$1 FOR NO KEY UPDATE")
+        .bind(auth_user.org_id)
+        .execute(&mut *tx)
+        .await?;
+    if std::env::var("BETA_MODE").as_deref() == Ok("true") {
+        let count: i64 =
+            sqlx::query_scalar("SELECT count(*) FROM tickets WHERE organization_id=$1")
+                .bind(auth_user.org_id)
+                .fetch_one(&mut *tx)
+                .await?;
+        if count >= 100 || payload.description.as_ref().is_some_and(|v| v.len() > 5000) {
+            return Err(AppError::BadRequest(
+                "Free beta limit: 100 tickets per workspace and 5000 bytes per description".into(),
+            ));
+        }
+    }
     let ticket = sqlx::query_as::<_, Ticket>(r#"INSERT INTO tickets (organization_id, created_by, subject, description)
            VALUES ($1, $2, $3, $4)
            RETURNING id, organization_id, created_by, assigned_to, subject, description, status, created_at, updated_at, priority, labels, channel"#)
@@ -57,7 +73,14 @@ pub async fn create_ticket(
         serde_json::json!({"subject":ticket.subject}),
     )
     .await?;
+    crate::workflow_engine::dispatch(&mut tx, &auth_user, "ticket.created", ticket.id).await?;
     tx.commit().await?;
+    let ticket =
+        sqlx::query_as::<_, Ticket>("SELECT * FROM tickets WHERE id=$1 AND organization_id=$2")
+            .bind(ticket.id)
+            .bind(auth_user.org_id)
+            .fetch_one(&state.db)
+            .await?;
     Ok(Json(ticket))
 }
 
@@ -137,6 +160,10 @@ pub async fn update_ticket(
     // This is the core of the outbox pattern: the ticket update and
     // the outbox event rows are committed together, atomically.
     let mut tx = state.db.begin().await?;
+    sqlx::query("SELECT id FROM organizations WHERE id=$1 FOR NO KEY UPDATE")
+        .bind(auth_user.org_id)
+        .execute(&mut *tx)
+        .await?;
 
     // Fetch the CURRENT state first
     let existing = sqlx::query_as::<_, Ticket>(r#"SELECT id, organization_id, created_by, assigned_to, subject, description, status, created_at, updated_at, priority, labels, channel
@@ -229,6 +256,9 @@ pub async fn update_ticket(
     )
     .await?;
     // Persist all changes atomically
+    if updated.status == crate::models::TicketStatus::Solved && existing.status != updated.status {
+        crate::workflow_engine::dispatch(&mut tx, &auth_user, "ticket.resolved", ticket_id).await?;
+    }
     tx.commit().await?;
 
     Ok(Json(updated))
@@ -276,30 +306,31 @@ pub async fn get_ticket_summary(
     // but this route is agent/admin-only so no ownership check needed here.
 
     // Step 2: call ai-copilot — Rust is the ONLY thing that ever talks to it directly
-    let copilot_url = format!("{}/copilot/summarize", state.ai_copilot_url);
-
-    let response = state
-        .http_client
-        .post(&copilot_url)
-        .header(
-            "X-Service-Token",
-            std::env::var("AI_SERVICE_TOKEN").unwrap_or_default(),
-        )
-        .json(&CopilotSummarizeRequest {
-            subject: ticket.subject.clone(),
-            content: ticket.description.clone(),
-        })
-        .send()
-        .await?;
-
-    if !response.status().is_success() {
-        return Err(AppError::Internal(
-            "AI copilot returned an error".to_string(),
-        ));
-    }
-
-    let summary: TicketSummaryResponse = response.json().await?;
-
+    let content = ticket.description.clone().unwrap_or_default();
+    let points = content
+        .lines()
+        .filter(|v| !v.trim().is_empty())
+        .take(4)
+        .map(|v| v.chars().take(300).collect::<String>())
+        .collect::<Vec<_>>();
+    let fallback = TicketSummaryResponse {
+        ticket_id: Some(ticket_id.to_string()),
+        summary: format!("{}: {}", ticket.subject, points.join(" ")),
+        key_points: points,
+        detected_sentiment: None,
+    };
+    let summary = crate::ai_activity::analyze(
+        &state,
+        &auth_user,
+        ticket_id,
+        "summarize",
+        &CopilotSummarizeRequest {
+            subject: ticket.subject,
+            content: ticket.description,
+        },
+        fallback,
+    )
+    .await?;
     Ok(Json(summary))
 }
 
@@ -341,30 +372,43 @@ pub async fn get_ticket_category(
     .await?
     .ok_or_else(|| AppError::NotFound("Ticket not found".to_string()))?;
 
-    let copilot_url = format!("{}/copilot/categorize", state.ai_copilot_url);
-
-    let response = state
-        .http_client
-        .post(&copilot_url)
-        .header(
-            "X-Service-Token",
-            std::env::var("AI_SERVICE_TOKEN").unwrap_or_default(),
-        )
-        .json(&CopilotCategorizeRequest {
-            subject: ticket.subject.clone(),
-            content: ticket.description.clone().unwrap_or_default(),
-        })
-        .send()
-        .await?;
-
-    if !response.status().is_success() {
-        return Err(AppError::Internal(
-            "AI copilot returned an error".to_string(),
-        ));
-    }
-
-    let category: TicketCategoryResponse = response.json().await?;
-
+    let text = format!(
+        "{} {}",
+        ticket.subject,
+        ticket.description.as_deref().unwrap_or("")
+    )
+    .to_lowercase();
+    let category = if ["invoice", "refund", "payment", "billing"]
+        .iter()
+        .any(|word| text.contains(word))
+    {
+        "Billing"
+    } else if ["login", "password", "account"]
+        .iter()
+        .any(|word| text.contains(word))
+    {
+        "Account"
+    } else if ["bug", "error", "outage"]
+        .iter()
+        .any(|word| text.contains(word))
+    {
+        "Technical"
+    } else {
+        "General"
+    };
+    let fallback=TicketCategoryResponse{ticket_id:Some(ticket_id.to_string()),category:category.into(),confidence:0.0,priority:"MEDIUM".into(),tags:vec![category.to_lowercase()],reasoning:Some("Deterministic local fallback; service unavailable. Uncalibrated keyword rule, human review required.".into())};
+    let category = crate::ai_activity::analyze(
+        &state,
+        &auth_user,
+        ticket_id,
+        "categorize",
+        &CopilotCategorizeRequest {
+            subject: ticket.subject,
+            content: ticket.description.unwrap_or_default(),
+        },
+        fallback,
+    )
+    .await?;
     Ok(Json(category))
 }
 

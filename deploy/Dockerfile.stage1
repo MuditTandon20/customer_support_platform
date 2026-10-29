@@ -1,0 +1,19 @@
+FROM rust:1.97-bookworm AS build
+WORKDIR /repo
+RUN apt-get update && apt-get install -y --no-install-recommends cmake pkg-config libssl-dev && rm -rf /var/lib/apt/lists/*
+COPY .cargo ./.cargo
+COPY backend/rust-api ./backend/rust-api
+RUN cargo build --manifest-path backend/rust-api/Cargo.toml --release --locked
+FROM python:3.12-slim-bookworm
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates libssl3 && rm -rf /var/lib/apt/lists/* && useradd -m app
+WORKDIR /app
+COPY backend/ai-copilot/requirements.txt backend/ai-copilot/requirements.lock ./
+RUN pip install --no-cache-dir -r requirements.txt
+COPY --from=build /repo/backend/rust-api/target/release/rust-api /usr/local/bin/rust-api
+COPY backend/ai-copilot/app ./app
+COPY deploy/run_services.py ./run_services.py
+USER app
+ENV PORT=10000 AI_COPILOT_URL=http://127.0.0.1:8001 BETA_MODE=true BACKGROUND_PROCESSING=false LLM_ENABLED=false ENABLE_SANDBOX=false DB_MAX_CONNECTIONS=4
+EXPOSE 10000
+HEALTHCHECK --interval=60s --timeout=15s --start-period=90s CMD python -c "import os,urllib.request; urllib.request.urlopen('http://127.0.0.1:'+os.getenv('PORT','10000')+'/ready')"
+CMD ["python", "run_services.py"]

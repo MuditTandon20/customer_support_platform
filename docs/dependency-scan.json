@@ -1,6 +1,6 @@
 {
   "source": "https://api.osv.dev/v1/querybatch",
-  "dependencies_checked": 340,
+  "dependencies_checked": 343,
   "python_scope": "Interpreter running this script; recursive project dependencies including uvicorn standard extras",
   "findings": [
     {

@@ -1,0 +1,77 @@
+{
+  "environment": "Local Windows, production Next.js, Playwright Chromium, Lighthouse 12.6.1 mobile simulated throttling; not hosted",
+  "url": "http://localhost:13000",
+  "scores": {
+    "performance": 81,
+    "accessibility": 100
+  },
+  "lcp_ms": 2633.384,
+  "cls": 0,
+  "tbt_ms": 635,
+  "inp": "Not measured by a navigation Lighthouse run; no field p75 claimed",
+  "bootup": [
+    {
+      "url": "http://localhost:13000/",
+      "total": 676.8200000000002,
+      "scripting": 14.039999999999997,
+      "scriptParseCompile": 7.2959999999999985
+    },
+    {
+      "url": "Unattributable",
+      "total": 495.60400000000016,
+      "scripting": 9.555999999999997,
+      "scriptParseCompile": 0
+    },
+    {
+      "url": "http://localhost:13000/_next/static/chunks/2e268anpfvdoc.js",
+      "total": 442.2800000000001,
+      "scripting": 385.8200000000001,
+      "scriptParseCompile": 19.352
+    },
+    {
+      "url": "http://localhost:13000/_next/static/chunks/3wbm-994r45kr.js",
+      "total": 301.3480000000002,
+      "scripting": 263.3440000000002,
+      "scriptParseCompile": 26.483999999999998
+    }
+  ],
+  "mainthread": [
+    {
+      "group": "scriptEvaluation",
+      "groupLabel": "Script Evaluation",
+      "duration": 703.4159999999988
+    },
+    {
+      "group": "styleLayout",
+      "groupLabel": "Style & Layout",
+      "duration": 597.0720000000001
+    },
+    {
+      "group": "other",
+      "groupLabel": "Other",
+      "duration": 568.8239999999997
+    },
+    {
+      "group": "scriptParseCompile",
+      "groupLabel": "Script Parsing & Compilation",
+      "duration": 68.608
+    },
+    {
+      "group": "parseHTML",
+      "groupLabel": "Parse HTML & CSS",
+      "duration": 16.451999999999998
+    },
+    {
+      "group": "paintCompositeRender",
+      "groupLabel": "Rendering",
+      "duration": 13.372
+    },
+    {
+      "group": "garbageCollection",
+      "groupLabel": "Garbage Collection",
+      "duration": 10.468
+    }
+  ],
+  "warnings": [],
+  "runtimeError": null
+}

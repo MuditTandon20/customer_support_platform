@@ -1,12 +1,17 @@
+#[cfg(feature = "kafka")]
 use rskafka::client::partition::{Compression, UnknownTopicHandling};
+#[cfg(feature = "kafka")]
 use rskafka::client::ClientBuilder;
+#[cfg(feature = "kafka")]
 use rskafka::record::Record;
 use sqlx::PgPool;
+#[cfg(feature = "kafka")]
 use std::collections::{BTreeMap, HashMap};
 use std::time::Duration;
 use uuid::Uuid;
 
 /// One row read out of the outbox_events table.
+#[cfg(feature = "kafka")]
 #[derive(sqlx::FromRow)]
 struct OutboxRow {
     id: Uuid,
@@ -17,6 +22,7 @@ struct OutboxRow {
 /// Maps our internal event_type string to a Kafka topic name.
 /// Centralizing this mapping here means adding a new event type later
 /// only requires one new match arm, not scattered logic everywhere.
+#[cfg(feature = "kafka")]
 fn topic_for_event(event_type: &str) -> &'static str {
     match event_type {
         "TicketStatusChanged" => "ticket.status_changed",
@@ -31,15 +37,15 @@ fn topic_for_event(event_type: &str) -> &'static str {
 /// This does not claim to be a Kafka consumer or replace Kafka offsets.
 pub async fn run_notification_projection(pool: PgPool) {
     loop {
-        if let Err(e) = project_notifications(&pool).await {
+        if let Err(e) = project_for_org(&pool, None).await {
             tracing::error!(error=%e,"Notification projection failed; retrying");
         }
         tokio::time::sleep(Duration::from_secs(2)).await;
     }
 }
-async fn project_notifications(pool: &PgPool) -> Result<(), sqlx::Error> {
+pub async fn project_for_org(pool: &PgPool, org: Option<Uuid>) -> Result<(), sqlx::Error> {
     let mut tx = pool.begin().await?;
-    let events:Vec<(Uuid,Uuid,Uuid,String)>=sqlx::query_as("SELECT e.id,e.organization_id,e.aggregate_id,e.event_type FROM outbox_events e WHERE NOT EXISTS(SELECT 1 FROM consumer_receipts r WHERE r.event_id=e.id AND r.consumer='notifications-v1') ORDER BY e.created_at LIMIT 50 FOR UPDATE OF e SKIP LOCKED").fetch_all(&mut *tx).await?;
+    let events:Vec<(Uuid,Uuid,Uuid,String)>=sqlx::query_as("SELECT e.id,e.organization_id,e.aggregate_id,e.event_type FROM outbox_events e WHERE ($1::uuid IS NULL OR e.organization_id=$1) AND NOT EXISTS(SELECT 1 FROM consumer_receipts r WHERE r.event_id=e.id AND r.consumer='notifications-v1') ORDER BY e.created_at LIMIT 50 FOR UPDATE OF e SKIP LOCKED").bind(org).fetch_all(&mut *tx).await?;
     for (event_id, org_id, resource, kind) in events {
         sqlx::query("INSERT INTO notifications(organization_id,event_id,resource_id,kind) VALUES($1,$2,$3,$4) ON CONFLICT(event_id) DO NOTHING").bind(org_id).bind(event_id).bind(resource).bind(kind).execute(&mut *tx).await?;
         sqlx::query("INSERT INTO consumer_receipts(consumer,event_id) VALUES('notifications-v1',$1) ON CONFLICT DO NOTHING").bind(event_id).execute(&mut *tx).await?;
@@ -54,6 +60,7 @@ async fn project_notifications(pool: &PgPool) -> Result<(), sqlx::Error> {
 ///
 /// This runs as a separate async task via tokio::spawn, alongside the
 /// Axum HTTP server — the two run concurrently, sharing the same DB pool.
+#[cfg(feature = "kafka")]
 pub async fn run_outbox_publisher(pool: PgPool, kafka_brokers: Vec<String>) {
     // Give Kafka a moment if the container just started.
     let client = loop {
@@ -89,6 +96,7 @@ pub async fn run_outbox_publisher(pool: PgPool, kafka_brokers: Vec<String>) {
     }
 }
 
+#[cfg(feature = "kafka")]
 async fn poll_and_publish(
     pool: &PgPool,
     client: &rskafka::client::Client,

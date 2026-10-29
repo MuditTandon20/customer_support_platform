@@ -13,6 +13,7 @@ export const navigation = [
   ["dashboard", "Overview", "◈"],
   ["inbox", "Inbox", "▤"],
   ["customers", "Customers", "◎"],
+  ["activity", "AI activity", "?"],
   ["knowledge", "Knowledge", "▧"],
   ["workflows", "Workflows", "⌘"],
   ["approvals", "Approvals", "◇"],

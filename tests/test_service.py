@@ -16,6 +16,13 @@ class InternalService(unittest.TestCase):
     def test_requires_service_auth(self):
         self.assertEqual(self.client.post('/copilot/summarize',json={'subject':'Test'}).status_code,401)
         self.assertEqual(self.client.get('/health').status_code,200)
+    def test_public_beta_cannot_enable_paid_model(self):
+        from unittest.mock import patch
+        from app.llm_client import LLMClient
+        with patch.dict(os.environ,{'BETA_MODE':'true','LLM_ENABLED':'true','OPENAI_API_KEY':'synthetic-not-a-real-provider-key'}):
+            client=LLMClient()
+            self.assertFalse(client.is_configured)
+            self.assertIsNone(client.client)
     def test_summary_and_classification(self):
         r=self.client.post('/copilot/summarize',headers=self.headers,json={'subject':'Login','content':'Reset failed.'})
         self.assertEqual(r.status_code,200)

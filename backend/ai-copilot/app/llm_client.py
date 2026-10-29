@@ -16,7 +16,7 @@ class LLMClient:
 
         # Check if a valid API key is present
         self.is_configured = bool(
-            os.getenv("LLM_ENABLED", "false").lower() == "true" and self.api_key and self.api_key not in ("your_api_key_here", "your-api-key-here", "sk-...", "")
+            os.getenv("BETA_MODE", "false").lower() != "true" and os.getenv("LLM_ENABLED", "false").lower() == "true" and self.api_key and self.api_key not in ("your_api_key_here", "your-api-key-here", "sk-...", "")
         )
 
         if self.is_configured:

@@ -96,3 +96,7 @@ if __name__ == "__main__":
     host = os.getenv("HOST", "0.0.0.0")
     port = int(os.getenv("PORT", "8001"))
     uvicorn.run("app.main:app", host=host, port=port, reload=True)
+
+@app.get("/ready", tags=["Health"])
+async def ready():
+    return {"status":"ready","mode":"deterministic_extract" if not llm_client.is_configured else "model_adapter"}

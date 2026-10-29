@@ -6,17 +6,28 @@ edition = "2021"
 [dependencies]
 tokio = { version = "1", features = ["full"] }
 axum = "0.7"
-sqlx = { version = "0.8.6", default-features = false, features = ["runtime-tokio-native-tls", "postgres", "uuid", "chrono", "migrate", "macros", "json"] }
+sqlx = { version = "0.9", default-features = false, features = ["runtime-tokio", "tls-native-tls", "postgres", "uuid", "chrono", "migrate", "macros", "json"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 uuid = { version = "1", features = ["v4", "serde"] }
 chrono = { version = "0.4", features = ["serde"] }
 dotenvy = "0.15"
 tracing = "0.1"
-tracing-subscriber = "0.3"
+tracing-subscriber = { version = "0.3", features = ["json", "env-filter"] }
 argon2 = "0.6"
-jsonwebtoken = { version = "10.3", default-features = false, features = ["rust_crypto"] }
-rskafka = { version = "0.6", default-features = false }
+rskafka = { version = "0.6", default-features = false, optional = true }
 reqwest = { version = "0.12", features = ["json"] }
 tower-http = { version = "0.6", features = ["cors", "trace", "limit"] }
 sha2 = "0.11"
+
+[features]
+default = []
+kafka = ["dep:rskafka"]
+
+# Keep native Windows development usable with the existing MSVC setup.
+# Linux hosting uses AWS-LC and omits the unused RustCrypto RSA/ECC stack.
+[target.'cfg(windows)'.dependencies]
+jsonwebtoken = { version = "10.3", default-features = false, features = ["rust_crypto"] }
+
+[target.'cfg(not(windows))'.dependencies]
+jsonwebtoken = { version = "10.3", default-features = false, features = ["aws_lc_rs"] }

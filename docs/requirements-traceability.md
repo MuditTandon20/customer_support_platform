@@ -1,3 +1,5 @@
+> Stage 1 adds chunk ingestion/retrieval, bounded event-triggered workflows, persisted failure traces, AI activity, beta limits and hosting preparation. See [the scoped release matrix and evidence](STAGE1_RELEASE_REPORT.md). Historical full-PRD gaps below still apply unless explicitly superseded there.
+
 # Requirement-by-requirement verification
 
 Date: 2026-10-29. Source: [supplied PRD](specification.md). The entire PRD is **not complete**. Status applies only to the capability named in each row, not to its entire parent module.

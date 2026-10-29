@@ -13,7 +13,10 @@ jobs:
       DATABASE_URL: postgres://postgres:test@localhost:5432/support_os_test
       JWT_SECRET: ci-test-only-secret-with-at-least-32-characters
       AI_SERVICE_TOKEN: ci-service-token
+      AI_COPILOT_URL: http://127.0.0.1:18001
       LLM_ENABLED: "false"
+      BETA_MODE: "false"
+      BACKGROUND_PROCESSING: "false"
       ENABLE_SANDBOX: "true"
       API_BIND: 127.0.0.1:18080
       FRONTEND_ORIGIN: http://localhost:13000
@@ -37,8 +40,10 @@ jobs:
       - run: |
           backend/rust-api/target/debug/rust-api > /tmp/api.log 2>&1 &
           (cd frontend && npm run start -- --port 13000) > /tmp/web.log 2>&1 &
-          python -c "import httpx,time; [(time.sleep(1)) for _ in range(30) if not __import__('socket').socket().connect_ex(('localhost',18080))==0]"
+          (cd backend/ai-copilot && python -m uvicorn app.main:app --host 127.0.0.1 --port 18001) > /tmp/ai.log 2>&1 &
+          python scripts/wait_services.py
           python tests/integration.py
+          python tests/stage1_integration.py
           cd tests && npm run test:e2e
       - uses: actions/upload-artifact@v4
         if: always()

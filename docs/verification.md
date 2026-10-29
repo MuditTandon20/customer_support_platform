@@ -1,3 +1,5 @@
+> Current Stage 1 results supersede historical counts: see [STAGE1_RELEASE_REPORT.md](STAGE1_RELEASE_REPORT.md). Docker/cloud runtime remains unverified.
+
 # Verification report — 2026-10-29
 
 The connected local implementation is demonstrated. The complete supplied PRD is not finished, and this report does not claim production readiness. Exact capability status is in [requirements-traceability.md](requirements-traceability.md).
@@ -25,7 +27,7 @@ The connected local implementation is demonstrated. The complete supplied PRD is
 
 ## Local smoke measurement
 
-`backend/ai-copilot/.venv/Scripts/python.exe tests/load_smoke.py` completed 100 requests with concurrency 10 and zero errors against the latest Rust debug build and disposable PostgreSQL 18. Actual recorded results: p50 17.47 ms, p95 366.02 ms, 0.57 seconds elapsed. Half the requests read inbox, half analytics, in an empty synthetic tenant. See [load-smoke.json](load-smoke.json). This is a basic concurrency smoke check, not a production load test, capacity guarantee, or availability SLO.
+`backend/ai-copilot/.venv/Scripts/python.exe tests/load_smoke.py` completed 100 requests with concurrency 10 and zero errors against the latest Rust debug build and disposable PostgreSQL 18. Actual recorded results: p50 52.2 ms, p95 295.41 ms, 0.98 seconds elapsed. Half the requests read inbox, half analytics, in an empty synthetic tenant. See [load-smoke.json](load-smoke.json). This is a basic concurrency smoke check, not a production load test, capacity guarantee, or availability SLO.
 
 ## Visual evidence
 
@@ -41,7 +43,7 @@ Screenshots were captured from the running application, not generated mockups. D
 
 ## Limits and unverified requirements
 
-Live email/WhatsApp/payments, semantic embeddings/ingestion queues, attachment handling/scanning, custom permissions/multiple memberships, complete durable workflow execution, independently verified resolution, full external integration/developer platform, retention/backups, production observability and production security remain incomplete. Provider credentials alone do not supply missing adapters. No paid inference/provider call, email delivery, payment, deployment, remote push, or production data change was performed.
+Live email/WhatsApp/payments, semantic embeddings/ingestion queues, attachment handling/scanning, custom permissions/multiple memberships, complete durable workflow execution, independently verified resolution, full external integration/developer platform, retention/backups, production observability and production security remain incomplete. Provider credentials alone do not supply missing adapters. No paid inference/provider call, email delivery, payment, deployment or production data change was performed. Stage 1 authorizes a separate testing-branch push.
 
 Some early checks failed and were repaired: browser selector matched the workflow icon incorrectly; login inline links needed underlines; animated text needed settling before contrast measurement; the mobile audit table needed keyboard focus. Final browser checks passed after these corrections. The initial dependency audit found inherited vulnerabilities, leading to the upgrades and explicit remaining-risk report above.
 

@@ -1,0 +1,6 @@
+{
+  "ai_service_failure": "passed: seven API suites with unavailable service and explicit fallback assertions",
+  "native_restart": "passed: owned ticket accessible after process restart with same Postgres",
+  "public_beta": "passed: synthetic emails, concurrent organization cap and disabled sandbox",
+  "container_restart": "UNVERIFIED: Docker engine unavailable"
+}

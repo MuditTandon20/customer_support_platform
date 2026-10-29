@@ -105,3 +105,14 @@ pub async fn verify(State(s): State<AppState>, Json(p): Json<Token>) -> AppResul
     tx.commit().await?;
     Ok(Json(json!({"verified":true})))
 }
+
+pub fn validate_beta_email(email: &str) -> AppResult<()> {
+    if std::env::var("BETA_MODE").as_deref() == Ok("true")
+        && !email.trim().to_lowercase().ends_with(".test")
+    {
+        return Err(AppError::BadRequest(
+            "This testing beta accepts synthetic .test email addresses only".into(),
+        ));
+    }
+    Ok(())
+}
