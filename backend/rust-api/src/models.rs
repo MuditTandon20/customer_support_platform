@@ -27,28 +27,34 @@ pub enum TicketStatus {
 
 // ---- Ticket Models & DTOs ----
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, sqlx::FromRow)]
 pub struct Ticket {
     pub id: Uuid,
     pub organization_id: Uuid,
     pub created_by: Uuid,
     pub assigned_to: Option<Uuid>,
     pub subject: String,
-    pub description: Option<String>,   // NEW
+    pub description: Option<String>, // NEW
     pub status: TicketStatus,
     pub created_at: chrono::DateTime<chrono::Utc>,
+    pub updated_at: chrono::DateTime<chrono::Utc>,
+    pub priority: String,
+    pub labels: Vec<String>,
+    pub channel: String,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct CreateTicketRequest {
     pub subject: String,
-    pub description: Option<String>,   // NEW
+    pub description: Option<String>, // NEW
 }
 
 #[derive(Debug, Deserialize)]
 pub struct UpdateTicketRequest {
     pub status: Option<TicketStatus>,
     pub assigned_to: Option<Uuid>,
+    #[serde(default)]
+    pub unassign: bool,
 }
 
 // ---- Domain events ----
@@ -104,10 +110,20 @@ pub struct AuthResponse {
 pub struct MeResponse {
     pub user_id: Uuid,
     pub org_id: Uuid,
+    pub org_name: Option<String>,
+    pub org_slug: Option<String>,
     pub role: Role,
 }
 
 #[derive(Debug, Deserialize)]
 pub struct UpdateUserRoleRequest {
+    pub role: Role,
+}
+
+#[derive(Debug, Serialize, sqlx::FromRow)]
+pub struct UserSummary {
+    pub id: Uuid,
+    pub email: String,
+    pub full_name: String,
     pub role: Role,
 }

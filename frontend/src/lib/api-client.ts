@@ -3,6 +3,7 @@ import type {
   AuthResponse,
   CreateTicketRequest,
   LoginRequest,
+  Role,
   SignupRequest,
   Ticket,
   TicketCategoryResponse,
@@ -10,9 +11,10 @@ import type {
   TicketSummaryResponse,
   UpdateTicketRequest,
   User,
+  UserSummary,
 } from "@/types";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:3000";
+const API_BASE_URL = "/api";
 
 class ApiError extends Error {
   status: number;
@@ -24,26 +26,33 @@ class ApiError extends Error {
 
 // Central fetch wrapper — every request goes through here, so auth headers
 // and error handling live in exactly one place (same principle as AppError in Rust).
-async function apiFetch<T>(
+export async function apiFetch<T>(
   path: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
 ): Promise<T> {
   const token = getToken();
 
   const headers: HeadersInit = {
     "Content-Type": "application/json",
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    ...(token && token !== "cookie-session"
+      ? { Authorization: `Bearer ${token}` }
+      : {}),
     ...options.headers,
   };
 
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
+    credentials: "include",
     headers,
   });
 
   if (!response.ok) {
-    const body = await response.json().catch(() => ({ error: "Unknown error" }));
-    throw new ApiError(response.status, body.error || "Request failed");
+    const raw = await response.text();
+    let message = raw || "Request failed";
+    try {
+      message = JSON.parse(raw).error || message;
+    } catch {}
+    throw new ApiError(response.status, message);
   }
 
   return response.json() as Promise<T>;
@@ -88,7 +97,7 @@ export function createTicket(data: CreateTicketRequest): Promise<Ticket> {
 
 export function updateTicket(
   id: string,
-  data: UpdateTicketRequest
+  data: UpdateTicketRequest,
 ): Promise<Ticket> {
   return apiFetch<Ticket>(`/tickets/${id}`, {
     method: "PATCH",
@@ -107,9 +116,20 @@ export function getTicketCategory(id: string): Promise<TicketCategoryResponse> {
 }
 
 export function getTicketDraftReply(
-  id: string
+  id: string,
 ): Promise<TicketDraftReplyResponse> {
   return apiFetch<TicketDraftReplyResponse>(`/tickets/${id}/draft-reply`);
 }
 
 export { ApiError };
+
+export function listUsers(): Promise<UserSummary[]> {
+  return apiFetch<UserSummary[]>("/users");
+}
+
+export function updateUserRole(userId: string, role: Role): Promise<unknown> {
+  return apiFetch(`/users/${userId}/role`, {
+    method: "PATCH",
+    body: JSON.stringify({ role }),
+  });
+}

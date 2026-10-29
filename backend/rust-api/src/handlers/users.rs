@@ -1,185 +1,186 @@
+use crate::{
+    auth::{self, AuthUser},
+    error::{AppError, AppResult},
+    models::*,
+    AppState,
+};
 use axum::{
     extract::{Path, State},
     Json,
 };
+use sqlx::Row;
 use uuid::Uuid;
 
-use crate::auth::{self, AuthUser};
-use crate::error::{AppError, AppResult};
-use crate::models::{
-    AuthResponse, LoginRequest, MeResponse, Role, SignupRequest, UpdateUserRoleRequest,
-};
-use crate::AppState;
-
 pub async fn signup(
-    State(state): State<AppState>,
-    Json(payload): Json<SignupRequest>,
-) -> AppResult<Json<AuthResponse>> {
-    let (org_id, assigned_role) = match payload.organization_id {
-        // ---- Case 1: joining an EXISTING org ----
-        Some(existing_org_id) => {
-            let org_exists = sqlx::query!(
-                "SELECT id FROM organizations WHERE id = $1",
-                existing_org_id
-            )
-            .fetch_optional(&state.db)
-            .await?
-            .is_some();
-
-            if !org_exists {
-                return Err(AppError::BadRequest("Organization not found".to_string()));
-            }
-
-            // SECURITY: joining an existing org can never grant admin —
-            // only an existing admin can promote someone.
-            let role = match payload.role {
-                Some(Role::Admin) => {
-                    return Err(AppError::BadRequest(
-                        "Cannot self-assign admin role".to_string(),
-                    ));
-                }
-                Some(role) => role,
-                None => Role::Customer,
-            };
-
-            (existing_org_id, role)
-        }
-        // ---- Case 2: creating a NEW org ----
-        None => {
-            let org_name = payload.organization_name.clone().ok_or_else(|| {
-                AppError::BadRequest(
-                    "organization_name is required to create a new organization".to_string(),
-                )
-            })?;
-
-            let org_slug = org_name.to_lowercase().replace(' ', "-");
-
-            let org = sqlx::query!(
-                "INSERT INTO organizations (name, slug) VALUES ($1, $2) RETURNING id",
-                org_name,
-                org_slug
-            )
-            .fetch_one(&state.db)
-            .await?;
-
-            // The person creating a brand-new org is always its admin
-            (org.id, Role::Admin)
-        }
-    };
-
-    let password_hash = auth::hash_password(&payload.password)?;
-
-    let user = sqlx::query!(
-        r#"INSERT INTO users (organization_id, email, password_hash, full_name, role)
-           VALUES ($1, $2, $3, $4, $5::user_role) RETURNING id"#,
-        org_id,
-        payload.email,
-        password_hash,
-        payload.full_name,
-        assigned_role as Role
-    )
-    .fetch_one(&state.db)
-    .await?;
-
-    let jwt_secret = std::env::var("JWT_SECRET")
-        .map_err(|_| AppError::Internal("JWT_SECRET must be set".to_string()))?;
-    let token = auth::create_jwt(user.id, org_id, assigned_role, &jwt_secret)?;
-
-    Ok(Json(AuthResponse {
-        token,
-        user_id: user.id,
-        org_id,
-    }))
-}
-
-pub async fn login(
-    State(state): State<AppState>,
-    Json(payload): Json<LoginRequest>,
-) -> AppResult<Json<AuthResponse>> {
-    let user = sqlx::query!(
-        r#"SELECT id, organization_id, password_hash, role as "role: Role"
-           FROM users WHERE email = $1"#,
-        payload.email
-    )
-    .fetch_optional(&state.db)
-    .await?
-    .ok_or_else(|| AppError::Unauthorized("Invalid credentials".to_string()))?;
-
-    let valid = auth::verify_password(&payload.password, &user.password_hash)?;
-
-    if !valid {
-        return Err(AppError::Unauthorized("Invalid credentials".to_string()));
-    }
-
-    let jwt_secret = std::env::var("JWT_SECRET")
-        .map_err(|_| AppError::Internal("JWT_SECRET must be set".to_string()))?;
-    let token = auth::create_jwt(user.id, user.organization_id, user.role, &jwt_secret)?;
-
-    Ok(Json(AuthResponse {
-        token,
-        user_id: user.id,
-        org_id: user.organization_id,
-    }))
-}
-
-pub async fn me(auth_user: AuthUser) -> Json<MeResponse> {
-    Json(MeResponse {
-        user_id: auth_user.user_id,
-        org_id: auth_user.org_id,
-        role: auth_user.role,
-    })
-}
-
-pub async fn update_user_role(
-    auth_user: AuthUser,
-    State(state): State<AppState>,
-    Path(target_user_id): Path<Uuid>,
-    Json(payload): Json<UpdateUserRoleRequest>,
-) -> AppResult<Json<serde_json::Value>> {
-    // RBAC: only an admin may change anyone's role.
-    if auth_user.role != Role::Admin {
-        return Err(AppError::Forbidden(
-            "Only admins can change user roles".to_string(),
+    State(s): State<AppState>,
+    Json(p): Json<SignupRequest>,
+) -> AppResult<(axum::http::HeaderMap, Json<AuthResponse>)> {
+    if p.organization_id.is_some() {
+        return Err(AppError::BadRequest(
+            "Use an invitation to join an organization".into(),
         ));
     }
-
-    // Layer 1: the target user must be in the SAME org as the caller.
-    let target = sqlx::query!(
-        r#"SELECT id, organization_id, role as "role: Role" FROM users WHERE id = $1"#,
-        target_user_id
-    )
-    .fetch_optional(&state.db)
-    .await?
-    .ok_or_else(|| AppError::NotFound("User not found".to_string()))?;
-
-    if target.organization_id != auth_user.org_id {
-        return Err(AppError::NotFound("User not found".to_string()));
+    let _legacy_requested_role = p.role; // Organization creators are always administrators.
+    let email = p.email.trim().to_lowercase();
+    let name = p.organization_name.as_deref().unwrap_or("").trim();
+    if !email.contains('@') || email.len() > 254 || p.password.len() < 12 || p.password.len() > 256
+    {
+        return Err(AppError::BadRequest(
+            "Valid email and password of 12-256 characters required".into(),
+        ));
     }
-
-    // Edge case: prevent an org from being left with zero admins.
-    if target.role == Role::Admin && payload.role != Role::Admin {
-        let admin_count = sqlx::query!(
-            r#"SELECT COUNT(*) as "count!" FROM users WHERE organization_id = $1 AND role = 'admin'"#,
-            auth_user.org_id
+    if name.is_empty()
+        || name.len() > 100
+        || p.full_name.trim().is_empty()
+        || p.full_name.len() > 200
+    {
+        return Err(AppError::BadRequest(
+            "Organization and full name required".into(),
+        ));
+    }
+    let hash = auth::hash_password(&p.password)?;
+    let mut tx = s.db.begin().await?;
+    let org_id: Uuid =
+        sqlx::query_scalar("INSERT INTO organizations(name,slug) VALUES($1,$2) RETURNING id")
+            .bind(name)
+            .bind(format!("workspace-{}", Uuid::new_v4()))
+            .fetch_one(&mut *tx)
+            .await?;
+    let user_id:Uuid=sqlx::query_scalar("INSERT INTO users(organization_id,email,password_hash,full_name,role) VALUES($1,$2,$3,$4,'admin') RETURNING id").bind(org_id).bind(&email).bind(hash).bind(p.full_name.trim()).fetch_one(&mut *tx).await.map_err(|error| {
+        if error.as_database_error().is_some_and(|db|db.is_unique_violation() && db.constraint()==Some("users_email_key")) {
+            AppError::Conflict("An account with this email already exists. Sign in to your existing workspace, or use a different email to create a new organization.".into())
+        } else {AppError::from(error)}
+    })?;
+    super::platform::audit(
+        &mut tx,
+        &AuthUser {
+            user_id,
+            org_id,
+            role: Role::Admin,
+        },
+        "organization.created",
+        org_id,
+        serde_json::json!({}),
+    )
+    .await?;
+    super::identity::queue_for_user(&mut tx, user_id, org_id, &email, "verify").await?;
+    tx.commit().await?;
+    let secret =
+        std::env::var("JWT_SECRET").map_err(|_| AppError::Internal("JWT_SECRET missing".into()))?;
+    let token = auth::create_jwt(user_id, org_id, Role::Admin, &secret)?;
+    Ok(auth::session_response(
+        &token,
+        AuthResponse {
+            token: token.clone(),
+            user_id,
+            org_id,
+        },
+    ))
+}
+pub async fn login(
+    State(s): State<AppState>,
+    Json(p): Json<LoginRequest>,
+) -> AppResult<(axum::http::HeaderMap, Json<AuthResponse>)> {
+    let row=sqlx::query("SELECT id,organization_id,password_hash,role,token_version FROM users WHERE lower(email)=$1").bind(p.email.trim().to_lowercase()).fetch_optional(&s.db).await?.ok_or_else(||AppError::Unauthorized("Invalid credentials".into()))?;
+    if p.password.len() > 256
+        || !auth::verify_password(&p.password, &row.get::<String, _>("password_hash"))?
+    {
+        return Err(AppError::Unauthorized("Invalid credentials".into()));
+    }
+    let user_id = row.get("id");
+    let org_id = row.get("organization_id");
+    let secret =
+        std::env::var("JWT_SECRET").map_err(|_| AppError::Internal("JWT_SECRET missing".into()))?;
+    let token = auth::create_jwt_version(
+        user_id,
+        org_id,
+        row.get("role"),
+        row.get("token_version"),
+        &secret,
+    )?;
+    Ok(auth::session_response(
+        &token,
+        AuthResponse {
+            token: token.clone(),
+            user_id,
+            org_id,
+        },
+    ))
+}
+pub async fn me(a: AuthUser, State(s): State<AppState>) -> AppResult<Json<MeResponse>> {
+    let row = sqlx::query("SELECT name,slug FROM organizations WHERE id=$1")
+        .bind(a.org_id)
+        .fetch_one(&s.db)
+        .await?;
+    Ok(Json(MeResponse {
+        user_id: a.user_id,
+        org_id: a.org_id,
+        org_name: Some(row.get("name")),
+        org_slug: Some(row.get("slug")),
+        role: a.role,
+    }))
+}
+pub async fn list_users(
+    a: AuthUser,
+    State(s): State<AppState>,
+) -> AppResult<Json<Vec<UserSummary>>> {
+    super::platform::staff(&a)?;
+    let users = sqlx::query_as::<_, UserSummary>(
+        "SELECT id,email,full_name,role FROM users WHERE organization_id=$1 ORDER BY full_name",
+    )
+    .bind(a.org_id)
+    .fetch_all(&s.db)
+    .await?;
+    Ok(Json(users))
+}
+pub async fn update_user_role(
+    a: AuthUser,
+    State(s): State<AppState>,
+    Path(id): Path<Uuid>,
+    Json(p): Json<UpdateUserRoleRequest>,
+) -> AppResult<Json<serde_json::Value>> {
+    if a.role != Role::Admin {
+        return Err(AppError::Forbidden("Administrator required".into()));
+    }
+    let mut tx = s.db.begin().await?;
+    sqlx::query("SELECT id FROM organizations WHERE id=$1 FOR NO KEY UPDATE")
+        .bind(a.org_id)
+        .execute(&mut *tx)
+        .await?;
+    let role: Role =
+        sqlx::query_scalar("SELECT role FROM users WHERE id=$1 AND organization_id=$2")
+            .bind(id)
+            .bind(a.org_id)
+            .fetch_optional(&mut *tx)
+            .await?
+            .ok_or_else(|| AppError::NotFound("User not found".into()))?;
+    if role == Role::Admin && p.role != Role::Admin {
+        let count: i64 = sqlx::query_scalar(
+            "SELECT count(*) FROM users WHERE organization_id=$1 AND role='admin'",
         )
-        .fetch_one(&state.db)
-        .await?
-        .count;
-
-        if admin_count <= 1 {
+        .bind(a.org_id)
+        .fetch_one(&mut *tx)
+        .await?;
+        if count <= 1 {
             return Err(AppError::BadRequest(
-                "Cannot demote the organization's last admin".to_string(),
+                "Cannot demote last administrator".into(),
             ));
         }
     }
-
-    sqlx::query!(
-        "UPDATE users SET role = $1::user_role WHERE id = $2",
-        payload.role as Role,
-        target_user_id
+    sqlx::query("UPDATE users SET role=$1 WHERE id=$2 AND organization_id=$3")
+        .bind(p.role)
+        .bind(id)
+        .bind(a.org_id)
+        .execute(&mut *tx)
+        .await?;
+    super::platform::audit(
+        &mut tx,
+        &a,
+        "user.role_changed",
+        id,
+        serde_json::json!({"role":p.role}),
     )
-    .execute(&state.db)
     .await?;
-
-    Ok(Json(serde_json::json!({ "user_id": target_user_id, "role": payload.role })))
+    tx.commit().await?;
+    Ok(Json(serde_json::json!({"user_id":id,"role":p.role})))
 }

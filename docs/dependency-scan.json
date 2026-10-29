@@ -1,0 +1,40 @@
+{
+  "source": "https://api.osv.dev/v1/querybatch",
+  "dependencies_checked": 340,
+  "python_scope": "Interpreter running this script; recursive project dependencies including uvicorn standard extras",
+  "findings": [
+    {
+      "package": {
+        "name": "block-buffer",
+        "ecosystem": "crates.io"
+      },
+      "version": "0.10.4",
+      "active_in_current_target": true,
+      "advisories": [
+        "GHSA-qwgh-2vcv-g2f7"
+      ]
+    },
+    {
+      "package": {
+        "name": "crypto-bigint",
+        "ecosystem": "crates.io"
+      },
+      "version": "0.5.5",
+      "active_in_current_target": true,
+      "advisories": [
+        "RUSTSEC-2026-0387"
+      ]
+    },
+    {
+      "package": {
+        "name": "rsa",
+        "ecosystem": "crates.io"
+      },
+      "version": "0.9.10",
+      "active_in_current_target": true,
+      "advisories": [
+        "RUSTSEC-2023-0071"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+services:
+  api:
+    environment:
+      KAFKA_BROKERS: kafka:9092
+    depends_on:
+      kafka:
+        condition: service_started

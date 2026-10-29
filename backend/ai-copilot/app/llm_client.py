@@ -16,7 +16,7 @@ class LLMClient:
 
         # Check if a valid API key is present
         self.is_configured = bool(
-            self.api_key and self.api_key not in ("your-api-key-here", "sk-...", "")
+            os.getenv("LLM_ENABLED", "false").lower() == "true" and self.api_key and self.api_key not in ("your_api_key_here", "your-api-key-here", "sk-...", "")
         )
 
         if self.is_configured:
@@ -24,7 +24,7 @@ class LLMClient:
             logger.info("LLMClient initialized with model: %s", self.model)
         else:
             self.client = None
-            logger.warning("LLMClient running in MOCK/FALLBACK mode: OPENAI_API_KEY is not configured.")
+            logger.warning("Deterministic local analysis active. Paid inference is not enabled.")
 
     async def _call_chat_completion(
         self,

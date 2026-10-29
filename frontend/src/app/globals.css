@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  --font-display: var(--font-display);
-  --font-body: var(--font-body);
-  --font-mono: var(--font-mono);
+  --font-display: Arial, Helvetica, sans-serif;
+  --font-body: Arial, Helvetica, sans-serif;
+  --font-mono: Consolas, monospace;
 }
 
 @theme inline {

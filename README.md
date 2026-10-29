@@ -1,134 +1,71 @@
-# 🚀 Customer Support Automation Platform
+# Aster Support OS
 
-An end-to-end, high-performance Customer Support and Automation Platform built with a multi-service architecture: **Rust (Axum)** for the high-throughput core API, **Python (FastAPI)** for the intelligent AI Copilot microservice, and **Next.js (React & Tailwind CSS)** for the modern frontend.
+An evidence-first customer support workspace built on the existing Rust/Axum API, PostgreSQL, Python/FastAPI copilot and Next.js frontend. This build adds a connected local product and preserves the original ticket APIs and event shapes.
 
----
+The full supplied PRD is **not entirely implemented**. Read [requirements and verification](docs/requirements-traceability.md) for exact status, and [build state](docs/BUILD_STATE.md) for remaining work. External delivery/payment providers are not live. No production-ready claim is made.
 
-## 🌟 Features
+## Run locally
 
-- **🏢 Multi-Tenant Architecture:** Built-in organization isolation and role-based access control (RBAC).
-- **⚡ High-Performance Core API:** Rust Axum backend with SQLx and PostgreSQL for ultra-fast ticket routing and transaction safety.
-- **🤖 AI-Powered Copilot:** Python FastAPI service providing automated ticket triage, sentiment analysis, smart summarization, and suggested response drafting.
-- **🔄 Transactional Outbox Pattern:** Guarantees reliable asynchronous event delivery and integration between microservices.
-- **🎨 Modern Web UI:** Next.js App Router, TypeScript, and clean responsive UI.
+With Docker Desktop's Linux engine running, from the project root:
 
----
-
-## 🛠️ Architecture & Tech Stack
-
-| Layer | Technology | Description |
-|---|---|---|
-| **Frontend** | Next.js 15, React 19, TypeScript, Tailwind CSS | Responsive dashboard & customer portal |
-| **Core API** | Rust, Axum, SQLx, Tokio, PostgreSQL | Authentication, ticket management, event outbox |
-| **AI Copilot** | Python 3.10+, FastAPI, OpenAI / LLM API | Auto-summarization & smart response generator |
-| **Database** | PostgreSQL | Relational storage for tenants, users, and tickets |
-| **Infrastructure** | Docker Compose | Local containerized database & dependencies |
-
----
-
-## 📂 Project Structure
-
-```text
-customer_support_platform/
-├── backend/
-│   ├── rust-api/              # Core API service (Axum + SQLx + Postgres)
-│   │   ├── migrations/        # SQL migration scripts
-│   │   ├── src/               # Rust source code (handlers, auth, outbox)
-│   │   ├── Cargo.toml
-│   │   └── docker-compose.yml # Postgres local setup
-│   └── ai-copilot/            # AI Microservice (FastAPI + LLM)
-│       ├── app/               # FastAPI application & routers
-│       └── requirements.txt
-├── frontend/                  # Modern Web Dashboard (Next.js)
-│   ├── src/app/               # App Router pages & layouts
-│   └── package.json
-├── docs/                      # Project documentation & design specs
-├── LICENSE                    # MIT License
-└── README.md
+```powershell
+.\scripts\init-env.ps1
+docker compose up --build
 ```
 
----
+Open **http://localhost:3000** and create an organization. API: http://localhost:8080; its migrations run automatically. No external API key is needed for extractive knowledge drafts. The local stack enables sandbox mail and disables paid inference. The sandbox never sends real email.
 
-## 🚀 Getting Started
+Optional synthetic data in a new, explicitly labeled demo organization:
 
-### 1. Prerequisites
-- [Rust](https://www.rust-lang.org/tools/install) (1.75+)
-- [Python](https://www.python.org/) (3.10+)
-- [Node.js](https://nodejs.org/) (v18+)
-- [Docker](https://www.docker.com/) (for PostgreSQL)
-
----
-
-### 2. Database Setup
-Start PostgreSQL using Docker:
-```bash
-cd backend/rust-api
-docker-compose up -d
+```powershell
+python -m pip install httpx
+python scripts/seed_demo.py
 ```
 
-Run database migrations:
-```bash
-cargo install sqlx-cli --no-default-features --features postgres
-sqlx migrate run
-```
+See [the runbook](docs/runbook.md) for native setup, a Docker-free disposable Postgres test harness, environment variables and failure handling. Docker definitions were authored but container execution remains unverified on this machine because the engine is unavailable.
 
----
+## Connected capabilities
 
-### 3. Running Backend (Rust API)
-```bash
-cd backend/rust-api
+- Dark/light, responsive console with command palette, keyboard access, reduced motion, live operations dashboard and actual event metrics.
+- Invitation-only organization membership; administrator/agent/customer roles; HttpOnly browser sessions; origin protection; live role checks and password-reset session revocation.
+- Inbox and customer context; threaded portal replies, team-only notes, priority, labels, assignment, ticket state rules and CSAT.
+- Current, tenant-scoped knowledge articles; public help center; full-text retrieval; cited extractive proposals, abstention, and source revalidation before proposal dispatch.
+- Typed local tools, dry-run previews, idempotency and administrator approval records. Sensitive external execution remains blocked.
+- Visual workflow authoring, keyboard reordering and drag/drop; branches, draft/publish/version restoration, simulation, server execution and inspectable traces.
+- Audit events, transactional outbox, durable local notification projection, optional Kafka publisher, rate/body limits and safe errors.
+- Local email round-trip sandbox, manual invitations, sandbox verification/reset links, honest integration status and enforced trial quotas.
+- Authenticated portal widget, customer conversation history and public searchable help center.
 
-# Copy environment file
-cp .env.example .env
+## Verification
 
-# Run the API server
-cargo run
-```
-*API runs on: `http://127.0.0.1:3000`*
-
----
-
-### 4. Running AI Copilot (Python FastAPI)
-```bash
-cd backend/ai-copilot
-
-# Create and activate virtual environment
-python -m venv venv
-# Windows:
-.\venv\Scripts\activate
-# Linux/macOS:
-# source venv/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Copy environment file and configure OPENAI_API_KEY
-cp .env.example .env
-
-# Start FastAPI server
-uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload
-```
-*AI Copilot API runs on: `http://127.0.0.1:8001` (Docs: `http://127.0.0.1:8001/docs`)*
-
----
-
-### 5. Running Frontend (Next.js)
-```bash
+```powershell
+cargo test --manifest-path backend/rust-api/Cargo.toml --locked
+python -m unittest discover -s tests -p 'test_*.py' -v
+python tests/integration.py
 cd frontend
-
-# Install dependencies
-npm install
-
-# Copy environment file
-cp .env.example .env.local
-
-# Run Next.js development server
-npm run dev
+npm ci
+npm run lint
+npx tsc --noEmit
+npm run build
+npm audit
+cd ../tests
+npm ci
+npx playwright install chromium
+npm run test:e2e
 ```
-*Frontend runs on: `http://localhost:3000`*
 
----
+HTTP integration/browser tests require the isolated local services described in the runbook. They create synthetic organizations and never reset an existing database. CI definition is in [.github/workflows/ci.yml](.github/workflows/ci.yml). Test results and actual limits are recorded in [the verification report](docs/verification.md).
 
-## 🛡️ License
+## Implementation references
 
-This project is licensed under the [MIT License](LICENSE).
+- [Original specification](docs/specification.md)
+- [Architecture and data flow](docs/architecture.md)
+- [API guide](docs/api.md) and [OpenAPI inventory](backend/rust-api/openapi.json)
+- [Architecture decisions](docs/decisions.md)
+- [Baseline audit](docs/current-state-audit.md)
+- [Desktop screenshot](docs/screenshots/workspace-desktop.png)
+- [Mobile screenshot](docs/screenshots/workspace-mobile.png)
+
+Not yet implemented: live email/WhatsApp/payments, semantic embeddings and ingestion queues, attachment storage/scanning, granular custom permissions, multiple memberships/org switching, complete workflow durability, production observability/retention/backups and a full developer integration platform. These require further implementation and verification, not merely credentials.
+
+MIT licensed; see [LICENSE](LICENSE).

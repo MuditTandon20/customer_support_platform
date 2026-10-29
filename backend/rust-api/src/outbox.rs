@@ -7,6 +7,7 @@ use std::time::Duration;
 use uuid::Uuid;
 
 /// One row read out of the outbox_events table.
+#[derive(sqlx::FromRow)]
 struct OutboxRow {
     id: Uuid,
     event_type: String,
@@ -20,8 +21,30 @@ fn topic_for_event(event_type: &str) -> &'static str {
     match event_type {
         "TicketStatusChanged" => "ticket.status_changed",
         "TicketAssigned" => "ticket.assigned",
+        "MessageCreated" => "conversation.message_created",
+        "TicketCreated" => "ticket.created",
         _ => "ticket.unknown",
     }
+}
+
+/// Local durable projection; each receipt and notification commits atomically.
+/// This does not claim to be a Kafka consumer or replace Kafka offsets.
+pub async fn run_notification_projection(pool: PgPool) {
+    loop {
+        if let Err(e) = project_notifications(&pool).await {
+            tracing::error!(error=%e,"Notification projection failed; retrying");
+        }
+        tokio::time::sleep(Duration::from_secs(2)).await;
+    }
+}
+async fn project_notifications(pool: &PgPool) -> Result<(), sqlx::Error> {
+    let mut tx = pool.begin().await?;
+    let events:Vec<(Uuid,Uuid,Uuid,String)>=sqlx::query_as("SELECT e.id,e.organization_id,e.aggregate_id,e.event_type FROM outbox_events e WHERE NOT EXISTS(SELECT 1 FROM consumer_receipts r WHERE r.event_id=e.id AND r.consumer='notifications-v1') ORDER BY e.created_at LIMIT 50 FOR UPDATE OF e SKIP LOCKED").fetch_all(&mut *tx).await?;
+    for (event_id, org_id, resource, kind) in events {
+        sqlx::query("INSERT INTO notifications(organization_id,event_id,resource_id,kind) VALUES($1,$2,$3,$4) ON CONFLICT(event_id) DO NOTHING").bind(org_id).bind(event_id).bind(resource).bind(kind).execute(&mut *tx).await?;
+        sqlx::query("INSERT INTO consumer_receipts(consumer,event_id) VALUES('notifications-v1',$1) ON CONFLICT DO NOTHING").bind(event_id).execute(&mut *tx).await?;
+    }
+    tx.commit().await
 }
 
 /// Starts an infinite background loop that:
@@ -71,13 +94,12 @@ async fn poll_and_publish(
     client: &rskafka::client::Client,
     partition_clients: &mut HashMap<String, rskafka::client::partition::PartitionClient>,
 ) -> Result<usize, Box<dyn std::error::Error>> {
-    let rows = sqlx::query_as!(
-        OutboxRow,
+    let rows = sqlx::query_as::<_, OutboxRow>(
         r#"SELECT id, event_type, payload
            FROM outbox_events
            WHERE published_at IS NULL
            ORDER BY created_at ASC
-           LIMIT 50"#
+           LIMIT 50"#,
     )
     .fetch_all(pool)
     .await?;
@@ -112,12 +134,10 @@ async fn poll_and_publish(
         // row would simply be re-published next cycle — at-least-once
         // delivery, which is why consumers should treat events as
         // idempotent (safe to process more than once).
-        sqlx::query!(
-            "UPDATE outbox_events SET published_at = now() WHERE id = $1",
-            row.id
-        )
-        .execute(pool)
-        .await?;
+        sqlx::query("UPDATE outbox_events SET published_at = now() WHERE id = $1")
+            .bind(row.id)
+            .execute(pool)
+            .await?;
 
         published_count += 1;
     }

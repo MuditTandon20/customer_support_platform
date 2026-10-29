@@ -1,0 +1,45 @@
+name: verify
+on: [push, pull_request]
+jobs:
+  integrated:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env: {POSTGRES_PASSWORD: test, POSTGRES_DB: support_os_test}
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 5s --health-timeout 3s --health-retries 20
+    env:
+      DATABASE_URL: postgres://postgres:test@localhost:5432/support_os_test
+      JWT_SECRET: ci-test-only-secret-with-at-least-32-characters
+      AI_SERVICE_TOKEN: ci-service-token
+      LLM_ENABLED: "false"
+      ENABLE_SANDBOX: "true"
+      API_BIND: 127.0.0.1:18080
+      FRONTEND_ORIGIN: http://localhost:13000
+      API_PROXY_URL: http://127.0.0.1:18080
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: 22}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo fmt --manifest-path backend/rust-api/Cargo.toml --check
+      - run: cargo test --manifest-path backend/rust-api/Cargo.toml --locked
+      - run: cargo build --manifest-path backend/rust-api/Cargo.toml --locked
+      - run: pip install -r backend/ai-copilot/requirements.txt
+      - run: python -m unittest discover -s tests -p 'test_*.py' -v
+      - run: npm ci && npm run lint && npx tsc --noEmit && npm run build && npm audit --audit-level=high
+        working-directory: frontend
+      - run: npm ci && npx playwright install --with-deps chromium
+        working-directory: tests
+      - run: |
+          backend/rust-api/target/debug/rust-api > /tmp/api.log 2>&1 &
+          (cd frontend && npm run start -- --port 13000) > /tmp/web.log 2>&1 &
+          python -c "import httpx,time; [(time.sleep(1)) for _ in range(30) if not __import__('socket').socket().connect_ex(('localhost',18080))==0]"
+          python tests/integration.py
+          cd tests && npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: verification, path: 'docs/screenshots'}

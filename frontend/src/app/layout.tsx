@@ -1,26 +1,10 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-display",
-  weight: ["500", "600", "700"],
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-body",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-});
+import "./workspace.css";
 
 export const metadata: Metadata = {
-  title: "Helpdesk Console",
-  description: "Customer support ticketing system",
+  title: "Aster Support OS",
+  description: "Evidence-first support with human control",
 };
 
 export default function RootLayout({
@@ -29,7 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en">
       <body className="bg-[#0B0F14] font-body text-[#E8EDF2] antialiased">
         {children}
       </body>

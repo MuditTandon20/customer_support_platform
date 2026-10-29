@@ -1,5 +1,7 @@
-use argon2::password_hash::{rand_core::OsRng, SaltString};
-use argon2::{Argon2, PasswordHash, PasswordHasher, PasswordVerifier};
+use argon2::{
+    password_hash::{phc::PasswordHash, PasswordHasher, PasswordVerifier},
+    Argon2,
+};
 use axum::{async_trait, extract::FromRequestParts, http::request::Parts};
 use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
 use serde::{Deserialize, Serialize};
@@ -10,9 +12,8 @@ use crate::models::Role;
 
 // Hash a plain password before storing it
 pub fn hash_password(password: &str) -> Result<String, argon2::password_hash::Error> {
-    let salt = SaltString::generate(&mut OsRng);
     let argon2 = Argon2::default();
-    let hash = argon2.hash_password(password.as_bytes(), &salt)?;
+    let hash = argon2.hash_password(password.as_bytes())?;
     Ok(hash.to_string())
 }
 
@@ -20,19 +21,37 @@ pub fn hash_password(password: &str) -> Result<String, argon2::password_hash::Er
 pub fn verify_password(password: &str, hash: &str) -> Result<bool, argon2::password_hash::Error> {
     let parsed_hash = PasswordHash::new(hash)?;
     let argon2 = Argon2::default();
-    Ok(argon2.verify_password(password.as_bytes(), &parsed_hash).is_ok())
+    Ok(argon2
+        .verify_password(password.as_bytes(), &parsed_hash)
+        .is_ok())
 }
 
 // What data we embed inside the JWT
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Claims {
-    pub sub: String,       // user_id (subject)
-    pub org_id: String,    // organization_id
-    pub role: Role,        // embedded so we don't need a DB hit per request
-    pub exp: usize,        // expiry timestamp
+    pub sub: String,    // user_id (subject)
+    pub org_id: String, // organization_id
+    pub role: Role,     // embedded so we don't need a DB hit per request
+    pub exp: usize,     // expiry timestamp
+    #[serde(default)]
+    pub token_version: i64,
 }
 
-pub fn create_jwt(user_id: Uuid, org_id: Uuid, role: Role, secret: &str) -> Result<String, jsonwebtoken::errors::Error> {
+pub fn create_jwt(
+    user_id: Uuid,
+    org_id: Uuid,
+    role: Role,
+    secret: &str,
+) -> Result<String, jsonwebtoken::errors::Error> {
+    create_jwt_version(user_id, org_id, role, 0, secret)
+}
+pub fn create_jwt_version(
+    user_id: Uuid,
+    org_id: Uuid,
+    role: Role,
+    token_version: i64,
+    secret: &str,
+) -> Result<String, jsonwebtoken::errors::Error> {
     let expiration = chrono::Utc::now()
         .checked_add_signed(chrono::Duration::hours(24))
         .expect("valid timestamp")
@@ -43,9 +62,14 @@ pub fn create_jwt(user_id: Uuid, org_id: Uuid, role: Role, secret: &str) -> Resu
         org_id: org_id.to_string(),
         role,
         exp: expiration,
+        token_version,
     };
 
-    encode(&Header::default(), &claims, &EncodingKey::from_secret(secret.as_bytes()))
+    encode(
+        &Header::default(),
+        &claims,
+        &EncodingKey::from_secret(secret.as_bytes()),
+    )
 }
 
 pub fn verify_jwt(token: &str, secret: &str) -> Result<Claims, jsonwebtoken::errors::Error> {
@@ -65,24 +89,30 @@ pub struct AuthUser {
 }
 
 #[async_trait]
-impl<S> FromRequestParts<S> for AuthUser
-where
-    S: Send + Sync,
-{
+impl FromRequestParts<crate::AppState> for AuthUser {
     type Rejection = AppError;
 
-    async fn from_request_parts(parts: &mut Parts, _state: &S) -> Result<Self, Self::Rejection> {
-        // 1. Extract the Authorization header
-        let auth_header = parts
+    async fn from_request_parts(
+        parts: &mut Parts,
+        state: &crate::AppState,
+    ) -> Result<Self, Self::Rejection> {
+        let bearer = parts
             .headers
             .get("Authorization")
-            .and_then(|value| value.to_str().ok())
-            .ok_or_else(|| AppError::Unauthorized("Missing Authorization header".to_string()))?;
-
-        // 2. Strip the "Bearer " prefix
-        let token = auth_header
-            .strip_prefix("Bearer ")
-            .ok_or_else(|| AppError::Unauthorized("Invalid Authorization header format".to_string()))?;
+            .and_then(|v| v.to_str().ok())
+            .and_then(|v| v.strip_prefix("Bearer "));
+        let cookie = parts
+            .headers
+            .get("cookie")
+            .and_then(|v| v.to_str().ok())
+            .and_then(|v| {
+                v.split(';')
+                    .map(str::trim)
+                    .find_map(|part| part.strip_prefix("aster_session="))
+            });
+        let token = bearer
+            .or(cookie)
+            .ok_or_else(|| AppError::Unauthorized("Authentication required".into()))?;
 
         // 3. Verify the JWT
         let jwt_secret = std::env::var("JWT_SECRET")
@@ -97,10 +127,84 @@ where
         let org_id = Uuid::parse_str(&claims.org_id)
             .map_err(|_| AppError::Unauthorized("Invalid org_id in token".to_string()))?;
 
+        let (role, version): (Role, i64) = sqlx::query_as(
+            "SELECT role, token_version FROM users WHERE id=$1 AND organization_id=$2",
+        )
+        .bind(user_id)
+        .bind(org_id)
+        .fetch_optional(&state.db)
+        .await?
+        .ok_or_else(|| AppError::Unauthorized("Session no longer valid".into()))?;
+        if version != claims.token_version {
+            return Err(AppError::Unauthorized("Session revoked".into()));
+        }
         Ok(AuthUser {
             user_id,
             org_id,
-            role: claims.role,
+            role,
         })
+    }
+}
+
+pub fn cookie_header(token: &str, clear: bool) -> axum::http::HeaderMap {
+    let mut headers = axum::http::HeaderMap::new();
+    let secure = if std::env::var("COOKIE_SECURE").as_deref() == Ok("true") {
+        "; Secure"
+    } else {
+        ""
+    };
+    let cookie = format!(
+        "aster_session={token}; HttpOnly; SameSite=Strict; Path=/; Max-Age={}{}",
+        if clear { 0 } else { 86400 },
+        secure
+    );
+    headers.insert(axum::http::header::SET_COOKIE, cookie.parse().unwrap());
+    headers
+}
+pub fn session_response<T: serde::Serialize>(
+    token: &str,
+    value: T,
+) -> (axum::http::HeaderMap, axum::Json<T>) {
+    (cookie_header(token, false), axum::Json(value))
+}
+pub async fn logout() -> (axum::http::HeaderMap, axum::Json<serde_json::Value>) {
+    (
+        cookie_header("", true),
+        axum::Json(serde_json::json!({"signed_out":true})),
+    )
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn legacy_hash_and_current_hash_roundtrip() {
+        let legacy:&str="$argon2id$v=19$m=19456,t=2,p=1$aEfNkeza7DhBb9SysUl9Gw$Mmdr4IDoC1ohHkuKtvvTevoHhj+o3LSj6lpmvOUfP3c";
+        assert!(verify_password("Demo-only-password-2026!", legacy).unwrap());
+        assert!(!verify_password("incorrect", legacy).unwrap());
+        let current = hash_password("Synthetic-roundtrip-2026!").unwrap();
+        assert!(verify_password("Synthetic-roundtrip-2026!", &current).unwrap());
+    }
+    #[test]
+    fn jwt_rejects_other_algorithms() {
+        let secret = "synthetic-test-secret-at-least-32-characters";
+        let user = Uuid::new_v4();
+        let org = Uuid::new_v4();
+        let good = create_jwt(user, org, Role::Admin, secret).unwrap();
+        assert_eq!(verify_jwt(&good, secret).unwrap().sub, user.to_string());
+        let claims = Claims {
+            sub: user.to_string(),
+            org_id: org.to_string(),
+            role: Role::Admin,
+            exp: (chrono::Utc::now().timestamp() + 60) as usize,
+            token_version: 0,
+        };
+        let other = encode(
+            &Header::new(jsonwebtoken::Algorithm::HS384),
+            &claims,
+            &EncodingKey::from_secret(secret.as_bytes()),
+        )
+        .unwrap();
+        assert!(verify_jwt(&other, secret).is_err());
     }
 }

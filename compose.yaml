@@ -1,0 +1,65 @@
+name: aster-support
+services:
+  db:
+    image: postgres:17-bookworm
+    environment:
+      POSTGRES_USER: support
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run scripts/init-env.ps1 first}
+      POSTGRES_DB: support_os
+    volumes:
+      - support_db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U support -d support_os"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+  api:
+    build: ./backend/rust-api
+    ports: ["127.0.0.1:8080:8080"]
+    environment:
+      DATABASE_URL: postgres://support:${POSTGRES_PASSWORD}@db:5432/support_os
+      JWT_SECRET: ${JWT_SECRET:?Run scripts/init-env.ps1 first}
+      AI_SERVICE_TOKEN: ${AI_SERVICE_TOKEN:?Run scripts/init-env.ps1 first}
+      AI_COPILOT_URL: http://ai:8001
+      FRONTEND_ORIGIN: http://localhost:3000
+      ENABLE_SANDBOX: "true"
+      RUST_LOG: info
+    depends_on:
+      db: {condition: service_healthy}
+      ai: {condition: service_started}
+    restart: unless-stopped
+  ai:
+    build: ./backend/ai-copilot
+    environment:
+      AI_SERVICE_TOKEN: ${AI_SERVICE_TOKEN}
+      LLM_ENABLED: "false"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+  web:
+    build:
+      context: ./frontend
+    ports: ["127.0.0.1:3000:3000"]
+    environment:
+      API_PROXY_URL: http://api:8080
+    depends_on: [api]
+    restart: unless-stopped
+  kafka:
+    image: apache/kafka:3.9.0
+    profiles: [events]
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+volumes:
+  support_db:

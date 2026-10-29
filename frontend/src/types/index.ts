@@ -26,8 +26,19 @@ export interface Ticket {
 export interface User {
   user_id: string;
   org_id: string;
+  org_name?: string;
+  org_slug?: string;
   role: Role;
 }
+
+
+export interface UserSummary {
+  id: string;
+  email: string;
+  full_name: string;
+  role: Role;
+}
+
 
 // ---- Auth request/response shapes (mirror SignupRequest, LoginRequest, AuthResponse) ----
 
@@ -59,6 +70,7 @@ export interface CreateTicketRequest {
 }
 
 export interface UpdateTicketRequest {
+  unassign?: boolean;
   status?: TicketStatus;
   assigned_to?: string;
 }

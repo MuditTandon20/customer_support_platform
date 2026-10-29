@@ -11,6 +11,10 @@ load_dotenv()
 from app import __version__
 from app.llm_client import llm_client
 from app.routers import copilot
+from app.routers import grounded
+from fastapi import Request
+from fastapi.responses import JSONResponse
+import secrets
 from app.schemas import HealthResponse
 
 # Configure logging
@@ -28,7 +32,7 @@ async def lifespan(app: FastAPI):
         logger.info("LLM Client is active with model '%s'", llm_client.model)
     else:
         logger.warning(
-            "LLM Client is running in MOCK mode. Configure OPENAI_API_KEY in .env to enable real LLM requests."
+            "Deterministic extraction/rules enabled. Paid inference is disabled unless explicitly configured."
         )
     yield
     logger.info("Shutting down AI Copilot Service...")
@@ -44,14 +48,26 @@ app = FastAPI(
 # CORS middleware for frontend / microservices interaction
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=[],
+    allow_credentials=False,
+    allow_methods=["POST", "GET"],
+    allow_headers=["Content-Type", "X-Service-Token"],
 )
 
 # Register Copilot Router
 app.include_router(copilot.router)
+app.include_router(grounded.router)
+
+@app.middleware("http")
+async def service_auth(request: Request, call_next):
+    if request.url.path.startswith('/copilot'):
+        expected = os.getenv('AI_SERVICE_TOKEN', '')
+        if not expected or not secrets.compare_digest(request.headers.get('x-service-token', ''), expected):
+            return JSONResponse(status_code=401, content={'error': 'Service authentication required'})
+        length = request.headers.get('content-length')
+        if length and (not length.isdigit() or int(length) > 262144):
+            return JSONResponse(status_code=413, content={'error': 'Request too large'})
+    return await call_next(request)
 
 
 @app.get("/", tags=["Root"])

@@ -1,0 +1,194 @@
+{
+  "source": "https://api.osv.dev/v1/querybatch",
+  "rust_and_python_dependencies_checked": 339,
+  "python_scope": "Installed direct and recursive project dependencies, including uvicorn standard extras",
+  "findings": [
+    {
+      "package": {
+        "name": "block-buffer",
+        "ecosystem": "crates.io"
+      },
+      "version": "0.10.4",
+      "advisories": [
+        "GHSA-qwgh-2vcv-g2f7"
+      ]
+    },
+    {
+      "package": {
+        "name": "jsonwebtoken",
+        "ecosystem": "crates.io"
+      },
+      "version": "9.3.1",
+      "advisories": [
+        "GHSA-h395-gr6q-cpjc"
+      ]
+    },
+    {
+      "package": {
+        "name": "paste",
+        "ecosystem": "crates.io"
+      },
+      "version": "1.0.15",
+      "advisories": [
+        "RUSTSEC-2024-0436"
+      ]
+    },
+    {
+      "package": {
+        "name": "rsa",
+        "ecosystem": "crates.io"
+      },
+      "version": "0.9.10",
+      "advisories": [
+        "RUSTSEC-2023-0071"
+      ]
+    },
+    {
+      "package": {
+        "name": "rustls",
+        "ecosystem": "crates.io"
+      },
+      "version": "0.23.43",
+      "advisories": [
+        "GHSA-2mjx-qc3c-rqvc",
+        "GHSA-c8m5-c952-6cm4",
+        "GHSA-h2v8-394m-p7vv",
+        "GHSA-w44r-93j7-qv28",
+        "RUSTSEC-2026-0285",
+        "RUSTSEC-2026-0346",
+        "RUSTSEC-2026-0348",
+        "RUSTSEC-2026-0349"
+      ]
+    },
+    {
+      "package": {
+        "name": "rustls-webpki",
+        "ecosystem": "crates.io"
+      },
+      "version": "0.103.15",
+      "advisories": [
+        "RUSTSEC-2026-0382"
+      ]
+    },
+    {
+      "package": {
+        "name": "sqlx",
+        "ecosystem": "crates.io"
+      },
+      "version": "0.7.4",
+      "advisories": [
+        "GHSA-xmrp-424f-vfpx",
+        "RUSTSEC-2024-0363"
+      ]
+    },
+    {
+      "package": {
+        "name": "tokio",
+        "ecosystem": "crates.io"
+      },
+      "version": "1.53.1",
+      "advisories": [
+        "RUSTSEC-2026-0386"
+      ]
+    },
+    {
+      "package": {
+        "name": "zstd",
+        "ecosystem": "crates.io"
+      },
+      "version": "0.13.3",
+      "advisories": [
+        "RUSTSEC-2026-0391"
+      ]
+    },
+    {
+      "package": {
+        "name": "zstd-safe",
+        "ecosystem": "crates.io"
+      },
+      "version": "7.2.4",
+      "advisories": [
+        "RUSTSEC-2026-0395",
+        "RUSTSEC-2026-0396",
+        "RUSTSEC-2026-0397",
+        "RUSTSEC-2026-0398",
+        "RUSTSEC-2026-0399",
+        "RUSTSEC-2026-0400",
+        "RUSTSEC-2026-0401",
+        "RUSTSEC-2026-0402",
+        "RUSTSEC-2026-0403",
+        "RUSTSEC-2026-0404",
+        "RUSTSEC-2026-0405",
+        "RUSTSEC-2026-0406"
+      ]
+    },
+    {
+      "package": {
+        "name": "zstd-sys",
+        "ecosystem": "crates.io"
+      },
+      "version": "2.0.16+zstd.1.5.7",
+      "advisories": [
+        "RUSTSEC-2026-0410"
+      ]
+    },
+    {
+      "package": {
+        "name": "certifi",
+        "ecosystem": "PyPI"
+      },
+      "version": "2026.5.20",
+      "advisories": [
+        "GHSA-6q48-6c7w-9gw2",
+        "PYSEC-2026-4320"
+      ]
+    },
+    {
+      "package": {
+        "name": "anyio",
+        "ecosystem": "PyPI"
+      },
+      "version": "4.13.0",
+      "advisories": [
+        "GHSA-5p39-cfhj-2xmp",
+        "GHSA-82r6-8w77-94w6",
+        "PYSEC-2026-4024",
+        "PYSEC-2026-4025"
+      ]
+    },
+    {
+      "package": {
+        "name": "python-dotenv",
+        "ecosystem": "PyPI"
+      },
+      "version": "1.0.1",
+      "advisories": [
+        "GHSA-mf9w-mj56-hr94",
+        "PYSEC-2026-2270"
+      ]
+    },
+    {
+      "package": {
+        "name": "starlette",
+        "ecosystem": "PyPI"
+      },
+      "version": "0.41.3",
+      "advisories": [
+        "GHSA-2c2j-9gv5-cj73",
+        "GHSA-7f5h-v6xp-fcq8",
+        "GHSA-82w8-qh3p-5jfq",
+        "GHSA-86qp-5c8j-p5mr",
+        "GHSA-jp82-jpqv-5vv3",
+        "GHSA-wqp7-x3pw-xc5r",
+        "GHSA-x746-7m8f-x49c",
+        "PYSEC-2026-161",
+        "PYSEC-2026-1941",
+        "PYSEC-2026-1942",
+        "PYSEC-2026-2280",
+        "PYSEC-2026-2281",
+        "PYSEC-2026-248",
+        "PYSEC-2026-249"
+      ]
+    }
+  ]
+}

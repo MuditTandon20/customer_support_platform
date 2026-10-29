@@ -1,0 +1,6 @@
+{
+  "status": "passed",
+  "database": "support_os_fresh_120a8a96283e4c9bb630d7731ce61d08",
+  "scope": "Fresh empty PostgreSQL 18 database; all additive migrations; latest compiled Rust; full HTTP integration suite",
+  "data_policy": "New test database retained for inspection; no existing database reset"
+}

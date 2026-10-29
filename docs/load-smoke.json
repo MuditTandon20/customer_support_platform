@@ -1,0 +1,11 @@
+{
+  "requests": 100,
+  "concurrency": 10,
+  "errors": 0,
+  "p50_ms": 17.47,
+  "p95_ms": 366.02,
+  "elapsed_seconds": 0.57,
+  "requests_per_second": 174.21,
+  "environment": "Windows local Rust debug build; disposable PostgreSQL 18; empty synthetic tenant; 50 inbox + 50 analytics requests",
+  "scope": "Smoke measurement only. Not an availability or production SLO."
+}

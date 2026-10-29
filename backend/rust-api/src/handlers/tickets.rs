@@ -8,8 +8,7 @@ use uuid::Uuid;
 use crate::auth::AuthUser;
 use crate::error::{AppError, AppResult};
 use crate::models::{
-    CreateTicketRequest, Role, Ticket, TicketAssigned, TicketStatus, TicketStatusChanged,
-    UpdateTicketRequest,
+    CreateTicketRequest, Role, Ticket, TicketAssigned, TicketStatusChanged, UpdateTicketRequest,
 };
 use crate::AppState;
 
@@ -18,22 +17,47 @@ pub async fn create_ticket(
     State(state): State<AppState>,
     Json(payload): Json<CreateTicketRequest>,
 ) -> AppResult<Json<Ticket>> {
+    if payload.subject.trim().is_empty()
+        || payload.subject.len() > 200
+        || payload
+            .description
+            .as_ref()
+            .is_some_and(|v| v.len() > 20000)
+    {
+        return Err(AppError::BadRequest(
+            "Subject required (max 200); description max 20000".into(),
+        ));
+    }
     // org_id and created_by come from the verified JWT (auth_user),
     // NEVER from the request body — this is what makes cross-org
     // ticket creation impossible even if a malicious client tries it.
-    let ticket = sqlx::query_as!(
-        Ticket,
-        r#"INSERT INTO tickets (organization_id, created_by, subject, description)
+    let mut tx = state.db.begin().await?;
+    let ticket = sqlx::query_as::<_, Ticket>(r#"INSERT INTO tickets (organization_id, created_by, subject, description)
            VALUES ($1, $2, $3, $4)
-           RETURNING id, organization_id, created_by, assigned_to, subject, description, status as "status: TicketStatus", created_at"#,
-        auth_user.org_id,
-        auth_user.user_id,
-        payload.subject,
-        payload.description
-    )
-    .fetch_one(&state.db)
+           RETURNING id, organization_id, created_by, assigned_to, subject, description, status, created_at, updated_at, priority, labels, channel"#)
+    .bind(auth_user.org_id)
+    .bind(auth_user.user_id)
+    .bind(payload.subject)
+    .bind(payload.description)
+    .fetch_one(&mut *tx)
     .await?;
-
+    crate::handlers::platform::audit(
+        &mut tx,
+        &auth_user,
+        "ticket.created",
+        ticket.id,
+        serde_json::json!({}),
+    )
+    .await?;
+    crate::handlers::platform::event(
+        &mut tx,
+        &auth_user,
+        "TicketCreated",
+        ticket.id,
+        serde_json::json!({"subject":ticket.subject}),
+    )
+    .await?;
+    tx.commit().await?;
     Ok(Json(ticket))
 }
 
@@ -47,27 +71,21 @@ pub async fn list_tickets(
     //   - agent/admin: can see every ticket in their org
     let tickets = match auth_user.role {
         Role::Customer => {
-            sqlx::query_as!(
-                Ticket,
-                r#"SELECT id, organization_id, created_by, assigned_to, subject, description, status as "status: TicketStatus", created_at
+            sqlx::query_as::<_, Ticket>(r#"SELECT id, organization_id, created_by, assigned_to, subject, description, status, created_at, updated_at, priority, labels, channel
                    FROM tickets
                    WHERE organization_id = $1 AND created_by = $2
-                   ORDER BY created_at DESC"#,
-                auth_user.org_id,
-                auth_user.user_id
-            )
+                   ORDER BY created_at DESC"#)
+    .bind(auth_user.org_id)
+    .bind(auth_user.user_id)
             .fetch_all(&state.db)
             .await?
         }
         Role::Agent | Role::Admin => {
-            sqlx::query_as!(
-                Ticket,
-                r#"SELECT id, organization_id, created_by, assigned_to, subject, description, status as "status: TicketStatus", created_at
+            sqlx::query_as::<_, Ticket>(r#"SELECT id, organization_id, created_by, assigned_to, subject, description, status, created_at, updated_at, priority, labels, channel
                    FROM tickets
                    WHERE organization_id = $1
-                   ORDER BY created_at DESC"#,
-                auth_user.org_id
-            )
+                   ORDER BY created_at DESC"#)
+    .bind(auth_user.org_id)
             .fetch_all(&state.db)
             .await?
         }
@@ -82,14 +100,11 @@ pub async fn get_ticket(
     Path(ticket_id): Path<Uuid>,
 ) -> AppResult<Json<Ticket>> {
     // Layer 1: org isolation always applies.
-    let ticket = sqlx::query_as!(
-        Ticket,
-        r#"SELECT id, organization_id, created_by, assigned_to, subject, description, status as "status: TicketStatus", created_at
+    let ticket = sqlx::query_as::<_, Ticket>(r#"SELECT id, organization_id, created_by, assigned_to, subject, description, status, created_at, updated_at, priority, labels, channel
            FROM tickets
-           WHERE id = $1 AND organization_id = $2"#,
-        ticket_id,
-        auth_user.org_id
-    )
+           WHERE id = $1 AND organization_id = $2"#)
+    .bind(ticket_id)
+    .bind(auth_user.org_id)
     .fetch_optional(&state.db)
     .await?
     // A row that exists in another org, or doesn't exist at all, both
@@ -124,31 +139,37 @@ pub async fn update_ticket(
     let mut tx = state.db.begin().await?;
 
     // Fetch the CURRENT state first
-    let existing = sqlx::query_as!(
-        Ticket,
-        r#"SELECT id, organization_id, created_by, assigned_to, subject, description, status as "status: TicketStatus", created_at
+    let existing = sqlx::query_as::<_, Ticket>(r#"SELECT id, organization_id, created_by, assigned_to, subject, description, status, created_at, updated_at, priority, labels, channel
            FROM tickets
            WHERE id = $1 AND organization_id = $2
-           FOR UPDATE"#,
-        ticket_id,
-        auth_user.org_id
-    )
+           FOR UPDATE"#)
+    .bind(ticket_id)
+    .bind(auth_user.org_id)
     .fetch_optional(&mut *tx)
     .await?
     .ok_or_else(|| AppError::NotFound("Ticket not found".to_string()))?;
 
-    let updated = sqlx::query_as!(
-        Ticket,
-        r#"UPDATE tickets
+    if let Some(to) = payload.status {
+        if !crate::policy::transition(existing.status, to) {
+            return Err(AppError::BadRequest("Invalid status transition".into()));
+        }
+    }
+    if let Some(user) = payload.assigned_to {
+        let valid:bool=sqlx::query_scalar("SELECT EXISTS(SELECT 1 FROM users WHERE id=$1 AND organization_id=$2 AND role IN ('admin','agent'))").bind(user).bind(auth_user.org_id).fetch_one(&mut *tx).await?;
+        if !valid {
+            return Err(AppError::NotFound("Assignee not found".into()));
+        }
+    }
+    let updated = sqlx::query_as::<_, Ticket>(r#"UPDATE tickets
            SET status = COALESCE($1, status),
-               assigned_to = COALESCE($2, assigned_to)
+               assigned_to = CASE WHEN $5 THEN NULL ELSE COALESCE($2, assigned_to) END
            WHERE id = $3 AND organization_id = $4
-           RETURNING id, organization_id, created_by, assigned_to, subject, description, status as "status: TicketStatus", created_at"#,
-        payload.status as Option<TicketStatus>,
-        payload.assigned_to,
-        ticket_id,
-        auth_user.org_id
-    )
+           RETURNING id, organization_id, created_by, assigned_to, subject, description, status, created_at, updated_at, priority, labels, channel"#)
+    .bind(payload.status)
+    .bind(payload.assigned_to)
+    .bind(ticket_id)
+    .bind(auth_user.org_id)
+    .bind(payload.unassign)
     .fetch_one(&mut *tx)
     .await?;
 
@@ -164,14 +185,14 @@ pub async fn update_ticket(
         };
         let payload_json = serde_json::to_value(&event)?;
 
-        sqlx::query!(
+        sqlx::query(
             r#"INSERT INTO outbox_events (event_type, aggregate_id, organization_id, payload)
                VALUES ($1, $2, $3, $4)"#,
-            "TicketStatusChanged",
-            updated.id,
-            updated.organization_id,
-            payload_json
         )
+        .bind("TicketStatusChanged")
+        .bind(updated.id)
+        .bind(updated.organization_id)
+        .bind(payload_json)
         .execute(&mut *tx)
         .await?;
     }
@@ -186,18 +207,27 @@ pub async fn update_ticket(
         };
         let payload_json = serde_json::to_value(&event)?;
 
-        sqlx::query!(
+        sqlx::query(
             r#"INSERT INTO outbox_events (event_type, aggregate_id, organization_id, payload)
                VALUES ($1, $2, $3, $4)"#,
-            "TicketAssigned",
-            updated.id,
-            updated.organization_id,
-            payload_json
         )
+        .bind("TicketAssigned")
+        .bind(updated.id)
+        .bind(updated.organization_id)
+        .bind(payload_json)
         .execute(&mut *tx)
         .await?;
     }
 
+    sqlx::query("UPDATE tickets SET updated_at=now(),resolved_at=CASE WHEN status IN ('solved','closed') THEN coalesce(resolved_at,now()) ELSE NULL END WHERE id=$1 AND organization_id=$2").bind(ticket_id).bind(auth_user.org_id).execute(&mut *tx).await?;
+    crate::handlers::platform::audit(
+        &mut tx,
+        &auth_user,
+        "ticket.updated",
+        ticket_id,
+        serde_json::json!({"status":updated.status,"assigned_to":updated.assigned_to}),
+    )
+    .await?;
     // Persist all changes atomically
     tx.commit().await?;
 
@@ -212,7 +242,7 @@ struct CopilotSummarizeRequest {
     content: Option<String>,
 }
 
-#[derive(Debug,Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct TicketSummaryResponse {
     pub ticket_id: Option<String>,
     pub summary: String,
@@ -233,14 +263,11 @@ pub async fn get_ticket_summary(
     }
 
     // Step 1: fetch the ticket, org-scoped — same pattern as get_ticket
-    let ticket = sqlx::query_as!(
-        Ticket,
-        r#"SELECT id, organization_id, created_by, assigned_to, subject, description, status as "status: TicketStatus", created_at
+    let ticket = sqlx::query_as::<_, Ticket>(r#"SELECT id, organization_id, created_by, assigned_to, subject, description, status, created_at, updated_at, priority, labels, channel
            FROM tickets
-           WHERE id = $1 AND organization_id = $2"#,
-        ticket_id,
-        auth_user.org_id
-    )
+           WHERE id = $1 AND organization_id = $2"#)
+    .bind(ticket_id)
+    .bind(auth_user.org_id)
     .fetch_optional(&state.db)
     .await?
     .ok_or_else(|| AppError::NotFound("Ticket not found".to_string()))?;
@@ -254,6 +281,10 @@ pub async fn get_ticket_summary(
     let response = state
         .http_client
         .post(&copilot_url)
+        .header(
+            "X-Service-Token",
+            std::env::var("AI_SERVICE_TOKEN").unwrap_or_default(),
+        )
         .json(&CopilotSummarizeRequest {
             subject: ticket.subject.clone(),
             content: ticket.description.clone(),
@@ -262,7 +293,9 @@ pub async fn get_ticket_summary(
         .await?;
 
     if !response.status().is_success() {
-        return Err(AppError::Internal("AI copilot returned an error".to_string()));
+        return Err(AppError::Internal(
+            "AI copilot returned an error".to_string(),
+        ));
     }
 
     let summary: TicketSummaryResponse = response.json().await?;
@@ -299,14 +332,11 @@ pub async fn get_ticket_category(
         ));
     }
 
-    let ticket = sqlx::query_as!(
-        Ticket,
-        r#"SELECT id, organization_id, created_by, assigned_to, subject, description, status as "status: TicketStatus", created_at
+    let ticket = sqlx::query_as::<_, Ticket>(r#"SELECT id, organization_id, created_by, assigned_to, subject, description, status, created_at, updated_at, priority, labels, channel
            FROM tickets
-           WHERE id = $1 AND organization_id = $2"#,
-        ticket_id,
-        auth_user.org_id
-    )
+           WHERE id = $1 AND organization_id = $2"#)
+    .bind(ticket_id)
+    .bind(auth_user.org_id)
     .fetch_optional(&state.db)
     .await?
     .ok_or_else(|| AppError::NotFound("Ticket not found".to_string()))?;
@@ -316,6 +346,10 @@ pub async fn get_ticket_category(
     let response = state
         .http_client
         .post(&copilot_url)
+        .header(
+            "X-Service-Token",
+            std::env::var("AI_SERVICE_TOKEN").unwrap_or_default(),
+        )
         .json(&CopilotCategorizeRequest {
             subject: ticket.subject.clone(),
             content: ticket.description.clone().unwrap_or_default(),
@@ -324,7 +358,9 @@ pub async fn get_ticket_category(
         .await?;
 
     if !response.status().is_success() {
-        return Err(AppError::Internal("AI copilot returned an error".to_string()));
+        return Err(AppError::Internal(
+            "AI copilot returned an error".to_string(),
+        ));
     }
 
     let category: TicketCategoryResponse = response.json().await?;
@@ -333,12 +369,6 @@ pub async fn get_ticket_category(
 }
 
 // ---- Draft Reply ----
-
-#[derive(Debug, Serialize)]
-struct CopilotDraftReplyRequest {
-    subject: String,
-    content: String,
-}
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct TicketDraftReplyResponse {
@@ -359,35 +389,24 @@ pub async fn get_ticket_draft_reply(
         ));
     }
 
-    let ticket = sqlx::query_as!(
-        Ticket,
-        r#"SELECT id, organization_id, created_by, assigned_to, subject, description, status as "status: TicketStatus", created_at
+    let ticket = sqlx::query_as::<_, Ticket>(r#"SELECT id, organization_id, created_by, assigned_to, subject, description, status, created_at, updated_at, priority, labels, channel
            FROM tickets
-           WHERE id = $1 AND organization_id = $2"#,
-        ticket_id,
-        auth_user.org_id
-    )
+           WHERE id = $1 AND organization_id = $2"#)
+    .bind(ticket_id)
+    .bind(auth_user.org_id)
     .fetch_optional(&state.db)
     .await?
     .ok_or_else(|| AppError::NotFound("Ticket not found".to_string()))?;
 
-    let copilot_url = format!("{}/copilot/draft-reply", state.ai_copilot_url);
-
-    let response = state
-        .http_client
-        .post(&copilot_url)
-        .json(&CopilotDraftReplyRequest {
-            subject: ticket.subject.clone(),
-            content: ticket.description.clone().unwrap_or_default(),
-        })
-        .send()
-        .await?;
-
-    if !response.status().is_success() {
-        return Err(AppError::Internal("AI copilot returned an error".to_string()));
-    }
-
-    let draft: TicketDraftReplyResponse = response.json().await?;
-
-    Ok(Json(draft))
+    let _ = ticket;
+    let Json(proposal) =
+        crate::handlers::platform::grounded(auth_user, State(state), Path(ticket_id)).await?;
+    Ok(Json(TicketDraftReplyResponse {
+        ticket_id: Some(ticket_id.to_string()),
+        draft_reply: proposal["draft"].as_str().unwrap_or("").to_string(),
+        suggested_action: Some(
+            "Extractive evidence draft. Check relevance and citations before sending.".into(),
+        ),
+        tone_used: "extractive / human review required".into(),
+    }))
 }
