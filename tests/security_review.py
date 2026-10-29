@@ -10,6 +10,7 @@ from pathlib import Path
 import platform
 import re
 import subprocess
+import time
 import uuid
 import httpx
 import sys
@@ -47,7 +48,7 @@ def main():
                 capture_output=True,text=True,check=True)
             assert not suid.stdout.strip(),suid.stdout
             unavailable=command(*compose,'exec','-T',service,'sh','-c',
-                'find /usr -type f \( -name systemd-homed -o -name tpm2daemon \) -print; for p in /dev/tpm0 /dev/tpmrm0; do if test -e "$p"; then echo "$p"; fi; done')
+                r'find /usr -type f \( -name systemd-homed -o -name tpm2daemon \) -print; for p in /dev/tpm0 /dev/tpmrm0; do if test -e "$p"; then echo "$p"; fi; done')
             assert not unavailable,unavailable
             if service=='web':command(*compose,'exec','-T',service,'sh','-c','test -w /app/.next/cache')
             if service in ['db','ai']:
@@ -61,8 +62,15 @@ def main():
     assert failed.returncode!=0
     base=os.getenv('TEST_API_URL','http://localhost:8080')
     client=httpx.Client(base_url=base,headers={'Origin':os.getenv('TEST_WEB_URL','http://localhost:3000')},timeout=30)
-    signup=client.post('/auth/signup',json={'email':f'boundary-{uuid.uuid4()}@example.test',
-        'password':'Synthetic-boundary-test-password!','organization_name':'Synthetic security boundaries','full_name':'Synthetic reviewer'})
+    # Earlier abuse tests intentionally exhaust the shared 60-second auth bucket.
+    # Respect the production limit, retry only 429, and fail after one window.
+    credentials={'email':f'boundary-{uuid.uuid4()}@example.test',
+        'password':'Synthetic-boundary-test-password!','organization_name':'Synthetic security boundaries','full_name':'Synthetic reviewer'}
+    deadline=time.monotonic()+65
+    while True:
+        signup=client.post('/auth/signup',json=credentials)
+        if signup.status_code!=429 or time.monotonic()>=deadline:break
+        time.sleep(min(5,max(0,deadline-time.monotonic())))
     signup.raise_for_status();auth={'Authorization':'Bearer '+signup.json()['token']};client.cookies.clear()
     xml='<!DOCTYPE note [<!ENTITY xxe SYSTEM "file:///etc/passwd">]><note>&xxe;</note>'
     assert client.post('/tickets',headers=auth|{'Content-Type':'application/xml'},content=xml).status_code==415
