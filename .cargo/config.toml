@@ -1,4 +1,4 @@
 [env]
-# AWS-LC's supported portable C implementation avoids a separate NASM
-# installation for native Windows builds. Cryptography stays in the provider.
+# Use AWS-LC's supported portable C implementation on Linux hosting.
+# Native Windows selects RustCrypto in Cargo.toml for toolchain compatibility.
 AWS_LC_SYS_NO_ASM = "1"
