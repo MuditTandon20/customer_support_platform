@@ -28,7 +28,15 @@ python -m pip install httpx
 python scripts/seed_demo.py
 ```
 
-See [the runbook](docs/runbook.md) for native setup, a Docker-free disposable Postgres test harness, environment variables and failure handling. Docker definitions were authored but container execution remains unverified on this machine because the engine is unavailable.
+See [the runbook](docs/runbook.md) for native setup, a Docker-free disposable Postgres test harness, environment variables and failure handling. Docker execution and recovery were subsequently verified; the latest scoped results are in the [security closure](docs/STAGE1_SECURITY_CLOSURE.md).
+
+## Owner documents and today's saved work
+
+- [Stage 1 PRD — editable Word document](docs/deliverables/ASTER_PRD_STAGE1.docx) · [PDF](docs/deliverables/ASTER_PRD_STAGE1.pdf)
+- [Project explained from scratch — editable Word document](docs/deliverables/ASTER_PROJECT_GUIDE.docx) · [PDF](docs/deliverables/ASTER_PROJECT_GUIDE.pdf)
+- [Saved task record — 29 October 2026](docs/TASK_LOG_2026-10-29.md)
+
+Current local dashboard: http://localhost:3000/workspace/dashboard (sign in at http://localhost:3000/login). The guide includes a separate synthetic demo workspace and a UI tour. These are local links, not a deployed public website.
 
 ## Connected capabilities
 

@@ -1,0 +1,3 @@
+# Preserve exported document bytes and PDF cross-reference offsets on checkout.
+*.pdf binary
+*.docx binary
